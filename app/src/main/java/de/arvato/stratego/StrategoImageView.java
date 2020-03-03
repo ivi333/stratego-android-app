@@ -3,9 +3,12 @@ package de.arvato.stratego;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
+import android.graphics.Rect;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 
 import androidx.annotation.Nullable;
@@ -32,6 +35,8 @@ public class StrategoImageView extends View {
                 _paint.setFilterBitmap(true);
         }
 
+
+
         private ImageCacheObject _ico;
 
         public StrategoImageView(Context context) {
@@ -45,7 +50,107 @@ public class StrategoImageView extends View {
         @Override
         protected void onDraw(Canvas canvas) {
                 super.onDraw(canvas);
+                if(arrColorScheme[0][0] == 0){
+                        return;
+                }
 
+                if (_matrix == null) {
+                        _matrix = new Matrix();
+                        float scale = 1.0F;
+                        Bitmap bmp = arrPieceBitmaps[StrategoConstants.RED][StrategoConstants.PAWN]; // any dynamic
+                        scale = (float)getWidth() / bmp.getWidth();
+                        Log.i("paintBoard", "init " + scale + " : " + bmp.getWidth() + ", " + getWidth());
+                        _matrix.setScale(scale, scale);
+                        if(bmpTile != null){
+                                _matrixTile = new Matrix();
+                                bmp = bmpTile;
+                                scale = (float)getWidth() / bmp.getWidth();
+                                _matrixTile.setScale(scale, scale);
+                        }
 
+                }
+
+                Bitmap bmp;
+                ImageCacheObject ico = _ico;
+
+                // first draw field background
+                if(ico == null)
+                        Log.e("err", "err");
+
+                if(hasFocus()){
+                        _paint.setColor(0xffff9900);
+                        canvas.drawRect(new Rect(0, 0, getWidth(), getHeight()), _paint);
+                } else {
+                        _paint.setColor(ico._fieldColor == 0 ? arrColorScheme[colorScheme][0] : arrColorScheme[colorScheme][1]);
+                        canvas.drawRect(new Rect(0, 0, getWidth(), getHeight()), _paint);
+
+                        //TODO later
+                        /*if (colorScheme == 6){ // 6 is color picker
+                                _paint.setColor(ico._fieldColor == 0 ? pref.getInt("color2", 0xffdddddd) : pref.getInt("color1", 0xffff0066));
+                                canvas.drawRect(new Rect(0, 0, getWidth(), getHeight()), _paint);
+                                if (ico._selected){
+                                        _paint.setColor(pref.getInt("color3", 0xcc00dddd) & 0xccffffff);
+                                        canvas.drawRect(new Rect(0, 0, getWidth(), getHeight()), _paint);
+                                }
+                        } else {
+                                _paint.setColor(ico._fieldColor == 0 ? _arrColorScheme[_colorScheme][0] : _arrColorScheme[_colorScheme][1]);
+                                canvas.drawRect(new Rect(0, 0, getWidth(), getHeight()), _paint);
+                                if (ico._selected) {
+                                        _paint.setColor(_arrColorScheme[_colorScheme][2]);
+                                        canvas.drawRect(new Rect(0, 0, getWidth(), getHeight()), _paint);
+                                }
+                        }*/
+                }
+
+                if(bmpTile != null){
+                        canvas.drawBitmap(bmpTile, _matrixTile, _paint);
+                }
+
+                if(bmpBorder != null && (ico._selected || hasFocus())){
+                        canvas.drawBitmap(bmpBorder, _matrix, _paint);
+                }
+
+                if(ico._selectedPos){
+                        canvas.drawBitmap(bmpSelectLight, _matrix, _paint);
+                }
+
+                if(ico._bPiece){
+                        bmp = arrPieceBitmaps[ico._color][ico._piece];
+                        //sActivity = (StrategoImageView.get_ssActivity() == null) ?  "" : start.get_ssActivity();
+                        // todo if it's fine then will put back && statements
+                        /*
+                        if (_sActivity.equals(getContext().getString(R.string.start_play))){
+                                if(options.is_sbFlipTopPieces()){
+                                        if((options.is_sbPlayAsBlack() ? ico._color == 1 : ico._color == 0)) {   // flips top pieces for human vs human without
+                                                canvas.rotate(180, getWidth() / 2, getHeight() / 2);                 // autoflip on in Play mode
+                                        }
+                                }
+                        }*/
+                        canvas.drawBitmap(bmp, _matrix, _paint);
+                }
+
+                if(ico._coord != null){
+                        _paint.setColor(0x99ffffff);
+                        canvas.drawRect(0, getHeight() - 14,  _paint.measureText(ico._coord) + 4, getHeight(), _paint);
+                        _paint.setColor(Color.BLACK);
+
+                        _paint.setTextSize(getHeight() > 50 ? (int)(getHeight()/5) : 10);
+                        canvas.drawText(ico._coord, 2, getHeight() - 2, _paint);
+
+                        if(ico._coord.equals("A") && !ImageCacheObject._flippedBoard){  // bottom-left corner coordinates
+                                canvas.drawText("1", 2 , getHeight() - 30, _paint);
+                        }
+                        else if(ico._coord.equals("H") && ImageCacheObject._flippedBoard){
+                                canvas.drawText("8", 2 , getHeight() - 30, _paint);
+                        }
+                }
+        }
+
+        public ImageCacheObject get_ico() {
+                return _ico;
+        }
+
+        public void setICO(ImageCacheObject _ico) {
+                this._ico = _ico;
         }
 }

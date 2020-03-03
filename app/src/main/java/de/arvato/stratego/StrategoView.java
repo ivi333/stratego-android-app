@@ -4,7 +4,7 @@ import android.app.Activity;
 import android.view.LayoutInflater;
 import android.view.View;
 
-class StrategoView {
+public class StrategoView extends StrategoControl {
 
     public static final String TAG = "StrategoView";
 
@@ -12,7 +12,7 @@ class StrategoView {
     private StrategoActivity parent;
     private LayoutInflater inflater;
 
-    StrategoView(Activity activity) {
+    public StrategoView(Activity activity) {
         super();
         parent = (StrategoActivity) activity;
         strategoViewBase = new StrategoViewBase(activity);

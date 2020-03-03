@@ -13,6 +13,8 @@ import android.view.Window;
 import android.widget.RelativeLayout;
 import android.widget.TableRow.LayoutParams;
 
+import java.util.ArrayList;
+
 public class StrategoViewBase {
 
 	public static final String TAG = "StrategoViewBase";
@@ -320,112 +322,28 @@ public class StrategoViewBase {
 		return -1;
 	}
 
-	/*public void paintBoard(JNI jni, int[] arrSelPositions, ArrayList<Integer> arrPos){
-		boolean bPiece, bSelected, bSelectedPosition;
-		int i, iResource, iPiece = StrategoConstants.PAWN, iColor = StrategoConstants.RED, iFieldColor;
-		// Before and after this method
-		System.gc();
-		ImageCacheObject._flippedBoard = _flippedBoard;
+	public void paintBoard(StrategoControl gameControl, int[] arrSelPositions, ArrayList<Integer> arrPos){
+		for(int i = 0; i < 100; i++) {
 
-		for(i = 0; i < 64; i++){
-			_arrImages[i].setPressed(false);
-			_arrImages[i].setSelected(false);
-		}
-		ImageCacheObject tmpCache;
-		for(i = 0; i < 64; i++)
-		{
-			bPiece = true;
-			bSelected = false;
-			bSelectedPosition = false;
+			gameControl.getPieceAt (i);
 
-			iFieldColor = (i&1)==0 ? (((i >> 3) & 1) == 0 ? StrategoConstants.BLUE : StrategoConstants.RED) : (((i >> 3) & 1) == 0 ? StrategoConstants.RED: StrategoConstants.BLUE);
-
-			iColor = StrategoConstants.RED;
-			iPiece = jni.pieceAt(iColor, i);
-
-			if(iPiece == StrategoConstants.FIELD)
-			{
-				iColor = StrategoConstants.BLUE;
-				iPiece = jni.pieceAt(iColor, i);
-
-				if(iPiece == StrategoConstants.FIELD)
-					bPiece = false;
-			}
-
-			for(int j = 0; j < arrSelPositions.length; j++){
-				if(arrSelPositions[j] == i)
-					bSelected = true;
-			}
-			if(arrPos != null){
-				bSelectedPosition = arrPos.contains(i);
-			}
-
-			String coord = null;
-			if(_showCoords){
-				if(_flippedBoard){
-					if(i < 8){
-						coord = Pos.colToString(i).toUpperCase();
-					} else{
-						if(i % 8 == 7){
-							coord = Pos.rowToString(i);
-						}
-					}
-				} else {
-					if(i > 55){
-						coord = Pos.colToString(i).toUpperCase();
-					} else{
-						if(i % 8 == 0){
-							coord = Pos.rowToString(i);
-						}
-					}
-				}
-			}
+			/*ImageCacheObject tmpCache;
 			tmpCache = _arrImgCache[i];
-			if(tmpCache._bPiece == bPiece &&
-			   tmpCache._piece == iPiece &&
-			   tmpCache._color == iColor &&
-			   tmpCache._fieldColor == iFieldColor &&
-			   tmpCache._selectedPos == bSelectedPosition &&
-			   tmpCache._selected == bSelected &&
-			   tmpCache._coord == coord){
+			tmpCache._bPiece = bPiece;
+			tmpCache._piece = iPiece;
+			tmpCache._color = iColor;
+			tmpCache._fieldColor = iFieldColor;
+			tmpCache._selectedPos = bSelectedPosition;
+			tmpCache._selected = bSelected;*/
 
-				continue;
-			}
-			else{
+			_arrImages[getFieldIndex(i)].setICO(tmpCache);
+			_arrImages[getFieldIndex(i)].invalidate();
 
-				tmpCache._coord = coord;
-
-				if(_modeBlindfold == MODE_BLINDFOLD_HIDEPIECES){
-					tmpCache._bPiece = false;
-					tmpCache._piece = -1;
-					tmpCache._color = iColor;
-					tmpCache._fieldColor = iFieldColor;
-					tmpCache._selectedPos = bSelectedPosition;
-					tmpCache._selected = bSelected;
-
-				} else if(_modeBlindfold == MODE_BLINDFOLD_SHOWPIECELOCATION){
-					tmpCache._bPiece = false;
-					tmpCache._piece = -1;
-					tmpCache._color = iColor;
-					tmpCache._fieldColor = iFieldColor;
-					tmpCache._selectedPos = iPiece >= 0;
-					tmpCache._selected = bSelected;
-				} else {
-					tmpCache._bPiece = bPiece;
-					tmpCache._piece = iPiece;
-					tmpCache._color = iColor;
-					tmpCache._fieldColor = iFieldColor;
-					tmpCache._selectedPos = bSelectedPosition;
-					tmpCache._selected = bSelected;
-				}
-
-				_arrImages[getFieldIndex(i)].setICO(tmpCache);
-				_arrImages[getFieldIndex(i)].invalidate();
-
-			} // cache check
 		}
+
+
 		System.gc();
-	}*/
+	}
 
 	public void setFlippedBoard(boolean flipped){
 		resetImageCache();
