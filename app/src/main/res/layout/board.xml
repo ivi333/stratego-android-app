@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <TableLayout xmlns:android="http://schemas.android.com/apk/res/android" android:id="@+id/BoardLayout"
+        android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_gravity="center"
+        android:background="@android:color/background_dark" android:padding="1dp"
+        >
+    <TableRow>
+        <de.arvato.stratego.StrategoImageView android:id="@+id/a10" />
+        <de.arvato.stratego.StrategoImageView android:id="@+id/b10" />
+        <de.arvato.stratego.StrategoImageView android:id="@+id/c10" />
+        <de.arvato.stratego.StrategoImageView android:id="@+id/d10" />
+        <de.arvato.stratego.StrategoImageView android:id="@+id/e10" />
+        <de.arvato.stratego.StrategoImageView android:id="@+id/f10" />
+        <de.arvato.stratego.StrategoImageView android:id="@+id/g10" />
+        <de.arvato.stratego.StrategoImageView android:id="@+id/h10" />
+        <de.arvato.stratego.StrategoImageView android:id="@+id/i10" />
+        <de.arvato.stratego.StrategoImageView android:id="@+id/j10" />
+    </TableRow>
+
+    <TableRow>
+        <de.arvato.stratego.StrategoImageView android:id="@+id/a9" />
+        <de.arvato.stratego.StrategoImageView android:id="@+id/b9" />
+        <de.arvato.stratego.StrategoImageView android:id="@+id/c9" />
+        <de.arvato.stratego.StrategoImageView android:id="@+id/d9" />
+        <de.arvato.stratego.StrategoImageView android:id="@+id/e9" />
+        <de.arvato.stratego.StrategoImageView android:id="@+id/f9" />
+        <de.arvato.stratego.StrategoImageView android:id="@+id/g9" />
+        <de.arvato.stratego.StrategoImageView android:id="@+id/h9" />
+        <de.arvato.stratego.StrategoImageView android:id="@+id/i9" />
+        <de.arvato.stratego.StrategoImageView android:id="@+id/j9" />
+    </TableRow>
+
+     <TableRow>
+        <de.arvato.stratego.StrategoImageView android:id="@+id/a8" />
+        <de.arvato.stratego.StrategoImageView android:id="@+id/b8" />
+        <de.arvato.stratego.StrategoImageView android:id="@+id/c8" />
+        <de.arvato.stratego.StrategoImageView android:id="@+id/d8" />
+        <de.arvato.stratego.StrategoImageView android:id="@+id/e8" />
+        <de.arvato.stratego.StrategoImageView android:id="@+id/f8" />
+        <de.arvato.stratego.StrategoImageView android:id="@+id/g8" />
+        <de.arvato.stratego.StrategoImageView android:id="@+id/h8" />
+         <de.arvato.stratego.StrategoImageView android:id="@+id/i8" />
+         <de.arvato.stratego.StrategoImageView android:id="@+id/j8" />
+    </TableRow>
+
+    <TableRow>
+        <de.arvato.stratego.StrategoImageView android:id="@+id/a7" />
+        <de.arvato.stratego.StrategoImageView android:id="@+id/b7" />
+        <de.arvato.stratego.StrategoImageView android:id="@+id/c7" />
+        <de.arvato.stratego.StrategoImageView android:id="@+id/d7" />
+        <de.arvato.stratego.StrategoImageView android:id="@+id/e7" />
+        <de.arvato.stratego.StrategoImageView android:id="@+id/f7" />
+        <de.arvato.stratego.StrategoImageView android:id="@+id/g7" />
+        <de.arvato.stratego.StrategoImageView android:id="@+id/h7" />
+        <de.arvato.stratego.StrategoImageView android:id="@+id/i7" />
+        <de.arvato.stratego.StrategoImageView android:id="@+id/j7" />
+    </TableRow>
+
+    <TableRow>
+        <de.arvato.stratego.StrategoImageView android:id="@+id/a6" />
+        <de.arvato.stratego.StrategoImageView android:id="@+id/b6" />
+        <de.arvato.stratego.StrategoImageView android:id="@+id/c6" />
+        <de.arvato.stratego.StrategoImageView android:id="@+id/d6" />
+        <de.arvato.stratego.StrategoImageView android:id="@+id/e6" />
+        <de.arvato.stratego.StrategoImageView android:id="@+id/f6" />
+        <de.arvato.stratego.StrategoImageView android:id="@+id/g6" />
+        <de.arvato.stratego.StrategoImageView android:id="@+id/h6" />
+        <de.arvato.stratego.StrategoImageView android:id="@+id/i6" />
+        <de.arvato.stratego.StrategoImageView android:id="@+id/j6" />
+    </TableRow>
+
+    <TableRow>
+        <de.arvato.stratego.StrategoImageView android:id="@+id/a5" />
+        <de.arvato.stratego.StrategoImageView android:id="@+id/b5" />
+        <de.arvato.stratego.StrategoImageView android:id="@+id/c5" />
+        <de.arvato.stratego.StrategoImageView android:id="@+id/d5" />
+        <de.arvato.stratego.StrategoImageView android:id="@+id/e5" />
+        <de.arvato.stratego.StrategoImageView android:id="@+id/f5" />
+        <de.arvato.stratego.StrategoImageView android:id="@+id/g5" />
+        <de.arvato.stratego.StrategoImageView android:id="@+id/h5" />
+        <de.arvato.stratego.StrategoImageView android:id="@+id/i5" />
+        <de.arvato.stratego.StrategoImageView android:id="@+id/j5" />
+    </TableRow>
+
+    <TableRow>
+        <de.arvato.stratego.StrategoImageView android:id="@+id/a4" />
+        <de.arvato.stratego.StrategoImageView android:id="@+id/b4" />
+        <de.arvato.stratego.StrategoImageView android:id="@+id/c4" />
+        <de.arvato.stratego.StrategoImageView android:id="@+id/d4" />
+        <de.arvato.stratego.StrategoImageView android:id="@+id/e4" />
+        <de.arvato.stratego.StrategoImageView android:id="@+id/f4" />
+        <de.arvato.stratego.StrategoImageView android:id="@+id/g4" />
+        <de.arvato.stratego.StrategoImageView android:id="@+id/h4" />
+        <de.arvato.stratego.StrategoImageView android:id="@+id/i4" />
+        <de.arvato.stratego.StrategoImageView android:id="@+id/j4" />
+    </TableRow>
+
+    <TableRow>
+        <de.arvato.stratego.StrategoImageView android:id="@+id/a3" />
+        <de.arvato.stratego.StrategoImageView android:id="@+id/b3" />
+        <de.arvato.stratego.StrategoImageView android:id="@+id/c3" />
+        <de.arvato.stratego.StrategoImageView android:id="@+id/d3" />
+        <de.arvato.stratego.StrategoImageView android:id="@+id/e3" />
+        <de.arvato.stratego.StrategoImageView android:id="@+id/f3" />
+        <de.arvato.stratego.StrategoImageView android:id="@+id/g3" />
+        <de.arvato.stratego.StrategoImageView android:id="@+id/h3" />
+        <de.arvato.stratego.StrategoImageView android:id="@+id/i3" />
+        <de.arvato.stratego.StrategoImageView android:id="@+id/j3" />
+    </TableRow>
+
+    <TableRow>
+        <de.arvato.stratego.StrategoImageView android:id="@+id/a2" />
+        <de.arvato.stratego.StrategoImageView android:id="@+id/b2" />
+        <de.arvato.stratego.StrategoImageView android:id="@+id/c2" />
+        <de.arvato.stratego.StrategoImageView android:id="@+id/d2" />
+        <de.arvato.stratego.StrategoImageView android:id="@+id/e2" />
+        <de.arvato.stratego.StrategoImageView android:id="@+id/f2" />
+        <de.arvato.stratego.StrategoImageView android:id="@+id/g2" />
+        <de.arvato.stratego.StrategoImageView android:id="@+id/h2" />
+        <de.arvato.stratego.StrategoImageView android:id="@+id/i2" />
+        <de.arvato.stratego.StrategoImageView android:id="@+id/j2" />
+    </TableRow>
+
+    <TableRow>
+        <de.arvato.stratego.StrategoImageView android:id="@+id/a1" />
+        <de.arvato.stratego.StrategoImageView android:id="@+id/b1" />
+        <de.arvato.stratego.StrategoImageView android:id="@+id/c1" />
+        <de.arvato.stratego.StrategoImageView android:id="@+id/d1" />
+        <de.arvato.stratego.StrategoImageView android:id="@+id/e1" />
+        <de.arvato.stratego.StrategoImageView android:id="@+id/f1" />
+        <de.arvato.stratego.StrategoImageView android:id="@+id/g1" />
+        <de.arvato.stratego.StrategoImageView android:id="@+id/h1" />
+        <de.arvato.stratego.StrategoImageView android:id="@+id/i1" />
+        <de.arvato.stratego.StrategoImageView android:id="@+id/j1" />
+    </TableRow>
+
+
+</TableLayout>

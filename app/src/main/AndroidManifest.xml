@@ -29,6 +29,13 @@
             android:name=".HtmlActivity"
             android:label="@string/app_name_help">
         </activity>
+        <activity
+            android:name=".StartPlayActivity"
+            android:label="@string/start_play">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+            </intent-filter>
+        </activity>
     </application>
     <supports-screens
         android:largeScreens="true"

@@ -13,7 +13,7 @@ import android.util.Log
 import android.view.*
 import android.widget.Toast
 
-class MyBaseActivity : Activity() {
+open class MyBaseActivity : Activity() {
     var _wakeLock: WakeLock? = null
     private var _onResumeTimeMillies: Long = 0
     var spSound: SoundPool? = null
