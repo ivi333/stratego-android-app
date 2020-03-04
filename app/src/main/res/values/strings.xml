@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">Chess</string>
+    <string name="app_name">Stratego</string>
     <string name="app_name_play">Play</string>
     <string name="app_name_playonline">Play online</string>
     <string name="app_name_setup">Setup</string>

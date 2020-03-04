@@ -283,10 +283,10 @@ public class StrategoViewBase {
 
 				// portrait
 				if (availableHeight > availableWidth) {
-					length = availableWidth / 8;
-					margin = (availableWidth - 8 * length) / 2;
+					length = availableWidth / 10;
+					margin = (availableWidth - 10 * length) / 2;
 				} else {
-					length = availableHeight / 8;
+					length = availableHeight / 10;
 				}
 
 				if (margin > 0) {
@@ -298,7 +298,7 @@ public class StrategoViewBase {
 				Log.i("StrategoViewBase", "availableHeight 2 " + availableHeight);
 
 				LayoutParams params = new LayoutParams(length, length);
-				for (int i = 0; i < 64; i++) {
+				for (int i = 0; i < 100; i++) {
 					_arrImages[i].setLayoutParams(params);
 				}
 			}
@@ -322,13 +322,45 @@ public class StrategoViewBase {
 		return -1;
 	}
 
-	public void paintBoard(StrategoControl gameControl, int[] arrSelPositions, ArrayList<Integer> arrPos){
+	public void paintBoard(StrategoControl gameControl, int positionSelected, ArrayList<Integer> arrPos){
+		//boolean bPiece, bSelected, bSelectedPosition;
+		//int iResource, iPiece = StrategoConstants.PAWN, iColor = StrategoConstants.RED, iFieldColor;
+		int iFieldColor1, iFieldColor2, iFieldColor;
+		System.gc();
+
+		for(int z = 0; z < 100; z++){
+			_arrImages[z].setPressed(false);
+			_arrImages[z].setSelected(false);
+		}
+
+		boolean change=true;
 		for(int i = 0; i < 100; i++) {
+			Piece piece = gameControl.getPieceAt (i);
+			ImageCacheObject tmpCache = _arrImgCache[i];
 
-			gameControl.getPieceAt (i);
+			// determinate background color
+			iFieldColor = i%2;
+			if (i % 10 == 0) {
+				if (change) change=false; else change = true;
+			}
+			if (change) {
+				if (iFieldColor == 1) iFieldColor = 0; else iFieldColor=1;
+			}
 
-			/*ImageCacheObject tmpCache;
-			tmpCache = _arrImgCache[i];
+
+			tmpCache._bPiece=true;
+			tmpCache._piece = piece.getId();
+			tmpCache._color = piece.getColor();
+
+			if (positionSelected != -1 && i == positionSelected) {
+				tmpCache._selected = true;
+			} else {
+				tmpCache._selected = false;
+			}
+			tmpCache._selectedPos = false;
+			tmpCache._fieldColor = iFieldColor;
+
+			/*tmpCache = _arrImgCache[i];
 			tmpCache._bPiece = bPiece;
 			tmpCache._piece = iPiece;
 			tmpCache._color = iColor;
@@ -340,7 +372,6 @@ public class StrategoViewBase {
 			_arrImages[getFieldIndex(i)].invalidate();
 
 		}
-
 
 		System.gc();
 	}

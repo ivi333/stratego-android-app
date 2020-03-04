@@ -1,6 +1,7 @@
 package de.arvato.stratego;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -25,7 +26,7 @@ public class StrategoImageView extends View {
 
         // 5 colorschemes with 2 colors each
         public static int[][] arrColorScheme = new int[6][3];
-        public static int colorScheme = 0;
+        public static int colorScheme = 1;
         public static Paint _paint = new Paint();
         public static Matrix _matrix = null;
         public static Matrix _matrixTile = null;
@@ -73,6 +74,7 @@ public class StrategoImageView extends View {
                 Bitmap bmp;
                 ImageCacheObject ico = _ico;
 
+                SharedPreferences pref = getContext().getSharedPreferences("StrategoPlayer", Context.MODE_PRIVATE);
                 // first draw field background
                 if(ico == null)
                         Log.e("err", "err");
@@ -83,9 +85,7 @@ public class StrategoImageView extends View {
                 } else {
                         _paint.setColor(ico._fieldColor == 0 ? arrColorScheme[colorScheme][0] : arrColorScheme[colorScheme][1]);
                         canvas.drawRect(new Rect(0, 0, getWidth(), getHeight()), _paint);
-
-                        //TODO later
-                        /*if (colorScheme == 6){ // 6 is color picker
+                        if (colorScheme == 6){ // 6 is color picker
                                 _paint.setColor(ico._fieldColor == 0 ? pref.getInt("color2", 0xffdddddd) : pref.getInt("color1", 0xffff0066));
                                 canvas.drawRect(new Rect(0, 0, getWidth(), getHeight()), _paint);
                                 if (ico._selected){
@@ -93,13 +93,13 @@ public class StrategoImageView extends View {
                                         canvas.drawRect(new Rect(0, 0, getWidth(), getHeight()), _paint);
                                 }
                         } else {
-                                _paint.setColor(ico._fieldColor == 0 ? _arrColorScheme[_colorScheme][0] : _arrColorScheme[_colorScheme][1]);
+                                _paint.setColor(ico._fieldColor == 0 ? arrColorScheme[colorScheme][0] : arrColorScheme[colorScheme][1]);
                                 canvas.drawRect(new Rect(0, 0, getWidth(), getHeight()), _paint);
                                 if (ico._selected) {
-                                        _paint.setColor(_arrColorScheme[_colorScheme][2]);
+                                        _paint.setColor(arrColorScheme[colorScheme][2]);
                                         canvas.drawRect(new Rect(0, 0, getWidth(), getHeight()), _paint);
                                 }
-                        }*/
+                        }
                 }
 
                 if(bmpTile != null){
