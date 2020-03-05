@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Rect;
@@ -18,7 +17,7 @@ public class StrategoImageView extends View {
 
         public static final String TAG = "ChessImageView";
 
-        public static Bitmap[][] arrPieceBitmaps = new Bitmap[2][6];
+        public static Bitmap[][] arrPieceBitmaps = new Bitmap[2][12];
         public static Bitmap bmpBorder, bmpSelect, bmpSelectLight;
         public static Bitmap bmpTile;
 
@@ -26,7 +25,7 @@ public class StrategoImageView extends View {
 
         // 5 colorschemes with 2 colors each
         public static int[][] arrColorScheme = new int[6][3];
-        public static int colorScheme = 1;
+        public static int colorScheme = 2;
         public static Paint _paint = new Paint();
         public static Matrix _matrix = null;
         public static Matrix _matrixTile = null;
@@ -129,7 +128,7 @@ public class StrategoImageView extends View {
                         canvas.drawBitmap(bmp, _matrix, _paint);
                 }
 
-                if(ico._coord != null){
+                /*if(ico._coord != null){
                         _paint.setColor(0x99ffffff);
                         canvas.drawRect(0, getHeight() - 14,  _paint.measureText(ico._coord) + 4, getHeight(), _paint);
                         _paint.setColor(Color.BLACK);
@@ -143,10 +142,10 @@ public class StrategoImageView extends View {
                         else if(ico._coord.equals("H") && ImageCacheObject._flippedBoard){
                                 canvas.drawText("8", 2 , getHeight() - 30, _paint);
                         }
-                }
+                }*/
         }
 
-        public ImageCacheObject get_ico() {
+        public ImageCacheObject getICO() {
                 return _ico;
         }
 

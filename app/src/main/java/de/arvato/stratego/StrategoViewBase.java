@@ -177,6 +177,8 @@ public class StrategoViewBase {
                 StrategoImageView._bmpBorder = null;
             }*/
 
+			StrategoImageView.bmpBorder = BitmapFactory.decodeStream(am.open(sFolder + "border.png"));
+
 			StrategoImageView.bmpSelect = BitmapFactory.decodeStream(am.open(sFolder + "select.png"));
 			StrategoImageView.bmpSelectLight = BitmapFactory.decodeStream(am.open(sFolder + "select_light.png"));
 			/*if(sPat.length() > 0){
@@ -186,7 +188,7 @@ public class StrategoViewBase {
 			}*/
 
 			//Bitmap _arrPieceBitmaps [][] = StrategoImageView.getArrPieceBitmaps();
-
+			/*
 			// pawn
 			StrategoImageView.arrPieceBitmaps[StrategoConstants.RED][StrategoConstants.PAWN] = BitmapFactory.decodeStream(am.open(sFolder + "pb.png"));
 			StrategoImageView.arrPieceBitmaps[StrategoConstants.BLUE][StrategoConstants.PAWN] = BitmapFactory.decodeStream(am.open(sFolder + "pw.png"));
@@ -210,6 +212,54 @@ public class StrategoViewBase {
 			// king
 			StrategoImageView.arrPieceBitmaps[StrategoConstants.RED][StrategoConstants.KING] = BitmapFactory.decodeStream(am.open(sFolder + "kb.png"));
 			StrategoImageView.arrPieceBitmaps[StrategoConstants.BLUE][StrategoConstants.KING] = BitmapFactory.decodeStream(am.open(sFolder + "kw.png"));
+			*/
+			// flag
+			StrategoImageView.arrPieceBitmaps[StrategoConstants.RED][StrategoConstants.FLAG] = BitmapFactory.decodeStream(am.open(sFolder + "bandera.png"));
+			StrategoImageView.arrPieceBitmaps[StrategoConstants.BLUE][StrategoConstants.FLAG] = BitmapFactory.decodeStream(am.open(sFolder + "bandera.png"));
+
+			// bomb
+			StrategoImageView.arrPieceBitmaps[StrategoConstants.RED][StrategoConstants.BOMB] = BitmapFactory.decodeStream(am.open(sFolder + "bomb.png"));
+			StrategoImageView.arrPieceBitmaps[StrategoConstants.BLUE][StrategoConstants.BOMB] = BitmapFactory.decodeStream(am.open(sFolder + "bomb.png"));
+
+			// spy
+			StrategoImageView.arrPieceBitmaps[StrategoConstants.RED][StrategoConstants.SPY] = BitmapFactory.decodeStream(am.open(sFolder + "spy.png"));
+			StrategoImageView.arrPieceBitmaps[StrategoConstants.BLUE][StrategoConstants.SPY] = BitmapFactory.decodeStream(am.open(sFolder + "spy.png"));
+
+			// scout
+			StrategoImageView.arrPieceBitmaps[StrategoConstants.RED][StrategoConstants.SCOUT] = BitmapFactory.decodeStream(am.open(sFolder + "scout.png"));
+			StrategoImageView.arrPieceBitmaps[StrategoConstants.BLUE][StrategoConstants.SCOUT] = BitmapFactory.decodeStream(am.open(sFolder + "scout.png"));
+
+			// miner
+			StrategoImageView.arrPieceBitmaps[StrategoConstants.RED][StrategoConstants.MINER] = BitmapFactory.decodeStream(am.open(sFolder + "minero.png"));
+			StrategoImageView.arrPieceBitmaps[StrategoConstants.BLUE][StrategoConstants.MINER] = BitmapFactory.decodeStream(am.open(sFolder + "minero.png"));
+
+			// sergeant
+			StrategoImageView.arrPieceBitmaps[StrategoConstants.RED][StrategoConstants.SERGEANT] = BitmapFactory.decodeStream(am.open(sFolder + "sargento.png"));
+			StrategoImageView.arrPieceBitmaps[StrategoConstants.BLUE][StrategoConstants.SERGEANT] = BitmapFactory.decodeStream(am.open(sFolder + "sargento.png"));
+
+			// lieutenant
+			StrategoImageView.arrPieceBitmaps[StrategoConstants.RED][StrategoConstants.LIEUTENANT] = BitmapFactory.decodeStream(am.open(sFolder + "lituant.png"));
+			StrategoImageView.arrPieceBitmaps[StrategoConstants.BLUE][StrategoConstants.LIEUTENANT] = BitmapFactory.decodeStream(am.open(sFolder + "lituant.png"));
+
+			// capitan
+			StrategoImageView.arrPieceBitmaps[StrategoConstants.RED][StrategoConstants.CAPITAN] = BitmapFactory.decodeStream(am.open(sFolder + "capitan.png"));
+			StrategoImageView.arrPieceBitmaps[StrategoConstants.BLUE][StrategoConstants.CAPITAN] = BitmapFactory.decodeStream(am.open(sFolder + "capitan.png"));
+
+			// major
+			StrategoImageView.arrPieceBitmaps[StrategoConstants.RED][StrategoConstants.MAJOR] = BitmapFactory.decodeStream(am.open(sFolder + "major.png"));
+			StrategoImageView.arrPieceBitmaps[StrategoConstants.BLUE][StrategoConstants.MAJOR] = BitmapFactory.decodeStream(am.open(sFolder + "major.png"));
+
+			// colonel
+			StrategoImageView.arrPieceBitmaps[StrategoConstants.RED][StrategoConstants.COLONEL] = BitmapFactory.decodeStream(am.open(sFolder + "coronel.png"));
+			StrategoImageView.arrPieceBitmaps[StrategoConstants.BLUE][StrategoConstants.COLONEL] = BitmapFactory.decodeStream(am.open(sFolder + "coronel.png"));
+
+			// general
+			StrategoImageView.arrPieceBitmaps[StrategoConstants.RED][StrategoConstants.GENERAL] = BitmapFactory.decodeStream(am.open(sFolder + "general.png"));
+			StrategoImageView.arrPieceBitmaps[StrategoConstants.BLUE][StrategoConstants.GENERAL] = BitmapFactory.decodeStream(am.open(sFolder + "general.png"));
+
+			// marshall
+			StrategoImageView.arrPieceBitmaps[StrategoConstants.RED][StrategoConstants.MARSHALL] = BitmapFactory.decodeStream(am.open(sFolder + "mariscal.png"));
+			StrategoImageView.arrPieceBitmaps[StrategoConstants.BLUE][StrategoConstants.MARSHALL] = BitmapFactory.decodeStream(am.open(sFolder + "mariscal.png"));
 
 		}catch(Exception ex){
 
