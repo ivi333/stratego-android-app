@@ -57,7 +57,7 @@ public class StrategoImageView extends View {
                 if (_matrix == null) {
                         _matrix = new Matrix();
                         float scale = 1.0F;
-                        Bitmap bmp = arrPieceBitmaps[StrategoConstants.RED][StrategoConstants.PAWN]; // any dynamic
+                        Bitmap bmp = arrPieceBitmaps[StrategoConstants.RED][StrategoConstants.FLAG]; // any dynamic
                         scale = (float)getWidth() / bmp.getWidth();
                         Log.i("paintBoard", "init " + scale + " : " + bmp.getWidth() + ", " + getWidth());
                         _matrix.setScale(scale, scale);

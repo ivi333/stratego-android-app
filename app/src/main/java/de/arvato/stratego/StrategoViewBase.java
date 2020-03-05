@@ -187,32 +187,6 @@ public class StrategoViewBase {
 				StrategoImageView._bmpTile = null;
 			}*/
 
-			//Bitmap _arrPieceBitmaps [][] = StrategoImageView.getArrPieceBitmaps();
-			/*
-			// pawn
-			StrategoImageView.arrPieceBitmaps[StrategoConstants.RED][StrategoConstants.PAWN] = BitmapFactory.decodeStream(am.open(sFolder + "pb.png"));
-			StrategoImageView.arrPieceBitmaps[StrategoConstants.BLUE][StrategoConstants.PAWN] = BitmapFactory.decodeStream(am.open(sFolder + "pw.png"));
-
-			// kNight
-			StrategoImageView.arrPieceBitmaps[StrategoConstants.RED][StrategoConstants.KNIGHT] = BitmapFactory.decodeStream(am.open(sFolder + "nb.png"));
-			StrategoImageView.arrPieceBitmaps[StrategoConstants.BLUE][StrategoConstants.KNIGHT] = BitmapFactory.decodeStream(am.open(sFolder + "nw.png"));
-
-			// bishop
-			StrategoImageView.arrPieceBitmaps[StrategoConstants.RED][StrategoConstants.BISHOP] = BitmapFactory.decodeStream(am.open(sFolder + "bb.png"));
-			StrategoImageView.arrPieceBitmaps[StrategoConstants.BLUE][StrategoConstants.BISHOP] = BitmapFactory.decodeStream(am.open(sFolder + "bw.png"));
-
-			// rook
-			StrategoImageView.arrPieceBitmaps[StrategoConstants.RED][StrategoConstants.ROOK] = BitmapFactory.decodeStream(am.open(sFolder + "rb.png"));
-			StrategoImageView.arrPieceBitmaps[StrategoConstants.BLUE][StrategoConstants.ROOK] = BitmapFactory.decodeStream(am.open(sFolder + "rw.png"));
-
-			// queen
-			StrategoImageView.arrPieceBitmaps[StrategoConstants.RED][StrategoConstants.QUEEN] = BitmapFactory.decodeStream(am.open(sFolder + "qb.png"));
-			StrategoImageView.arrPieceBitmaps[StrategoConstants.BLUE][StrategoConstants.QUEEN] = BitmapFactory.decodeStream(am.open(sFolder + "qw.png"));
-
-			// king
-			StrategoImageView.arrPieceBitmaps[StrategoConstants.RED][StrategoConstants.KING] = BitmapFactory.decodeStream(am.open(sFolder + "kb.png"));
-			StrategoImageView.arrPieceBitmaps[StrategoConstants.BLUE][StrategoConstants.KING] = BitmapFactory.decodeStream(am.open(sFolder + "kw.png"));
-			*/
 			// flag
 			StrategoImageView.arrPieceBitmaps[StrategoConstants.RED][StrategoConstants.FLAG] = BitmapFactory.decodeStream(am.open(sFolder + "bandera.png"));
 			StrategoImageView.arrPieceBitmaps[StrategoConstants.BLUE][StrategoConstants.FLAG] = BitmapFactory.decodeStream(am.open(sFolder + "bandera.png"));
