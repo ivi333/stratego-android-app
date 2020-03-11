@@ -166,6 +166,8 @@ public class StrategoViewBase {
 		//String sFolder = prefs.getString("pieceSet", "highres") + "/";
         String sFolder = "highres/";
 //		String sPat  	= prefs.getString("tileSet", "");
+        String boardFolder = "board/";
+
 
 		try{
 
@@ -235,8 +237,14 @@ public class StrategoViewBase {
 			StrategoImageView.arrPieceBitmaps[StrategoConstants.RED][StrategoConstants.MARSHALL] = BitmapFactory.decodeStream(am.open(sFolder + "mariscal.png"));
 			StrategoImageView.arrPieceBitmaps[StrategoConstants.BLUE][StrategoConstants.MARSHALL] = BitmapFactory.decodeStream(am.open(sFolder + "mariscal.png"));
 
-		}catch(Exception ex){
+			// field board
+            for (int k=0;k<20;k++) {
+                StrategoImageView.arrFieldBitmap[k] = BitmapFactory.decodeStream(am.open(boardFolder + (k+1) + ".png" ));
+            }
 
+
+		}catch(Exception ex){
+			ex.printStackTrace();
 		}
 
 		//int _arrColorScheme[][] = StrategoImageView.getArrColorScheme();
@@ -371,6 +379,11 @@ public class StrategoViewBase {
 				if (iFieldColor == 1) iFieldColor = 0; else iFieldColor=1;
 			}
 
+			if (i<20) {
+			    tmpCache.boardField = i;
+            } else {
+				tmpCache.boardField = -1;
+			}
 
 			tmpCache._bPiece=true;
 			tmpCache._piece = piece.getId();

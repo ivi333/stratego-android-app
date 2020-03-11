@@ -15,6 +15,8 @@ class ImageCacheObject {
 	var _selected = false
     @JvmField
 	var _coord: String? = null
+    @JvmField
+    var boardField = 0;
 
     companion object {
         @JvmField

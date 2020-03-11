@@ -21,6 +21,8 @@ public class StrategoImageView extends View {
         public static Bitmap bmpBorder, bmpSelect, bmpSelectLight;
         public static Bitmap bmpTile;
 
+        public static Bitmap[] arrFieldBitmap = new Bitmap[20];
+
         private static String sActivity;
 
         // 5 colorschemes with 2 colors each
@@ -99,6 +101,11 @@ public class StrategoImageView extends View {
                                         canvas.drawRect(new Rect(0, 0, getWidth(), getHeight()), _paint);
                                 }
                         }
+                }
+
+                if (ico.boardField != -1) {
+                    bmp = arrFieldBitmap[ico.boardField];
+                    canvas.drawBitmap(bmp, _matrix, _paint);
                 }
 
                 if(bmpTile != null){
