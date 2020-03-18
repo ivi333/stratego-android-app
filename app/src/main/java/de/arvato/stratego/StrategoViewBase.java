@@ -238,7 +238,7 @@ public class StrategoViewBase {
 			StrategoImageView.arrPieceBitmaps[StrategoConstants.BLUE][StrategoConstants.MARSHALL] = BitmapFactory.decodeStream(am.open(sFolder + "mariscal.png"));
 
 			// field board
-            for (int k=0;k<20;k++) {
+            for (int k=0;k<100;k++) {
                 StrategoImageView.arrFieldBitmap[k] = BitmapFactory.decodeStream(am.open(boardFolder + (k+1) + ".png" ));
             }
 
@@ -379,11 +379,7 @@ public class StrategoViewBase {
 				if (iFieldColor == 1) iFieldColor = 0; else iFieldColor=1;
 			}
 
-			if (i<20) {
-			    tmpCache.boardField = i;
-            } else {
-				tmpCache.boardField = -1;
-			}
+			tmpCache.boardField = i;
 
 			tmpCache._bPiece=true;
 			tmpCache._piece = piece.getId();

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Rect;
@@ -21,7 +22,7 @@ public class StrategoImageView extends View {
         public static Bitmap bmpBorder, bmpSelect, bmpSelectLight;
         public static Bitmap bmpTile;
 
-        public static Bitmap[] arrFieldBitmap = new Bitmap[20];
+        public static Bitmap[] arrFieldBitmap = new Bitmap[100];
 
         private static String sActivity;
 
@@ -80,7 +81,7 @@ public class StrategoImageView extends View {
                 if(ico == null)
                         Log.e("err", "err");
 
-                if(hasFocus()){
+                /*if(hasFocus()){
                         _paint.setColor(0xffff9900);
                         canvas.drawRect(new Rect(0, 0, getWidth(), getHeight()), _paint);
                 } else {
@@ -101,11 +102,21 @@ public class StrategoImageView extends View {
                                         canvas.drawRect(new Rect(0, 0, getWidth(), getHeight()), _paint);
                                 }
                         }
-                }
+                }*/
 
                 if (ico.boardField != -1) {
                     bmp = arrFieldBitmap[ico.boardField];
                     canvas.drawBitmap(bmp, _matrix, _paint);
+                }
+
+                //draw border
+                if (isFieldBoardWithBorder(ico.boardField)) {
+                        _paint.setStyle(Paint.Style.STROKE);
+                        _paint.setStrokeWidth(3);
+                        _paint.setColor(Color.BLACK);
+                        canvas.drawRect(new Rect(0, 0, getWidth(), getHeight()), _paint);
+                } else {
+                        _paint.setStrokeWidth(0);
                 }
 
                 if(bmpTile != null){
@@ -132,7 +143,8 @@ public class StrategoImageView extends View {
                                         }
                                 }
                         }*/
-                        canvas.drawBitmap(bmp, _matrix, _paint);
+                        //TODO comment out
+                        //canvas.drawBitmap(bmp, _matrix, _paint);
                 }
 
                 /*if(ico._coord != null){
@@ -158,5 +170,13 @@ public class StrategoImageView extends View {
 
         public void setICO(ImageCacheObject _ico) {
                 this._ico = _ico;
+        }
+
+        public boolean isFieldBoardWithBorder (final int pos) {
+                return pos != StrategoConstants.c6 && pos != StrategoConstants.d6
+                        && pos != StrategoConstants.c5 && pos != StrategoConstants.d5
+                        && pos != StrategoConstants.g6 && pos != StrategoConstants.h6
+                        && pos != StrategoConstants.g5 && pos != StrategoConstants.h5;
+
         }
 }
