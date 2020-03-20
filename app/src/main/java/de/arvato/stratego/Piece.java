@@ -3,6 +3,7 @@ package de.arvato.stratego;
 public class Piece {
     private int color;
     private int id;
+    private int points;
 
     public void setColor(int color) {
         this.color = color;
@@ -18,5 +19,12 @@ public class Piece {
 
     public int getId() {
         return id;
+    }
+    public void setPoints(int points) {
+        this.points = points;
+    }
+
+    public int getPoints() {
+        return points;
     }
 }

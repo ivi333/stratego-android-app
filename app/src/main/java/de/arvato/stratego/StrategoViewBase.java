@@ -190,52 +190,53 @@ public class StrategoViewBase {
 			}*/
 
 			// flag
-			StrategoImageView.arrPieceBitmaps[StrategoConstants.RED][StrategoConstants.FLAG] = BitmapFactory.decodeStream(am.open(sFolder + "bandera.png"));
-			StrategoImageView.arrPieceBitmaps[StrategoConstants.BLUE][StrategoConstants.FLAG] = BitmapFactory.decodeStream(am.open(sFolder + "bandera.png"));
+
+			StrategoImageView.arrPieceBitmaps[StrategoConstants.RED][PieceEnum.FLAG.getPosition()] = BitmapFactory.decodeStream(am.open(sFolder + "bandera_red.png"));
+			StrategoImageView.arrPieceBitmaps[StrategoConstants.BLUE][PieceEnum.FLAG.getPosition()] = BitmapFactory.decodeStream(am.open(sFolder + "bandera_blue.png"));
 
 			// bomb
-			StrategoImageView.arrPieceBitmaps[StrategoConstants.RED][StrategoConstants.BOMB] = BitmapFactory.decodeStream(am.open(sFolder + "bomb.png"));
-			StrategoImageView.arrPieceBitmaps[StrategoConstants.BLUE][StrategoConstants.BOMB] = BitmapFactory.decodeStream(am.open(sFolder + "bomb.png"));
+			StrategoImageView.arrPieceBitmaps[StrategoConstants.RED][PieceEnum.BOMB.getPosition()] = BitmapFactory.decodeStream(am.open(sFolder + "bomb_red.png"));
+			StrategoImageView.arrPieceBitmaps[StrategoConstants.BLUE][PieceEnum.BOMB.getPosition()] = BitmapFactory.decodeStream(am.open(sFolder + "bomb_blue.png"));
 
 			// spy
-			StrategoImageView.arrPieceBitmaps[StrategoConstants.RED][StrategoConstants.SPY] = BitmapFactory.decodeStream(am.open(sFolder + "spy.png"));
-			StrategoImageView.arrPieceBitmaps[StrategoConstants.BLUE][StrategoConstants.SPY] = BitmapFactory.decodeStream(am.open(sFolder + "spy.png"));
+			StrategoImageView.arrPieceBitmaps[StrategoConstants.RED][PieceEnum.SPY.getPosition()] = BitmapFactory.decodeStream(am.open(sFolder + "spy_red.png"));
+			StrategoImageView.arrPieceBitmaps[StrategoConstants.BLUE][PieceEnum.SPY.getPosition()] = BitmapFactory.decodeStream(am.open(sFolder + "spy_blue.png"));
 
 			// scout
-			StrategoImageView.arrPieceBitmaps[StrategoConstants.RED][StrategoConstants.SCOUT] = BitmapFactory.decodeStream(am.open(sFolder + "scout.png"));
-			StrategoImageView.arrPieceBitmaps[StrategoConstants.BLUE][StrategoConstants.SCOUT] = BitmapFactory.decodeStream(am.open(sFolder + "scout.png"));
+			StrategoImageView.arrPieceBitmaps[StrategoConstants.RED][PieceEnum.SCOUT.getPosition()] = BitmapFactory.decodeStream(am.open(sFolder + "scout_red.png"));
+			StrategoImageView.arrPieceBitmaps[StrategoConstants.BLUE][PieceEnum.SCOUT.getPosition()] = BitmapFactory.decodeStream(am.open(sFolder + "scout_blue.png"));
 
 			// miner
-			StrategoImageView.arrPieceBitmaps[StrategoConstants.RED][StrategoConstants.MINER] = BitmapFactory.decodeStream(am.open(sFolder + "minero.png"));
-			StrategoImageView.arrPieceBitmaps[StrategoConstants.BLUE][StrategoConstants.MINER] = BitmapFactory.decodeStream(am.open(sFolder + "minero.png"));
+			StrategoImageView.arrPieceBitmaps[StrategoConstants.RED][PieceEnum.MINER.getPosition()] = BitmapFactory.decodeStream(am.open(sFolder + "minero_red.png"));
+			StrategoImageView.arrPieceBitmaps[StrategoConstants.BLUE][PieceEnum.MINER.getPosition()] = BitmapFactory.decodeStream(am.open(sFolder + "minero_blue.png"));
 
 			// sergeant
-			StrategoImageView.arrPieceBitmaps[StrategoConstants.RED][StrategoConstants.SERGEANT] = BitmapFactory.decodeStream(am.open(sFolder + "sargento.png"));
-			StrategoImageView.arrPieceBitmaps[StrategoConstants.BLUE][StrategoConstants.SERGEANT] = BitmapFactory.decodeStream(am.open(sFolder + "sargento.png"));
+			StrategoImageView.arrPieceBitmaps[StrategoConstants.RED][PieceEnum.SERGEANT.getPosition()] = BitmapFactory.decodeStream(am.open(sFolder + "sargento_red.png"));
+			StrategoImageView.arrPieceBitmaps[StrategoConstants.BLUE][PieceEnum.SERGEANT.getPosition()] = BitmapFactory.decodeStream(am.open(sFolder + "sargento_blue.png"));
 
 			// lieutenant
-			StrategoImageView.arrPieceBitmaps[StrategoConstants.RED][StrategoConstants.LIEUTENANT] = BitmapFactory.decodeStream(am.open(sFolder + "lituant.png"));
-			StrategoImageView.arrPieceBitmaps[StrategoConstants.BLUE][StrategoConstants.LIEUTENANT] = BitmapFactory.decodeStream(am.open(sFolder + "lituant.png"));
+			StrategoImageView.arrPieceBitmaps[StrategoConstants.RED][PieceEnum.LIEUTENANT.getPosition()] = BitmapFactory.decodeStream(am.open(sFolder + "lituant_red.png"));
+			StrategoImageView.arrPieceBitmaps[StrategoConstants.BLUE][PieceEnum.LIEUTENANT.getPosition()] = BitmapFactory.decodeStream(am.open(sFolder + "lituant_blue.png"));
 
 			// capitan
-			StrategoImageView.arrPieceBitmaps[StrategoConstants.RED][StrategoConstants.CAPITAN] = BitmapFactory.decodeStream(am.open(sFolder + "capitan.png"));
-			StrategoImageView.arrPieceBitmaps[StrategoConstants.BLUE][StrategoConstants.CAPITAN] = BitmapFactory.decodeStream(am.open(sFolder + "capitan.png"));
+			StrategoImageView.arrPieceBitmaps[StrategoConstants.RED][PieceEnum.CAPITAN.getPosition()] = BitmapFactory.decodeStream(am.open(sFolder + "capitan_red.png"));
+			StrategoImageView.arrPieceBitmaps[StrategoConstants.BLUE][PieceEnum.CAPITAN.getPosition()] = BitmapFactory.decodeStream(am.open(sFolder + "capitan_blue.png"));
 
 			// major
-			StrategoImageView.arrPieceBitmaps[StrategoConstants.RED][StrategoConstants.MAJOR] = BitmapFactory.decodeStream(am.open(sFolder + "major.png"));
-			StrategoImageView.arrPieceBitmaps[StrategoConstants.BLUE][StrategoConstants.MAJOR] = BitmapFactory.decodeStream(am.open(sFolder + "major.png"));
+			StrategoImageView.arrPieceBitmaps[StrategoConstants.RED][PieceEnum.MAJOR.getPosition()] = BitmapFactory.decodeStream(am.open(sFolder + "major_red.png"));
+			StrategoImageView.arrPieceBitmaps[StrategoConstants.BLUE][PieceEnum.MAJOR.getPosition()] = BitmapFactory.decodeStream(am.open(sFolder + "major_blue.png"));
 
 			// colonel
-			StrategoImageView.arrPieceBitmaps[StrategoConstants.RED][StrategoConstants.COLONEL] = BitmapFactory.decodeStream(am.open(sFolder + "coronel.png"));
-			StrategoImageView.arrPieceBitmaps[StrategoConstants.BLUE][StrategoConstants.COLONEL] = BitmapFactory.decodeStream(am.open(sFolder + "coronel.png"));
+			StrategoImageView.arrPieceBitmaps[StrategoConstants.RED][PieceEnum.COLONEL.getPosition()] = BitmapFactory.decodeStream(am.open(sFolder + "coronel_red.png"));
+			StrategoImageView.arrPieceBitmaps[StrategoConstants.BLUE][PieceEnum.COLONEL.getPosition()] = BitmapFactory.decodeStream(am.open(sFolder + "coronel_blue.png"));
 
 			// general
-			StrategoImageView.arrPieceBitmaps[StrategoConstants.RED][StrategoConstants.GENERAL] = BitmapFactory.decodeStream(am.open(sFolder + "general.png"));
-			StrategoImageView.arrPieceBitmaps[StrategoConstants.BLUE][StrategoConstants.GENERAL] = BitmapFactory.decodeStream(am.open(sFolder + "general.png"));
+			StrategoImageView.arrPieceBitmaps[StrategoConstants.RED][PieceEnum.GENERAL.getPosition()] = BitmapFactory.decodeStream(am.open(sFolder + "general_red.png"));
+			StrategoImageView.arrPieceBitmaps[StrategoConstants.BLUE][PieceEnum.GENERAL.getPosition()] = BitmapFactory.decodeStream(am.open(sFolder + "general_blue.png"));
 
 			// marshall
-			StrategoImageView.arrPieceBitmaps[StrategoConstants.RED][StrategoConstants.MARSHALL] = BitmapFactory.decodeStream(am.open(sFolder + "mariscal.png"));
-			StrategoImageView.arrPieceBitmaps[StrategoConstants.BLUE][StrategoConstants.MARSHALL] = BitmapFactory.decodeStream(am.open(sFolder + "mariscal.png"));
+			StrategoImageView.arrPieceBitmaps[StrategoConstants.RED][PieceEnum.MARSHALL.getPosition()] = BitmapFactory.decodeStream(am.open(sFolder + "mariscal_red.png"));
+			StrategoImageView.arrPieceBitmaps[StrategoConstants.BLUE][PieceEnum.MARSHALL.getPosition()] = BitmapFactory.decodeStream(am.open(sFolder + "mariscal_blue.png"));
 
 			// field board
             for (int k=0;k<100;k++) {
@@ -380,10 +381,14 @@ public class StrategoViewBase {
 			}
 
 			tmpCache.boardField = i;
-
-			tmpCache._bPiece=true;
-			tmpCache._piece = piece.getId();
-			tmpCache._color = piece.getColor();
+			if (piece!=null) {
+				tmpCache._bPiece = true;
+				tmpCache._piece = piece.getId();
+				tmpCache._color = piece.getColor();
+			} else {
+				Log.d("StrategoViewBase", "piece is null at:" + i);
+				tmpCache._bPiece = false;
+			}
 
 			if (positionSelected != -1 && i == positionSelected) {
 				tmpCache._selected = true;

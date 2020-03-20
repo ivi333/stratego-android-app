@@ -60,7 +60,7 @@ public class StrategoImageView extends View {
                 if (_matrix == null) {
                         _matrix = new Matrix();
                         float scale = 1.0F;
-                        Bitmap bmp = arrPieceBitmaps[StrategoConstants.RED][StrategoConstants.FLAG]; // any dynamic
+                        Bitmap bmp = arrPieceBitmaps[StrategoConstants.RED][PieceEnum.FLAG.getPosition()]; // any dynamic
                         scale = (float)getWidth() / bmp.getWidth();
                         Log.i("paintBoard", "init " + scale + " : " + bmp.getWidth() + ", " + getWidth());
                         _matrix.setScale(scale, scale);
@@ -110,7 +110,7 @@ public class StrategoImageView extends View {
                 }
 
                 //draw border
-                if (isFieldBoardWithBorder(ico.boardField)) {
+                if (StrategoControl.isFieldBoardWithBorder(ico.boardField)) {
                         _paint.setStyle(Paint.Style.STROKE);
                         _paint.setStrokeWidth(3);
                         _paint.setColor(Color.BLACK);
@@ -143,8 +143,7 @@ public class StrategoImageView extends View {
                                         }
                                 }
                         }*/
-                        //TODO comment out
-                        //canvas.drawBitmap(bmp, _matrix, _paint);
+                        canvas.drawBitmap(bmp, _matrix, _paint);
                 }
 
                 /*if(ico._coord != null){
@@ -172,11 +171,4 @@ public class StrategoImageView extends View {
                 this._ico = _ico;
         }
 
-        public boolean isFieldBoardWithBorder (final int pos) {
-                return pos != StrategoConstants.c6 && pos != StrategoConstants.d6
-                        && pos != StrategoConstants.c5 && pos != StrategoConstants.d5
-                        && pos != StrategoConstants.g6 && pos != StrategoConstants.h6
-                        && pos != StrategoConstants.g5 && pos != StrategoConstants.h5;
-
-        }
 }
