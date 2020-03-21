@@ -14,25 +14,14 @@ public class StrategoConstants
 	public static final int STALEMATE = 7;
 	public static final int DRAW_REPEAT = 8; // draw by repetition (3 times same board position)
 	// ///////////////////////////////////////////////////////////////////////////////////////////////
-	
+	public static final int MAX_ROWS=10;
+	public static final int MAX_COLS=10;
+
+
 	// array index of data memebers that hold data for either black or white. these must be 0 and 1 cause arrays are of length 2
 	public static final int RED = 0;
 	public static final int BLUE = 1;
 	
-	// index and representation of the pieces array and values - must be from [0-11].
-	/*public static final int FLAG = 0;
-	public static final int BOMB = 1;
-	public static final int SPY = 2;
-	public static final int SCOUT = 3;
-	public static final int MINER = 4;
-	public static final int SERGEANT = 5;
-	public static final int LIEUTENANT = 6;
-	public static final int CAPITAN = 7;
-	public static final int MAJOR = 8;
-	public static final int COLONEL = 9;
-	public static final int GENERAL= 10;
-	public static final int MARSHALL= 11;*/
-
 	//Max pieces for each player
 	public static final int MAX_PIECES = 40;
 
@@ -54,8 +43,8 @@ public class StrategoConstants
 	public static final int FIELD = -1;
 
 	// Initial positions allowed for each player
-	public static final int [] RED_PLAYER = { 0, 40 };
-	public static final int [] BLUE_PLAYER = { 60, 100 };
+	public static final int [] BLUE_PLAYER = { 0, 40 };
+	public static final int [] RED_PLAYER = { 60, 100 };
 
 	// "enumeration" integer position values
 	public static final int a10 = 0, b10 = 1, c10 = 2, d10 = 3, e10 = 4, f10 = 5, g10 = 6, h10 = 7, i10=8, j10=9;

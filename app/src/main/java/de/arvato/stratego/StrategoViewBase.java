@@ -191,52 +191,52 @@ public class StrategoViewBase {
 
 			// flag
 
-			StrategoImageView.arrPieceBitmaps[StrategoConstants.RED][PieceEnum.FLAG.getPosition()] = BitmapFactory.decodeStream(am.open(sFolder + "bandera_red.png"));
-			StrategoImageView.arrPieceBitmaps[StrategoConstants.BLUE][PieceEnum.FLAG.getPosition()] = BitmapFactory.decodeStream(am.open(sFolder + "bandera_blue.png"));
+			StrategoImageView.arrPieceBitmaps[StrategoConstants.RED][PieceEnum.FLAG.getId()] = BitmapFactory.decodeStream(am.open(sFolder + "bandera_red.png"));
+			StrategoImageView.arrPieceBitmaps[StrategoConstants.BLUE][PieceEnum.FLAG.getId()] = BitmapFactory.decodeStream(am.open(sFolder + "bandera_blue.png"));
 
 			// bomb
-			StrategoImageView.arrPieceBitmaps[StrategoConstants.RED][PieceEnum.BOMB.getPosition()] = BitmapFactory.decodeStream(am.open(sFolder + "bomb_red.png"));
-			StrategoImageView.arrPieceBitmaps[StrategoConstants.BLUE][PieceEnum.BOMB.getPosition()] = BitmapFactory.decodeStream(am.open(sFolder + "bomb_blue.png"));
+			StrategoImageView.arrPieceBitmaps[StrategoConstants.RED][PieceEnum.BOMB.getId()] = BitmapFactory.decodeStream(am.open(sFolder + "bomb_red.png"));
+			StrategoImageView.arrPieceBitmaps[StrategoConstants.BLUE][PieceEnum.BOMB.getId()] = BitmapFactory.decodeStream(am.open(sFolder + "bomb_blue.png"));
 
 			// spy
-			StrategoImageView.arrPieceBitmaps[StrategoConstants.RED][PieceEnum.SPY.getPosition()] = BitmapFactory.decodeStream(am.open(sFolder + "spy_red.png"));
-			StrategoImageView.arrPieceBitmaps[StrategoConstants.BLUE][PieceEnum.SPY.getPosition()] = BitmapFactory.decodeStream(am.open(sFolder + "spy_blue.png"));
+			StrategoImageView.arrPieceBitmaps[StrategoConstants.RED][PieceEnum.SPY.getId()] = BitmapFactory.decodeStream(am.open(sFolder + "spy_red.png"));
+			StrategoImageView.arrPieceBitmaps[StrategoConstants.BLUE][PieceEnum.SPY.getId()] = BitmapFactory.decodeStream(am.open(sFolder + "spy_blue.png"));
 
 			// scout
-			StrategoImageView.arrPieceBitmaps[StrategoConstants.RED][PieceEnum.SCOUT.getPosition()] = BitmapFactory.decodeStream(am.open(sFolder + "scout_red.png"));
-			StrategoImageView.arrPieceBitmaps[StrategoConstants.BLUE][PieceEnum.SCOUT.getPosition()] = BitmapFactory.decodeStream(am.open(sFolder + "scout_blue.png"));
+			StrategoImageView.arrPieceBitmaps[StrategoConstants.RED][PieceEnum.SCOUT.getId()] = BitmapFactory.decodeStream(am.open(sFolder + "scout_red.png"));
+			StrategoImageView.arrPieceBitmaps[StrategoConstants.BLUE][PieceEnum.SCOUT.getId()] = BitmapFactory.decodeStream(am.open(sFolder + "scout_blue.png"));
 
 			// miner
-			StrategoImageView.arrPieceBitmaps[StrategoConstants.RED][PieceEnum.MINER.getPosition()] = BitmapFactory.decodeStream(am.open(sFolder + "minero_red.png"));
-			StrategoImageView.arrPieceBitmaps[StrategoConstants.BLUE][PieceEnum.MINER.getPosition()] = BitmapFactory.decodeStream(am.open(sFolder + "minero_blue.png"));
+			StrategoImageView.arrPieceBitmaps[StrategoConstants.RED][PieceEnum.MINER.getId()] = BitmapFactory.decodeStream(am.open(sFolder + "minero_red.png"));
+			StrategoImageView.arrPieceBitmaps[StrategoConstants.BLUE][PieceEnum.MINER.getId()] = BitmapFactory.decodeStream(am.open(sFolder + "minero_blue.png"));
 
 			// sergeant
-			StrategoImageView.arrPieceBitmaps[StrategoConstants.RED][PieceEnum.SERGEANT.getPosition()] = BitmapFactory.decodeStream(am.open(sFolder + "sargento_red.png"));
-			StrategoImageView.arrPieceBitmaps[StrategoConstants.BLUE][PieceEnum.SERGEANT.getPosition()] = BitmapFactory.decodeStream(am.open(sFolder + "sargento_blue.png"));
+			StrategoImageView.arrPieceBitmaps[StrategoConstants.RED][PieceEnum.SERGEANT.getId()] = BitmapFactory.decodeStream(am.open(sFolder + "sargento_red.png"));
+			StrategoImageView.arrPieceBitmaps[StrategoConstants.BLUE][PieceEnum.SERGEANT.getId()] = BitmapFactory.decodeStream(am.open(sFolder + "sargento_blue.png"));
 
 			// lieutenant
-			StrategoImageView.arrPieceBitmaps[StrategoConstants.RED][PieceEnum.LIEUTENANT.getPosition()] = BitmapFactory.decodeStream(am.open(sFolder + "lituant_red.png"));
-			StrategoImageView.arrPieceBitmaps[StrategoConstants.BLUE][PieceEnum.LIEUTENANT.getPosition()] = BitmapFactory.decodeStream(am.open(sFolder + "lituant_blue.png"));
+			StrategoImageView.arrPieceBitmaps[StrategoConstants.RED][PieceEnum.LIEUTENANT.getId()] = BitmapFactory.decodeStream(am.open(sFolder + "lituant_red.png"));
+			StrategoImageView.arrPieceBitmaps[StrategoConstants.BLUE][PieceEnum.LIEUTENANT.getId()] = BitmapFactory.decodeStream(am.open(sFolder + "lituant_blue.png"));
 
 			// capitan
-			StrategoImageView.arrPieceBitmaps[StrategoConstants.RED][PieceEnum.CAPITAN.getPosition()] = BitmapFactory.decodeStream(am.open(sFolder + "capitan_red.png"));
-			StrategoImageView.arrPieceBitmaps[StrategoConstants.BLUE][PieceEnum.CAPITAN.getPosition()] = BitmapFactory.decodeStream(am.open(sFolder + "capitan_blue.png"));
+			StrategoImageView.arrPieceBitmaps[StrategoConstants.RED][PieceEnum.CAPITAN.getId()] = BitmapFactory.decodeStream(am.open(sFolder + "capitan_red.png"));
+			StrategoImageView.arrPieceBitmaps[StrategoConstants.BLUE][PieceEnum.CAPITAN.getId()] = BitmapFactory.decodeStream(am.open(sFolder + "capitan_blue.png"));
 
 			// major
-			StrategoImageView.arrPieceBitmaps[StrategoConstants.RED][PieceEnum.MAJOR.getPosition()] = BitmapFactory.decodeStream(am.open(sFolder + "major_red.png"));
-			StrategoImageView.arrPieceBitmaps[StrategoConstants.BLUE][PieceEnum.MAJOR.getPosition()] = BitmapFactory.decodeStream(am.open(sFolder + "major_blue.png"));
+			StrategoImageView.arrPieceBitmaps[StrategoConstants.RED][PieceEnum.MAJOR.getId()] = BitmapFactory.decodeStream(am.open(sFolder + "major_red.png"));
+			StrategoImageView.arrPieceBitmaps[StrategoConstants.BLUE][PieceEnum.MAJOR.getId()] = BitmapFactory.decodeStream(am.open(sFolder + "major_blue.png"));
 
 			// colonel
-			StrategoImageView.arrPieceBitmaps[StrategoConstants.RED][PieceEnum.COLONEL.getPosition()] = BitmapFactory.decodeStream(am.open(sFolder + "coronel_red.png"));
-			StrategoImageView.arrPieceBitmaps[StrategoConstants.BLUE][PieceEnum.COLONEL.getPosition()] = BitmapFactory.decodeStream(am.open(sFolder + "coronel_blue.png"));
+			StrategoImageView.arrPieceBitmaps[StrategoConstants.RED][PieceEnum.COLONEL.getId()] = BitmapFactory.decodeStream(am.open(sFolder + "coronel_red.png"));
+			StrategoImageView.arrPieceBitmaps[StrategoConstants.BLUE][PieceEnum.COLONEL.getId()] = BitmapFactory.decodeStream(am.open(sFolder + "coronel_blue.png"));
 
 			// general
-			StrategoImageView.arrPieceBitmaps[StrategoConstants.RED][PieceEnum.GENERAL.getPosition()] = BitmapFactory.decodeStream(am.open(sFolder + "general_red.png"));
-			StrategoImageView.arrPieceBitmaps[StrategoConstants.BLUE][PieceEnum.GENERAL.getPosition()] = BitmapFactory.decodeStream(am.open(sFolder + "general_blue.png"));
+			StrategoImageView.arrPieceBitmaps[StrategoConstants.RED][PieceEnum.GENERAL.getId()] = BitmapFactory.decodeStream(am.open(sFolder + "general_red.png"));
+			StrategoImageView.arrPieceBitmaps[StrategoConstants.BLUE][PieceEnum.GENERAL.getId()] = BitmapFactory.decodeStream(am.open(sFolder + "general_blue.png"));
 
 			// marshall
-			StrategoImageView.arrPieceBitmaps[StrategoConstants.RED][PieceEnum.MARSHALL.getPosition()] = BitmapFactory.decodeStream(am.open(sFolder + "mariscal_red.png"));
-			StrategoImageView.arrPieceBitmaps[StrategoConstants.BLUE][PieceEnum.MARSHALL.getPosition()] = BitmapFactory.decodeStream(am.open(sFolder + "mariscal_blue.png"));
+			StrategoImageView.arrPieceBitmaps[StrategoConstants.RED][PieceEnum.MARSHALL.getId()] = BitmapFactory.decodeStream(am.open(sFolder + "mariscal_red.png"));
+			StrategoImageView.arrPieceBitmaps[StrategoConstants.BLUE][PieceEnum.MARSHALL.getId()] = BitmapFactory.decodeStream(am.open(sFolder + "mariscal_blue.png"));
 
 			// field board
             for (int k=0;k<100;k++) {
@@ -383,10 +383,10 @@ public class StrategoViewBase {
 			tmpCache.boardField = i;
 			if (piece!=null) {
 				tmpCache._bPiece = true;
-				tmpCache._piece = piece.getId();
-				tmpCache._color = piece.getColor();
+				tmpCache._piece = piece.getPieceEnum().getId();
+				tmpCache._color = piece.getPlayer();
 			} else {
-				Log.d("StrategoViewBase", "piece is null at:" + i);
+				//Log.d("StrategoViewBase", "piece is null at:" + i);
 				tmpCache._bPiece = false;
 			}
 

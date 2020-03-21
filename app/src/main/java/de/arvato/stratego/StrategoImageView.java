@@ -60,7 +60,7 @@ public class StrategoImageView extends View {
                 if (_matrix == null) {
                         _matrix = new Matrix();
                         float scale = 1.0F;
-                        Bitmap bmp = arrPieceBitmaps[StrategoConstants.RED][PieceEnum.FLAG.getPosition()]; // any dynamic
+                        Bitmap bmp = arrPieceBitmaps[StrategoConstants.RED][PieceEnum.FLAG.getId()]; // any dynamic
                         scale = (float)getWidth() / bmp.getWidth();
                         Log.i("paintBoard", "init " + scale + " : " + bmp.getWidth() + ", " + getWidth());
                         _matrix.setScale(scale, scale);
@@ -110,7 +110,7 @@ public class StrategoImageView extends View {
                 }
 
                 //draw border
-                if (StrategoControl.isFieldBoardWithBorder(ico.boardField)) {
+                if (StrategoControl.isPlayablePosition(ico.boardField)) {
                         _paint.setStyle(Paint.Style.STROKE);
                         _paint.setStrokeWidth(3);
                         _paint.setColor(Color.BLACK);

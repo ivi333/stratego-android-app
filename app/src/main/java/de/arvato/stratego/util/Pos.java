@@ -33,10 +33,10 @@ public class Pos
 		return (row * 10) + col;
 	}
 	
-	// returns the row [0-9] from top to bottom; ie values in [a8-h8] return 0.
+	// returns the row [0-9] from top to bottom; ie values in [a10-j10] return 0.
 	public static int row(final int val)
 	{
-		return (val >> 3) & 9;
+		return val / 10;
 	}
 	//  returns the column [0-9] from left to right; ie values in [a8-a8] return 0.
 	public static int col(final int val)

@@ -42,6 +42,16 @@ public class StrategoView {
     public boolean handleClick(int index) {
         Log.d(TAG, "handleClick at index:" + index);
 
+        int nextMov[] = strategoControl.getPossibleMovements (index);
+
+        StringBuilder sb = new StringBuilder();
+        for (int i : nextMov) {
+            sb.append(i);
+            sb.append(",");
+        }
+        if (sb.length() > 0) sb.deleteCharAt(sb.length()-1);
+        Log.d(TAG, "possible movements at index:" + index + " = " + sb.toString());
+
         strategoViewBase.paintBoard(strategoControl, index, null);
         return false;
     }

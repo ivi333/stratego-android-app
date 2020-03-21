@@ -1,8 +1,7 @@
 package de.arvato.stratego;
 
-import android.util.Log;
-
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -10,44 +9,119 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 
+import de.arvato.stratego.util.Pos;
+
 public class StrategoControl {
 
     private static final Random rng = new Random();
 
-
     protected Piece [] pieces;
     protected boolean myTurn;
     protected int myColor;
+    protected int turn;
+
 
     public StrategoControl () {
+        startGame ();
+    }
+
+    public void startGame () {
         myTurn=false;
         myColor = StrategoConstants.RED;
         pieces = new Piece [100];
-
         randomPieces (StrategoConstants.RED);
         randomPieces (StrategoConstants.BLUE);
+        turn = StrategoConstants.RED;
+    }
 
-        /*putPiece (0, StrategoConstants.RED, StrategoConstants.FLAG);
-        putPiece (1, StrategoConstants.RED, StrategoConstants.SPY);
-        putPiece (2, StrategoConstants.RED, StrategoConstants.SCOUT);
-        putPiece (3, StrategoConstants.RED, StrategoConstants.MINER);
-        putPiece (4, StrategoConstants.RED, StrategoConstants.SERGEANT);
-        putPiece (5, StrategoConstants.RED, StrategoConstants.LIEUTENANT);
-        putPiece (6, StrategoConstants.RED, StrategoConstants.CAPITAN);
-        putPiece (7, StrategoConstants.RED, StrategoConstants.MAJOR);
-        putPiece (8, StrategoConstants.RED, StrategoConstants.COLONEL);
-        putPiece (9, StrategoConstants.RED, StrategoConstants.GENERAL);
-        putPiece (10, StrategoConstants.RED, StrategoConstants.MARSHALL);
-        putPiece (11, StrategoConstants.RED, StrategoConstants.BOMB);*/
+    public void movePiece (int player, int from, int to) {
+        if (player != turn) return;
 
-        /*for (int z = 12; z<50; z++) {
-            putPiece(z, StrategoConstants.RED, StrategoConstants.MINER);
+        if (player == StrategoConstants.RED)
+            player = StrategoConstants.BLUE;
+        else
+            player = StrategoConstants.RED;
+    }
+
+    public int [] getPossibleMovements (int pos) {
+        Piece piece = pieces[pos];
+        if (piece == null) {
+            return new int[0];
         }
+        List<Integer> res = Collections.emptyList();
+        if (piece.getPieceEnum().isAllowMovement()) {
+            switch (piece.getPieceEnum()) {
+                case SCOUT:
+                    res = calculateMovement (piece, pos, true);
+                    break;
+                default:
+                    res = calculateMovement (piece, pos, false);
+                    break;
+            }
+        }
+        int arrayInt [] = new int[res.size()];
+        for (int z=0;z<res.size();z++) {
+            arrayInt[z]=res.get(z);
+        }
+       return arrayInt;
+    }
 
-        for (int z = 50; z<100; z++) {
-            putPiece(z, StrategoConstants.BLUE, StrategoConstants.BOMB);
-        }*/
+    private List<Integer> calculateMovement(final Piece piece, final int pos, final boolean isMultiple) {
+        int row = Pos.row(pos);
+        int col = Pos.col(pos);
+        List<Integer> freePos = new ArrayList<Integer>();
+        int nextPos;
+        if (isMultiple) {
+            //SCOUT TODO
+        } else {
+            if ( (row -1) > 0) {
+                nextPos = Pos.fromColAndRow(col, (row -1));
+                boolean available = nextPositionAvailable (piece, nextPos);
+                if (available) {
+                    freePos.add(nextPos);
+                }
+            }
 
+            if ( (row + 1) < 100) {
+                nextPos = Pos.fromColAndRow(col, (row +1));
+                boolean available = nextPositionAvailable (piece, nextPos);
+                if (available) {
+                    freePos.add(nextPos);
+                }
+            }
+
+            if ( Pos.row(pos+1) == row ) {
+                nextPos = Pos.fromColAndRow((col+1), row);
+                boolean available = nextPositionAvailable (piece, nextPos);
+                if (available) {
+                    freePos.add(nextPos);
+                }
+            }
+
+            if ( Pos.row(pos-1) == row) {
+                nextPos = Pos.fromColAndRow((col-1), row);
+                boolean available = nextPositionAvailable (piece, nextPos);
+                if (available) {
+                    freePos.add(nextPos);
+                }
+            }
+        }
+        return freePos;
+    }
+
+    private boolean nextPositionAvailable(Piece piece, int nextPos) {
+        // not playable position
+        if (!isPlayablePosition(nextPos)) return false;
+
+        // Board position is free
+        Piece nextPiece = pieces[nextPos];
+        if (nextPiece == null) return true;
+
+        //Opposite piece
+        if (nextPiece.getPlayer() != piece.getPlayer()) return true;
+
+        // by default is not playable
+        return false;
     }
 
     private void randomPieces(int player) {
@@ -90,23 +164,21 @@ public class StrategoControl {
     }
 
     private void putPiece(int pos, int color, PieceEnum piece) {
-        Log.d("StrategoControl", "Adding piece:" + piece + " boardPos:" + pos + " player:" + color);
+        //Log.d("StrategoControl", "Adding piece:" + piece + " boardPos:" + pos + " player:" + color);
         pieces [pos] = new Piece();
-        pieces [pos].setColor(color);
-        pieces [pos].setId(piece.getPosition());
-        pieces [pos].setPoints(piece.getPoints());
+        pieces [pos].setPlayer(color);
+        pieces[pos].setPieceEnum(piece);
     }
 
     public Piece getPieceAt(int i) {
         return pieces[i];
     }
 
-    public static boolean isFieldBoardWithBorder (final int pos) {
+    public static boolean isPlayablePosition (final int pos) {
         return pos != StrategoConstants.c6 && pos != StrategoConstants.d6
                 && pos != StrategoConstants.c5 && pos != StrategoConstants.d5
                 && pos != StrategoConstants.g6 && pos != StrategoConstants.h6
                 && pos != StrategoConstants.g5 && pos != StrategoConstants.h5;
-
     }
 
     public static int randomBetween (int low, int high) {
