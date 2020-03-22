@@ -20,7 +20,6 @@ public class StrategoView {
         strategoViewBase = new StrategoViewBase(activity);
         inflater = (LayoutInflater) parent.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
         strategoControl = new StrategoControl();
-
         View.OnClickListener ocl = new View.OnClickListener() {
             public void onClick(View arg0) {
                 handleClick(strategoViewBase.getIndexOfButton(arg0));
@@ -42,24 +41,26 @@ public class StrategoView {
     public boolean handleClick(int index) {
         Log.d(TAG, "handleClick at index:" + index);
 
-        int nextMov[] = strategoControl.getPossibleMovements (index);
-
-        StringBuilder sb = new StringBuilder();
-        for (int i : nextMov) {
-            sb.append(i);
-            sb.append(",");
+        if (strategoControl.selectPiece(index)) {
+            Log.d (TAG, "Piece at position:" + index + " has been selected.");
+            int nextMov[] = strategoControl.getPossibleMovements (index);
+            StringBuilder sb = new StringBuilder();
+            for (int i : nextMov) {
+                sb.append(i);
+                sb.append(",");
+            }
+            if (sb.length() > 0) sb.deleteCharAt(sb.length()-1);
+            Log.d(TAG, "Possible movements at index:" + index + " = " + sb.toString());
+        } else {
+            Log.d (TAG, "Move Piece to target index:" + index);
+            strategoControl.movePiece(index);
         }
-        if (sb.length() > 0) sb.deleteCharAt(sb.length()-1);
-        Log.d(TAG, "possible movements at index:" + index + " = " + sb.toString());
 
         strategoViewBase.paintBoard(strategoControl, index, null);
         return false;
     }
 
     public void paintBoard () {
-
         strategoViewBase.paintBoard(strategoControl, -1, null);
-
-
     }
 }

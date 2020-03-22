@@ -5,7 +5,7 @@ package de.arvato.stratego;
  */
 public enum PieceEnum {
 	FLAG ("FLAG", 0, -1, false),	/* 1 */
-	BOMB ("BOMB", 1, -1, false),	/* 6 */
+	BOMB ("BOMB", 1, 12, false),	/* 6 */
 	SPY ("SPY",2,  1, true),		/* 1 */
 	SCOUT ("SCOUT", 3, 2, true),	/* 8 */
 	MINER ("MINER", 4, 3, true),	/* 5 */
