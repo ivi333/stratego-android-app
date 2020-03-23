@@ -371,6 +371,24 @@ public class StrategoViewBase {
 			Piece piece = gameControl.getPieceAt (i);
 			ImageCacheObject tmpCache = _arrImgCache[i];
 
+			if (!tmpCache.initalized) {
+			    tmpCache.initalized = true;
+            } else {
+                // check if the field has changed
+                boolean tmp_bPiece = piece!=null;
+                int tmp_piece = piece != null ? piece.getPieceEnum().getId() : -500;
+                int tmp_color = piece != null ? piece.getPlayer() : -500;
+                boolean tmp_selected = (positionSelected!=-1 && positionSelected == i);
+
+                if (tmpCache._bPiece == tmp_bPiece &&
+                    tmpCache._piece == tmp_piece &&
+                    tmpCache._color == tmp_color &&
+                    tmpCache._selected == tmp_selected ){
+                    Log.d(TAG, "Skipping rendering position has not changed:" + i);
+                    continue;
+                }
+            }
+
 			// determinate background color
 			iFieldColor = i%2;
 			if (i % 10 == 0) {
@@ -380,7 +398,9 @@ public class StrategoViewBase {
 				if (iFieldColor == 1) iFieldColor = 0; else iFieldColor=1;
 			}
 
+            tmpCache._fieldColor = iFieldColor;
 			tmpCache.boardField = i;
+
 			if (piece!=null) {
 				tmpCache._bPiece = true;
 				tmpCache._piece = piece.getPieceEnum().getId();
@@ -396,7 +416,6 @@ public class StrategoViewBase {
 				tmpCache._selected = false;
 			}
 			tmpCache._selectedPos = false;
-			tmpCache._fieldColor = iFieldColor;
 
 			/*tmpCache = _arrImgCache[i];
 			tmpCache._bPiece = bPiece;

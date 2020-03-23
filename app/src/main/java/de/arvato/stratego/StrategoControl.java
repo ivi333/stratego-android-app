@@ -159,9 +159,61 @@ public class StrategoControl {
         List<Integer> freePos = new ArrayList<Integer>();
         int nextPos;
         if (isMultiple) {
-            //SCOUT TODO
+            int tmpRow = row;
+            boolean available=true;
+            while ( ((tmpRow -1) >=0) && available) {
+                nextPos = Pos.fromColAndRow(col, (tmpRow-1));
+                if (nextPos >= 0 && nextPos < 100) {
+                    available = nextPositionAvailable(piece, nextPos);
+                    if (available) {
+                        freePos.add(nextPos);
+                    }
+                }
+                tmpRow--;
+            }
 
+            tmpRow = row;
+            available = true;
+            while ( ((tmpRow + 1) < 10) && available) {
+                nextPos = Pos.fromColAndRow(col, (tmpRow +1));
+                if (nextPos >= 0 && nextPos < 100) {
+                    available = nextPositionAvailable(piece, nextPos);
+                    if (available) {
+                        freePos.add(nextPos);
+                    }
+                }
+                tmpRow++;
+            }
 
+            available = true;
+            int tmpPos = pos;
+            int tmpCol = col;
+            while ( (Pos.row(tmpPos+1) == row) && available) {
+                nextPos = Pos.fromColAndRow((tmpCol+1), row);
+                if (nextPos >= 0 && nextPos < 100) {
+                    available = nextPositionAvailable(piece, nextPos);
+                    if (available) {
+                        freePos.add(nextPos);
+                    }
+                }
+                tmpPos++;
+                tmpCol++;
+            }
+
+            tmpPos=pos;
+            tmpCol=col;
+            available=true;
+            while ( (Pos.row(tmpPos-1) == row) && available) {
+                nextPos = Pos.fromColAndRow((tmpCol-1), row);
+                if (nextPos >= 0 && nextPos < 100) {
+                    available = nextPositionAvailable (piece, nextPos);
+                    if (available) {
+                        freePos.add(nextPos);
+                    }
+                }
+                tmpPos--;
+                tmpCol--;
+            }
         } else {
             if ( (row -1) >= 0) {
                 nextPos = Pos.fromColAndRow(col, (row -1));
@@ -318,5 +370,3 @@ public class StrategoControl {
         return rng.nextInt(high-low) + low;
     }
 }
-
-
