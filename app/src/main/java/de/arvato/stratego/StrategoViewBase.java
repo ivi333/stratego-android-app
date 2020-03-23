@@ -236,7 +236,7 @@ public class StrategoViewBase {
 
 			// marshall
 			StrategoImageView.arrPieceBitmaps[StrategoConstants.RED][PieceEnum.MARSHALL.getId()] = BitmapFactory.decodeStream(am.open(sFolder + "mariscal_red.png"));
-			StrategoImageView.arrPieceBitmaps[StrategoConstants.BLUE][PieceEnum.MARSHALL.getId()] = BitmapFactory.decodeStream(am.open(sFolder + "mariscal_blue.png"));
+			StrategoImageView.arrPieceBitmaps[StrategoConstants.BLUE][PieceEnum.MARSHALL.getId()] = BitmapFactory.decodeStream(am.open(sFolder + "marshall_blue.png"));
 
 			// field board
             for (int k=0;k<100;k++) {

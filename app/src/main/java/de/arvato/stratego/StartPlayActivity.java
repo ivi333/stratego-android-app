@@ -7,9 +7,6 @@ import android.view.MotionEvent;
 
 public class StartPlayActivity extends StrategoActivity implements TextToSpeech.OnInitListener, GestureDetector.OnGestureListener {
 
-//    private var mainLayout : RelativeLayout?=null;
-// private val arrImages: Array<StrategoImageView?> = arrayOfNulls<StrategoImageView>(64)
-
     private StrategoView strategoView;
     private GestureDetector gestureDetector;
 
@@ -21,17 +18,6 @@ public class StartPlayActivity extends StrategoActivity implements TextToSpeech.
         strategoView = new StrategoView(this);
 
         gestureDetector = new GestureDetector(this, this);
-
-
-        /*mainLayout = this.findViewById(R.id.LayoutMain) as RelativeLayout
-        var imgView1 = mainLayout!!.findViewById<StrategoImageView>(R.id.a8)
-        imgView1.setBackgroundResource(R.drawable.chess);
-
-        var imgView2 = mainLayout!!.findViewById<StrategoImageView>(R.id.b8)
-        imgView2.setBackgroundResource(R.drawable.chess);
-
-        var imgView3 = mainLayout!!.findViewById<StrategoImageView>(R.id.c8)
-        imgView3.setBackgroundResource(R.drawable.chess);*/
 
     }
 
