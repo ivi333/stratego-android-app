@@ -11,7 +11,7 @@ public enum PieceEnum {
 	MINER ("MINER", 4, 3, true),	/* 5 */
 	SERGEANT ("SERGEANT", 5, 4, true),	/* 4 */
 	LIEUTENANT ("LIEUTENANT", 6, 5, true),	/* 4 */
-	CAPITAN ("CAPITAN", 7, 6, true),  	/* 4 */
+	CAPTAIN ("CAPTAIN", 7, 6, true),  	/* 4 */
 	MAJOR ("MAJOR", 8, 7, true),  /* 3 */
 	COLONEL ("COLONEL", 9, 8, true),	  	/* 2 */
 	GENERAL ("GENERAL", 10, 9, true),		/* 1 */

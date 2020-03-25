@@ -290,7 +290,7 @@ public class StrategoControl {
         mapBoard.put(PieceEnum.GENERAL, StrategoConstants.GEN_MAX);
         mapBoard.put(PieceEnum.COLONEL, StrategoConstants.COR_MAX);
         mapBoard.put(PieceEnum.MAJOR, StrategoConstants.COM_MAX);
-        mapBoard.put(PieceEnum.CAPITAN, StrategoConstants.CAP_MAX);
+        mapBoard.put(PieceEnum.CAPTAIN, StrategoConstants.CAP_MAX);
         mapBoard.put(PieceEnum.LIEUTENANT, StrategoConstants.TEN_MAX);
         mapBoard.put(PieceEnum.SERGEANT, StrategoConstants.SAR_MAX);
         mapBoard.put(PieceEnum.MINER, StrategoConstants.MIN_MAX);
@@ -329,7 +329,7 @@ public class StrategoControl {
         mapBoard.put(PieceEnum.GENERAL, StrategoConstants.GEN_MAX);
         mapBoard.put(PieceEnum.COLONEL, StrategoConstants.COR_MAX);
         mapBoard.put(PieceEnum.MAJOR, StrategoConstants.COM_MAX);
-        mapBoard.put(PieceEnum.CAPITAN, StrategoConstants.CAP_MAX);
+        mapBoard.put(PieceEnum.CAPTAIN, StrategoConstants.CAP_MAX);
         mapBoard.put(PieceEnum.LIEUTENANT, StrategoConstants.TEN_MAX);
         mapBoard.put(PieceEnum.SERGEANT, StrategoConstants.SAR_MAX);
         mapBoard.put(PieceEnum.MINER, StrategoConstants.MIN_MAX);

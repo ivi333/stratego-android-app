@@ -219,8 +219,8 @@ public class StrategoViewBase {
 			StrategoImageView.arrPieceBitmaps[StrategoConstants.BLUE][PieceEnum.LIEUTENANT.getId()] = BitmapFactory.decodeStream(am.open(sFolder + "lituant_blue.png"));
 
 			// capitan
-			StrategoImageView.arrPieceBitmaps[StrategoConstants.RED][PieceEnum.CAPITAN.getId()] = BitmapFactory.decodeStream(am.open(sFolder + "capitan_red.png"));
-			StrategoImageView.arrPieceBitmaps[StrategoConstants.BLUE][PieceEnum.CAPITAN.getId()] = BitmapFactory.decodeStream(am.open(sFolder + "capitan_blue.png"));
+			StrategoImageView.arrPieceBitmaps[StrategoConstants.RED][PieceEnum.CAPTAIN.getId()] = BitmapFactory.decodeStream(am.open(sFolder + "capitan_red.png"));
+			StrategoImageView.arrPieceBitmaps[StrategoConstants.BLUE][PieceEnum.CAPTAIN.getId()] = BitmapFactory.decodeStream(am.open(sFolder + "capitan_blue.png"));
 
 			// major
 			StrategoImageView.arrPieceBitmaps[StrategoConstants.RED][PieceEnum.MAJOR.getId()] = BitmapFactory.decodeStream(am.open(sFolder + "major_red.png"));
@@ -243,6 +243,7 @@ public class StrategoViewBase {
                 StrategoImageView.arrFieldBitmap[k] = BitmapFactory.decodeStream(am.open(boardFolder + (k+1) + ".png" ));
             }
 
+            // captured pieces
 
 		}catch(Exception ex){
 			ex.printStackTrace();

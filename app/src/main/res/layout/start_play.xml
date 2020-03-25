@@ -13,22 +13,22 @@
                 >
                 <ImageView
                     android:src="@drawable/turnblue"
-                    android:layout_height="12dip" android:layout_width="12dip"
+                    android:layout_height="12dip" android:layout_width="14dip"
                     />
                 <ImageView
                     android:src="@drawable/turnred"
-                    android:layout_height="12dip" android:layout_width="12dip"
+                    android:layout_height="12dip" android:layout_width="14dip"
                     />
             </ViewSwitcher>
             <TextView android:id="@+id/TextViewClockTimeOpp"
-                android:layout_height="wrap_content" android:layout_width="50dip"
+                android:layout_height="wrap_content" android:layout_width="60dip"
                 android:text="00:00"
                 style="@style/MyNormalTextStyle"
                 />
             <TextView android:id="@+id/TextViewTopTitle"
                 android:layout_width="wrap_content" android:layout_height="wrap_content"
                 style="@style/MyNormalTextStyle"
-                android:text="Title..."
+                android:text="Player Blue..."
                 />
         </TableRow>
     </TableLayout>
@@ -39,6 +39,299 @@
         android:layout_below="@id/LayoutTopTitle"
         android:id="@+id/includeboard"
         />
+    <TableLayout android:id="@+id/LayoutBottomTitle"
+        android:layout_width="fill_parent" android:layout_height="wrap_content"
+        android:layout_below="@id/includeboard"
+        >
+        <TableRow android:gravity="center_vertical">
+            <ViewSwitcher android:id="@+id/ImageTurnMe"
+                android:layout_height="wrap_content" android:layout_width="wrap_content"
+                android:layout_marginLeft="8dip" android:layout_marginRight="8dip"
+                >
+                <ImageView
+                    android:src="@drawable/turnred"
+                    android:layout_height="12dip" android:layout_width="14dip"
+                    />
+                <ImageView
+                    android:src="@drawable/turnblue"
+                    android:layout_height="12dip" android:layout_width="14dip"
+                    />
+            </ViewSwitcher>
+            <TextView android:id="@+id/TextViewClockTimeMe"
+                android:layout_height="wrap_content" android:layout_width="60dip"
+                android:text="00:00"
+                style="@style/MyNormalTextStyle"
+                />
+            <TextView android:id="@+id/TextViewTitle"
+                android:layout_width="wrap_content" android:layout_height="wrap_content"
+                style="@style/MyNormalTextStyle"
+                android:text="Player Red"
+                />
+        </TableRow>
+    </TableLayout>
 
+    <RelativeLayout android:id="@+id/bottomPlayLayout" android:layout_width="fill_parent" android:layout_height="wrap_content"
+        android:layout_below="@id/LayoutBottomTitle" android:gravity="center_vertical"
+        android:background="@color/cardview_dark_background"
+        >
+
+        <ViewAnimator
+            android:id="@+id/ViewAnimatorMain"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_marginTop="1dip"
+            android:animateFirstView="true"
+            android:layout_marginBottom="1dip">
+
+            <TableLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content">
+
+                <TableRow
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content">
+
+
+                    <de.arvato.stratego.StrategoCapturedImageView
+                        android:id="@+id/ImageCapturedRedMarshall"
+                        style="@style/CaptureImageStyle" />
+
+                    <de.arvato.stratego.StrategoCapturedImageView
+                        android:id="@+id/ImageCapturedRedGeneral"
+                        style="@style/CaptureImageStyle" />
+
+                    <de.arvato.stratego.StrategoCapturedImageView
+                        android:id="@+id/ImageCapturedRedColonel"
+                        style="@style/CaptureImageStyle" />
+
+                    <de.arvato.stratego.StrategoCapturedImageView
+                        android:id="@+id/ImageCapturedRedLieutenant"
+                        style="@style/CaptureImageStyle" />
+
+                    <de.arvato.stratego.StrategoCapturedImageView
+                        android:id="@+id/ImageCapturedRedCaptain"
+                        style="@style/CaptureImageStyle" />
+
+                    <de.arvato.stratego.StrategoCapturedImageView
+                        android:id="@+id/ImageCapturedRedMajor"
+                        style="@style/CaptureImageStyle" />
+
+                    <de.arvato.stratego.StrategoCapturedImageView
+                        android:id="@+id/ImageCapturedRedSergeant"
+                        style="@style/CaptureImageStyle" />
+
+                    <de.arvato.stratego.StrategoCapturedImageView
+                        android:id="@+id/ImageCapturedRedMiner"
+                        style="@style/CaptureImageStyle" />
+
+                    <de.arvato.stratego.StrategoCapturedImageView
+                        android:id="@+id/ImageCapturedRedScout"
+                        style="@style/CaptureImageStyle" />
+
+                    <de.arvato.stratego.StrategoCapturedImageView
+                        android:id="@+id/ImageCapturedRedSpy"
+                        style="@style/CaptureImageStyle" />
+
+                    <de.arvato.stratego.StrategoCapturedImageView
+                        android:id="@+id/ImageCapturedRedBomb"
+                        style="@style/CaptureImageStyle" />
+
+                    <de.arvato.stratego.StrategoCapturedImageView
+                        android:id="@+id/ImageCapturedRedFlag"
+                        style="@style/CaptureImageStyle" />
+
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/TextViewCapturedRedMarshall"
+                        android:text="1"
+                        style="@style/CaptureTextStyle" />
+
+                    <TextView
+                        android:id="@+id/TextViewCapturedRedGeneral"
+                        style="@style/CaptureTextStyle" />
+
+                    <TextView
+                        android:id="@+id/TextViewCapturedRedColonel"
+                        style="@style/CaptureTextStyle" />
+
+                    <TextView
+                        android:id="@+id/TextViewCapturedRedLieutenant"
+                        style="@style/CaptureTextStyle" />
+
+                    <TextView
+                        android:id="@+id/TextViewCapturedRedCaptain"
+                        style="@style/CaptureTextStyle" />
+
+                    <TextView
+                        android:id="@+id/TextViewCapturedRedMajor"
+                        style="@style/CaptureTextStyle" />
+
+                    <TextView
+                        android:id="@+id/TextViewCapturedRedSergeant"
+                        style="@style/CaptureTextStyle" />
+
+                    <TextView
+                        android:id="@+id/TextViewCapturedRedMiner"
+                        style="@style/CaptureTextStyle" />
+
+                    <TextView
+                        android:id="@+id/TextViewCapturedRedScout"
+                        style="@style/CaptureTextStyle" />
+
+                    <TextView
+                        android:id="@+id/TextViewCapturedRedSpy"
+                        style="@style/CaptureTextStyle" />
+
+                    <TextView
+                        android:id="@+id/TextViewCapturedRedBomb"
+                        style="@style/CaptureTextStyle" />
+
+                    <TextView
+                        android:id="@+id/TextViewCapturedRedFlag"
+                        style="@style/CaptureTextStyle" />
+
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content">
+
+                    <de.arvato.stratego.StrategoCapturedImageView
+                        android:id="@+id/ImageCapturedBlueMarshall"
+                        style="@style/CaptureImageStyle" />
+
+                    <de.arvato.stratego.StrategoCapturedImageView
+                        android:id="@+id/ImageCapturedBlueGeneral"
+                        style="@style/CaptureImageStyle" />
+
+                    <de.arvato.stratego.StrategoCapturedImageView
+                        android:id="@+id/ImageCapturedBlueColonel"
+                        style="@style/CaptureImageStyle" />
+
+                    <de.arvato.stratego.StrategoCapturedImageView
+                        android:id="@+id/ImageCapturedBlueLieutenant"
+                        style="@style/CaptureImageStyle" />
+
+                    <de.arvato.stratego.StrategoCapturedImageView
+                        android:id="@+id/ImageCapturedBlueCaptain"
+                        style="@style/CaptureImageStyle" />
+
+                    <de.arvato.stratego.StrategoCapturedImageView
+                        android:id="@+id/ImageCapturedBlueMajor"
+                        style="@style/CaptureImageStyle" />
+
+                    <de.arvato.stratego.StrategoCapturedImageView
+                        android:id="@+id/ImageCapturedBlueSergeant"
+                        style="@style/CaptureImageStyle" />
+
+                    <de.arvato.stratego.StrategoCapturedImageView
+                        android:id="@+id/ImageCapturedBlueMiner"
+                        style="@style/CaptureImageStyle" />
+
+                    <de.arvato.stratego.StrategoCapturedImageView
+                        android:id="@+id/ImageCapturedBlueScout"
+                        style="@style/CaptureImageStyle" />
+
+                    <de.arvato.stratego.StrategoCapturedImageView
+                        android:id="@+id/ImageCapturedBlueSpy"
+                        style="@style/CaptureImageStyle" />
+
+                    <de.arvato.stratego.StrategoCapturedImageView
+                        android:id="@+id/ImageCapturedBlueBomb"
+                        style="@style/CaptureImageStyle" />
+
+                    <de.arvato.stratego.StrategoCapturedImageView
+                        android:id="@+id/ImageCapturedBlueFlag"
+                        style="@style/CaptureImageStyle" />
+
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/TextViewCapturedBlueMarshall"
+                        style="@style/CaptureTextStyle" />
+
+                    <TextView
+                        android:id="@+id/TextViewCapturedBlueGeneral"
+                        style="@style/CaptureTextStyle" />
+
+                    <TextView
+                        android:id="@+id/TextViewCapturedBlueColonel"
+                        style="@style/CaptureTextStyle" />
+
+                    <TextView
+                        android:id="@+id/TextViewCapturedBlueLieutenant"
+                        style="@style/CaptureTextStyle" />
+
+                    <TextView
+                        android:id="@+id/TextViewCapturedBlueCaptain"
+                        style="@style/CaptureTextStyle" />
+
+                    <TextView
+                        android:id="@+id/TextViewCapturedBlueMajor"
+                        style="@style/CaptureTextStyle" />
+
+                    <TextView
+                        android:id="@+id/TextViewCapturedBlueSergeant"
+                        style="@style/CaptureTextStyle" />
+
+                    <TextView
+                        android:id="@+id/TextViewCapturedBlueMiner"
+                        style="@style/CaptureTextStyle" />
+
+                    <TextView
+                        android:id="@+id/TextViewCapturedBlueScout"
+                        style="@style/CaptureTextStyle" />
+
+                    <TextView
+                        android:id="@+id/TextViewCapturedBlueSpy"
+                        style="@style/CaptureTextStyle" />
+
+                    <TextView
+                        android:id="@+id/TextViewCapturedBlueBomb"
+                        style="@style/CaptureTextStyle" />
+
+                    <TextView
+                        android:id="@+id/TextViewCapturedBlueFlag"
+                        style="@style/CaptureTextStyle" />
+
+                </TableRow>
+
+            </TableLayout>
+
+            <RelativeLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/TextViewEngine2"
+                    style="@style/DarkThemeTextStyle"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Engine Info:"
+                    android:padding="4dip" />
+
+                <TextView
+                    android:id="@+id/TextViewEngineValue2"
+                    style="@style/DarkThemeTextStyle"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/TextViewEngine2"
+                    android:text="Text View Engine Value 2"
+                    android:padding="4dip" />
+            </RelativeLayout>
+
+        </ViewAnimator>
+
+
+    </RelativeLayout>
 
 </android.widget.RelativeLayout>
