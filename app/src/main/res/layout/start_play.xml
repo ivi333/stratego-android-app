@@ -83,14 +83,29 @@
             android:animateFirstView="true"
             android:layout_marginBottom="1dip">
 
-            <TableLayout
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Captured Pieces"
+                    android:gravity="center_horizontal"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                    android:textColor="@color/white"
+                    android:textStyle="bold"
+                    android:padding="5dip">
+                </TextView>
+
+                <TableLayout
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content">
 
                 <TableRow
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content">
-
 
                     <de.arvato.stratego.StrategoCapturedImageView
                         android:id="@+id/ImageCapturedRedMarshall"
@@ -196,7 +211,9 @@
                         style="@style/CaptureTextStyle" />
 
                 </TableRow>
-
+                <TableRow>
+                    <TextView android:padding="10dip"></TextView>
+                </TableRow>
                 <TableRow
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content">
@@ -306,7 +323,7 @@
                 </TableRow>
 
             </TableLayout>
-
+            </LinearLayout>
             <RelativeLayout
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content">

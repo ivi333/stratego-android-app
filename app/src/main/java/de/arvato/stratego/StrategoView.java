@@ -125,7 +125,7 @@ public class StrategoView {
         arrImageCaptured[StrategoConstants.BLUE][PieceEnum.BOMB.getId()] = (StrategoCapturedImageView) parent.findViewById(R.id.ImageCapturedBlueBomb);
         arrImageCaptured[StrategoConstants.BLUE][PieceEnum.BOMB.getId()].initBitmap("bomb_blue.png");
         arrImageCaptured[StrategoConstants.BLUE][PieceEnum.FLAG.getId()] = (StrategoCapturedImageView) parent.findViewById(R.id.ImageCapturedBlueFlag);
-        arrImageCaptured[StrategoConstants.BLUE][PieceEnum.FLAG.getId()].initBitmap("balndera_blue.png");
+        arrImageCaptured[StrategoConstants.BLUE][PieceEnum.FLAG.getId()].initBitmap("bandera_blue.png");
 
 
         arrTextCaptured = new TextView[2][12];
