@@ -7,6 +7,8 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.ViewAnimator;
 
+import java.util.Map;
+
 public class StrategoView {
 
     public static final String TAG = "StrategoView";
@@ -154,7 +156,12 @@ public class StrategoView {
         arrTextCaptured[StrategoConstants.BLUE][PieceEnum.BOMB.getId()] =  parent.findViewById(R.id.TextViewCapturedBlueBomb);
         arrTextCaptured[StrategoConstants.BLUE][PieceEnum.FLAG.getId()] =  parent.findViewById(R.id.TextViewCapturedBlueFlag);
 
-
+        for (int i=0;i<2;i++) {
+            for (int j=0;j<12;j++) {
+                arrImageCaptured[i][j].setVisibility(View.INVISIBLE);
+                arrTextCaptured[i][j].setVisibility(View.INVISIBLE);
+            }
+        }
     }
 
     public void paintBoard () {
@@ -170,6 +177,15 @@ public class StrategoView {
     }
 
     public void updateStatus () {
+        updateCapturedPieces (StrategoConstants.RED, strategoControl.getCapturedPiecesRed());
+        updateCapturedPieces (StrategoConstants.BLUE, strategoControl.getCapturedPiecesBlue());
+    }
 
+    private void updateCapturedPieces(int player, Map<PieceEnum, Integer> capturedPieces) {
+        for (Map.Entry<PieceEnum, Integer> entry : capturedPieces.entrySet()) {
+            arrImageCaptured[player][entry.getKey().getId()].setVisibility(View.VISIBLE);
+            arrTextCaptured[player][entry.getKey().getId()].setVisibility(View.VISIBLE);
+            arrTextCaptured[player][entry.getKey().getId()].setText(String.valueOf(entry.getValue()));
+        }
     }
 }

@@ -83,23 +83,7 @@
             android:animateFirstView="true"
             android:layout_marginBottom="1dip">
 
-            <LinearLayout
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Captured Pieces"
-                    android:gravity="center_horizontal"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Large"
-                    android:textColor="@color/white"
-                    android:textStyle="bold"
-                    android:padding="5dip">
-                </TextView>
-
-                <TableLayout
+            <TableLayout
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content">
 
@@ -120,7 +104,7 @@
                         style="@style/CaptureImageStyle" />
 
                     <de.arvato.stratego.StrategoCapturedImageView
-                        android:id="@+id/ImageCapturedRedLieutenant"
+                        android:id="@+id/ImageCapturedRedMajor"
                         style="@style/CaptureImageStyle" />
 
                     <de.arvato.stratego.StrategoCapturedImageView
@@ -128,7 +112,7 @@
                         style="@style/CaptureImageStyle" />
 
                     <de.arvato.stratego.StrategoCapturedImageView
-                        android:id="@+id/ImageCapturedRedMajor"
+                        android:id="@+id/ImageCapturedRedLieutenant"
                         style="@style/CaptureImageStyle" />
 
                     <de.arvato.stratego.StrategoCapturedImageView
@@ -163,7 +147,6 @@
 
                     <TextView
                         android:id="@+id/TextViewCapturedRedMarshall"
-                        android:text="1"
                         style="@style/CaptureTextStyle" />
 
                     <TextView
@@ -175,7 +158,7 @@
                         style="@style/CaptureTextStyle" />
 
                     <TextView
-                        android:id="@+id/TextViewCapturedRedLieutenant"
+                        android:id="@+id/TextViewCapturedRedMajor"
                         style="@style/CaptureTextStyle" />
 
                     <TextView
@@ -183,7 +166,7 @@
                         style="@style/CaptureTextStyle" />
 
                     <TextView
-                        android:id="@+id/TextViewCapturedRedMajor"
+                        android:id="@+id/TextViewCapturedRedLieutenant"
                         style="@style/CaptureTextStyle" />
 
                     <TextView
@@ -231,7 +214,7 @@
                         style="@style/CaptureImageStyle" />
 
                     <de.arvato.stratego.StrategoCapturedImageView
-                        android:id="@+id/ImageCapturedBlueLieutenant"
+                        android:id="@+id/ImageCapturedBlueMajor"
                         style="@style/CaptureImageStyle" />
 
                     <de.arvato.stratego.StrategoCapturedImageView
@@ -239,7 +222,7 @@
                         style="@style/CaptureImageStyle" />
 
                     <de.arvato.stratego.StrategoCapturedImageView
-                        android:id="@+id/ImageCapturedBlueMajor"
+                        android:id="@+id/ImageCapturedBlueLieutenant"
                         style="@style/CaptureImageStyle" />
 
                     <de.arvato.stratego.StrategoCapturedImageView
@@ -285,7 +268,7 @@
                         style="@style/CaptureTextStyle" />
 
                     <TextView
-                        android:id="@+id/TextViewCapturedBlueLieutenant"
+                        android:id="@+id/TextViewCapturedBlueMajor"
                         style="@style/CaptureTextStyle" />
 
                     <TextView
@@ -293,7 +276,7 @@
                         style="@style/CaptureTextStyle" />
 
                     <TextView
-                        android:id="@+id/TextViewCapturedBlueMajor"
+                        android:id="@+id/TextViewCapturedBlueLieutenant"
                         style="@style/CaptureTextStyle" />
 
                     <TextView
@@ -323,7 +306,7 @@
                 </TableRow>
 
             </TableLayout>
-            </LinearLayout>
+
             <RelativeLayout
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content">

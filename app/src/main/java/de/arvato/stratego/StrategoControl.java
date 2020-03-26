@@ -24,6 +24,9 @@ public class StrategoControl {
     protected int selectPos;
 
 
+    protected Map<PieceEnum, Integer> capturedPiecesRed;
+    protected Map<PieceEnum, Integer> capturedPiecesBlue;
+
     public StrategoControl () {
         startGame ();
     }
@@ -32,6 +35,8 @@ public class StrategoControl {
         myTurn=false;
         myColor = StrategoConstants.RED;
         pieces = new Piece [100];
+        capturedPiecesBlue = new HashMap<PieceEnum, Integer>();
+        capturedPiecesRed = new HashMap<PieceEnum, Integer>();
         if (!fake) {
             randomPieces(StrategoConstants.RED);
             randomPieces(StrategoConstants.BLUE);
@@ -58,9 +63,12 @@ public class StrategoControl {
                 if (pieceFrom.getPieceEnum() == pieceTo.getPieceEnum()) {
                   pieces[selectPos] = null;
                   pieces[to] = null;
+                  capturePiece(pieceFrom.getPlayer(), pieceFrom.getPieceEnum());
+                  capturePiece(pieceTo.getPlayer(), pieceTo.getPieceEnum());
                 } else if (pieceTo.getPieceEnum() == PieceEnum.FLAG) {
                     pieces[to] = pieces[selectPos];
                     pieces[selectPos] = null;
+                    capturePiece(pieceTo.getPlayer(), pieceTo.getPieceEnum());
                     finishGame ();
                 } else {
                     boolean specialCasesWinPlayer1 = false;
@@ -81,13 +89,16 @@ public class StrategoControl {
                     if (specialCasesWinPlayer1) {
                         pieces[to] = pieces[selectPos];
                         pieces[selectPos] = null;
+                        capturePiece(pieceTo.getPlayer(), pieceTo.getPieceEnum());
                     } else {
                         //fight one vs one
                         if (pieceFrom.getPieceEnum().getPoints() > pieceTo.getPieceEnum().getPoints()) {
                             pieces[to] = pieces[selectPos];
                             pieces[selectPos] = null;
+                            capturePiece(pieceTo.getPlayer(), pieceTo.getPieceEnum());
                         } else {
                             pieces[selectPos] = null;
+                            capturePiece(pieceFrom.getPlayer(), pieceFrom.getPieceEnum());
                         }
                     }
                 }
@@ -357,6 +368,32 @@ public class StrategoControl {
 
     public Piece getPieceAt(int i) {
         return pieces[i];
+    }
+
+    public void capturePiece (final int player, PieceEnum piece) {
+        if (StrategoConstants.RED == player) {
+            if (capturedPiecesRed.containsKey(piece)) {
+                Integer i = capturedPiecesRed.get(piece);
+                capturedPiecesRed.put(piece, ++i);
+            } else {
+                capturedPiecesRed.put(piece, 1);
+            }
+        } else {
+            if (capturedPiecesBlue.containsKey(piece)) {
+                Integer i = capturedPiecesBlue.get(piece);
+                capturedPiecesBlue.put(piece, ++i);
+            } else {
+                capturedPiecesBlue.put(piece, 1);
+            }
+        }
+    }
+
+    public Map<PieceEnum, Integer> getCapturedPiecesRed() {
+        return capturedPiecesRed;
+    }
+
+    public Map<PieceEnum, Integer> getCapturedPiecesBlue() {
+        return capturedPiecesBlue;
     }
 
     public static boolean isPlayablePosition (final int pos) {
