@@ -2,19 +2,19 @@ package de.arvato.stratego
 
 class ImageCacheObject {
     @JvmField
-	var _piece = 0
+	var piece = 0
     @JvmField
-	var _color = 0
+	var color = 0
     @JvmField
-	var _fieldColor = 0
+	var fieldColor = 0
     @JvmField
-	var _bPiece = false
+	var bPiece = false
     @JvmField
-	var _selectedPos = false
+	var selectedPos = false
     @JvmField
-	var _selected = false
+	var selected = false
     @JvmField
-	var _coord: String? = null
+	var coord: String? = null
     @JvmField
     var boardField = 0;
     @JvmField

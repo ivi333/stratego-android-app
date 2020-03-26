@@ -13,7 +13,7 @@ import android.view.Window;
 import android.widget.RelativeLayout;
 import android.widget.TableRow.LayoutParams;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class StrategoViewBase {
 
@@ -179,7 +179,7 @@ public class StrategoViewBase {
                 StrategoImageView._bmpBorder = null;
             }*/
 
-			StrategoImageView.bmpBorder = BitmapFactory.decodeStream(am.open(sFolder + "border.png"));
+			StrategoImageView.bmpBorder = BitmapFactory.decodeStream(am.open(sFolder + "border_yellow.png"));
 
 			StrategoImageView.bmpSelect = BitmapFactory.decodeStream(am.open(sFolder + "select.png"));
 			StrategoImageView.bmpSelectLight = BitmapFactory.decodeStream(am.open(sFolder + "select_light.png"));
@@ -356,10 +356,9 @@ public class StrategoViewBase {
 		return -1;
 	}
 
-	public void paintBoard(StrategoControl gameControl, int positionSelected, ArrayList<Integer> arrPos){
-		//boolean bPiece, bSelected, bSelectedPosition;
-		//int iResource, iPiece = StrategoConstants.PAWN, iColor = StrategoConstants.RED, iFieldColor;
+	public void paintBoard(StrategoControl gameControl, int positionSelected, List<Integer> arrPos){
 		int iFieldColor1, iFieldColor2, iFieldColor;
+
 		System.gc();
 
 		for(int z = 0; z < 100; z++){
@@ -380,12 +379,13 @@ public class StrategoViewBase {
                 int tmp_piece = piece != null ? piece.getPieceEnum().getId() : -500;
                 int tmp_color = piece != null ? piece.getPlayer() : -500;
                 boolean tmp_selected = (positionSelected!=-1 && positionSelected == i);
+				boolean tmpSelectedPos = arrPos.contains(i);
 
-                if (tmpCache._bPiece == tmp_bPiece &&
-                    tmpCache._piece == tmp_piece &&
-                    tmpCache._color == tmp_color &&
-                    tmpCache._selected == tmp_selected ){
-                    Log.d(TAG, "Skipping rendering position has not changed:" + i);
+                if (tmpCache.bPiece == tmp_bPiece &&
+                    tmpCache.piece == tmp_piece &&
+                    tmpCache.color == tmp_color &&
+                    tmpCache.selected == tmp_selected &&
+					tmpCache.selectedPos == tmpSelectedPos ){
                     continue;
                 }
             }
@@ -399,32 +399,24 @@ public class StrategoViewBase {
 				if (iFieldColor == 1) iFieldColor = 0; else iFieldColor=1;
 			}
 
-            tmpCache._fieldColor = iFieldColor;
+            tmpCache.fieldColor = iFieldColor;
 			tmpCache.boardField = i;
 
 			if (piece!=null) {
-				tmpCache._bPiece = true;
-				tmpCache._piece = piece.getPieceEnum().getId();
-				tmpCache._color = piece.getPlayer();
+				tmpCache.bPiece = true;
+				tmpCache.piece = piece.getPieceEnum().getId();
+				tmpCache.color = piece.getPlayer();
 			} else {
-				//Log.d("StrategoViewBase", "piece is null at:" + i);
-				tmpCache._bPiece = false;
+				tmpCache.bPiece = false;
 			}
 
 			if (positionSelected != -1 && i == positionSelected) {
-				tmpCache._selected = true;
+				tmpCache.selected = true;
 			} else {
-				tmpCache._selected = false;
+				tmpCache.selected = false;
 			}
-			tmpCache._selectedPos = false;
 
-			/*tmpCache = _arrImgCache[i];
-			tmpCache._bPiece = bPiece;
-			tmpCache._piece = iPiece;
-			tmpCache._color = iColor;
-			tmpCache._fieldColor = iFieldColor;
-			tmpCache._selectedPos = bSelectedPosition;
-			tmpCache._selected = bSelected;*/
+			tmpCache.selectedPos = arrPos.contains(i);
 
 			_arrImages[getFieldIndex(i)].setICO(tmpCache);
 			_arrImages[getFieldIndex(i)].invalidate();
@@ -458,12 +450,12 @@ public class StrategoViewBase {
 
 	public void resetImageCache(){
 		for(int i = 0; i < 100; i++){
-			_arrImgCache[i]._bPiece = false;
-			_arrImgCache[i]._fieldColor = (i&1)==0 ? (((i >> 3) & 1) == 0 ? StrategoConstants.RED : StrategoConstants.BLUE) : (((i >> 3) & 1) == 0 ? StrategoConstants.BLUE: StrategoConstants.RED);
-			_arrImgCache[i]._selectedPos = false;
-			_arrImgCache[i]._selected = false;
-			_arrImgCache[i]._color = -1;
-			_arrImgCache[i]._piece = -1;
+			_arrImgCache[i].bPiece = false;
+			_arrImgCache[i].fieldColor = (i&1)==0 ? (((i >> 3) & 1) == 0 ? StrategoConstants.RED : StrategoConstants.BLUE) : (((i >> 3) & 1) == 0 ? StrategoConstants.BLUE: StrategoConstants.RED);
+			_arrImgCache[i].selectedPos = false;
+			_arrImgCache[i].selected = false;
+			_arrImgCache[i].color = -1;
+			_arrImgCache[i].piece = -1;
 		}
 	}
 }

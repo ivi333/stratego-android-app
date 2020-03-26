@@ -18,32 +18,31 @@ public class StrategoControl {
     public static final boolean fake = true;
 
     protected Piece [] pieces;
-    protected boolean myTurn;
     protected int myColor;
     protected int turn;
     protected int selectPos;
-
-
     protected Map<PieceEnum, Integer> capturedPiecesRed;
     protected Map<PieceEnum, Integer> capturedPiecesBlue;
+
+    protected StrategoConstants.GameStatus gameStatus;
 
     public StrategoControl () {
         startGame ();
     }
 
     public void startGame () {
-        myTurn=false;
+        turn = StrategoConstants.RED;
         myColor = StrategoConstants.RED;
         pieces = new Piece [100];
         capturedPiecesBlue = new HashMap<PieceEnum, Integer>();
         capturedPiecesRed = new HashMap<PieceEnum, Integer>();
+        gameStatus = StrategoConstants.GameStatus.INIT_BOARD;
         if (!fake) {
             randomPieces(StrategoConstants.RED);
             randomPieces(StrategoConstants.BLUE);
         } else {
             randomFake ();
         }
-        turn = StrategoConstants.RED;
     }
 
     public void movePiece (int to) {
@@ -108,7 +107,7 @@ public class StrategoControl {
         }
     }
 
-    private void finishGame() {
+    public void finishGame() {
         //TODO
     }
 
@@ -130,10 +129,11 @@ public class StrategoControl {
     }
 
     public boolean isValidMovement (int selectedPos, int pos) {
-        int [] possibilities = getPossibleMovements(selectedPos);
+        //int [] possibilities = getPossibleMovements(selectedPos);
+        List<Integer> possibilities = getPossibleMovements(selectedPos);
         boolean res=false;
-        for (int x : possibilities) {
-            if (x == pos) {
+        for (Integer x : possibilities) {
+            if (x.equals(pos)) {
                 res=true;
                 break;
             }
@@ -141,10 +141,10 @@ public class StrategoControl {
         return res;
     }
 
-    public int [] getPossibleMovements (int pos) {
+    public List<Integer> getPossibleMovements (int pos) {
         Piece piece = pieces[pos];
         if (piece == null) {
-            return new int[0];
+            return null;
         }
         List<Integer> res = Collections.emptyList();
         if (piece.getPieceEnum().isAllowMovement()) {
@@ -157,11 +157,7 @@ public class StrategoControl {
                     break;
             }
         }
-        int arrayInt [] = new int[res.size()];
-        for (int z=0;z<res.size();z++) {
-            arrayInt[z]=res.get(z);
-        }
-       return arrayInt;
+       return res;
     }
 
     private List<Integer> calculateMovement(final Piece piece, final int pos, final boolean isMultiple) {
@@ -179,6 +175,7 @@ public class StrategoControl {
                     if (available) {
                         freePos.add(nextPos);
                     }
+                    if (pieces[nextPos] != null) break;
                 }
                 tmpRow--;
             }
@@ -192,6 +189,7 @@ public class StrategoControl {
                     if (available) {
                         freePos.add(nextPos);
                     }
+                    if (pieces[nextPos] != null) break;
                 }
                 tmpRow++;
             }
@@ -206,6 +204,7 @@ public class StrategoControl {
                     if (available) {
                         freePos.add(nextPos);
                     }
+                    if (pieces[nextPos] != null) break;
                 }
                 tmpPos++;
                 tmpCol++;
@@ -221,6 +220,7 @@ public class StrategoControl {
                     if (available) {
                         freePos.add(nextPos);
                     }
+                    if (pieces[nextPos] != null) break;
                 }
                 tmpPos--;
                 tmpCol--;
@@ -272,14 +272,11 @@ public class StrategoControl {
     private boolean nextPositionAvailable(Piece piece, int nextPos) {
         // not playable position
         if (!isPlayablePosition(nextPos)) return false;
-
         // Board position is free
         Piece nextPiece = pieces[nextPos];
         if (nextPiece == null) return true;
-
         //Opposite piece
         if (nextPiece.getPlayer() != piece.getPlayer()) return true;
-
         // by default is not playable
         return false;
     }
@@ -292,10 +289,8 @@ public class StrategoControl {
             if (isPlayablePosition(next))
                 generated.add(next);
         }
-
         List<Integer> boardPosList = new ArrayList<Integer>(generated.size());
         boardPosList.addAll(generated);
-
         Map<PieceEnum, Integer> mapBoard = new HashMap<PieceEnum, Integer>();
         mapBoard.put(PieceEnum.MARSHALL, StrategoConstants.MAR_MAX);
         mapBoard.put(PieceEnum.GENERAL, StrategoConstants.GEN_MAX);
@@ -309,7 +304,6 @@ public class StrategoControl {
         mapBoard.put(PieceEnum.SPY, StrategoConstants.ESP_MAX);
         mapBoard.put(PieceEnum.BOMB, StrategoConstants.BOM_MAX);
         mapBoard.put(PieceEnum.FLAG, StrategoConstants.BAN_MAX);
-
         int k=0;
         for (Map.Entry<PieceEnum, Integer> entry : mapBoard.entrySet()) {
             PieceEnum piece = entry.getKey();
@@ -331,10 +325,8 @@ public class StrategoControl {
             }
             generated.add(next);
         }
-
         List<Integer> boardPosList = new ArrayList<Integer>(generated.size());
         boardPosList.addAll(generated);
-
         Map<PieceEnum, Integer> mapBoard = new HashMap<PieceEnum, Integer>();
         mapBoard.put(PieceEnum.MARSHALL, StrategoConstants.MAR_MAX);
         mapBoard.put(PieceEnum.GENERAL, StrategoConstants.GEN_MAX);
@@ -348,7 +340,6 @@ public class StrategoControl {
         mapBoard.put(PieceEnum.SPY, StrategoConstants.ESP_MAX);
         mapBoard.put(PieceEnum.BOMB, StrategoConstants.BOM_MAX);
         mapBoard.put(PieceEnum.FLAG, StrategoConstants.BAN_MAX);
-
         int k=0;
         for (Map.Entry<PieceEnum, Integer> entry : mapBoard.entrySet()) {
             PieceEnum piece = entry.getKey();
@@ -359,7 +350,7 @@ public class StrategoControl {
         }
     }
 
-    private void putPiece(int pos, int color, PieceEnum piece) {
+    public void putPiece(int pos, int color, PieceEnum piece) {
         //Log.d("StrategoControl", "Adding piece:" + piece + " boardPos:" + pos + " player:" + color);
         pieces [pos] = new Piece();
         pieces [pos].setPlayer(color);
@@ -394,6 +385,10 @@ public class StrategoControl {
 
     public Map<PieceEnum, Integer> getCapturedPiecesBlue() {
         return capturedPiecesBlue;
+    }
+
+    public StrategoConstants.GameStatus getGameStatus() {
+        return gameStatus;
     }
 
     public static boolean isPlayablePosition (final int pos) {

@@ -11,7 +11,6 @@ import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 
 public class StrategoCapturedImageView extends View {
@@ -50,14 +49,12 @@ public class StrategoCapturedImageView extends View {
     }
 
     public void onDraw(Canvas canvas) {
-
         if(_bitMap == null){
             return;
         }
-
         //float scale = (float) getWidth() / _bitMap.getWidth();
         float scale=1.0F;
-        Log.d (TAG, "scale:" + String.valueOf(scale) + " getWidth():" + getWidth() + " bitMap.getWidh():" + _bitMap.getWidth() );
+        //Log.d (TAG, "scale:" + String.valueOf(scale) + " getWidth():" + getWidth() + " bitMap.getWidh():" + _bitMap.getWidth() );
         Matrix m = new Matrix();
         m.setScale(scale, scale);
         Paint p = new Paint();

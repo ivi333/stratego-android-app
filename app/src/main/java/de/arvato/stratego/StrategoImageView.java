@@ -123,16 +123,16 @@ public class StrategoImageView extends View {
                         canvas.drawBitmap(bmpTile, _matrixTile, _paint);
                 }
 
-                if(bmpBorder != null && (ico._selected || hasFocus())){
+                if(bmpBorder != null && (ico.selected || hasFocus())){
                         canvas.drawBitmap(bmpBorder, _matrix, _paint);
                 }
 
-                if(ico._selectedPos){
+                if(ico.selectedPos){
                         canvas.drawBitmap(bmpSelectLight, _matrix, _paint);
                 }
 
-                if(ico._bPiece){
-                        bmp = arrPieceBitmaps[ico._color][ico._piece];
+                if(ico.bPiece){
+                        bmp = arrPieceBitmaps[ico.color][ico.piece];
                         //sActivity = (StrategoImageView.get_ssActivity() == null) ?  "" : start.get_ssActivity();
                         // todo if it's fine then will put back && statements
                         /*

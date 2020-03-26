@@ -7,6 +7,8 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.ViewAnimator;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 
 public class StrategoView {
@@ -18,9 +20,10 @@ public class StrategoView {
     private LayoutInflater inflater;
     private StrategoControl strategoControl;
     private ViewAnimator viewAnimator;
-
     private StrategoCapturedImageView[][] arrImageCaptured;
     private TextView[][] arrTextCaptured;
+    private int selectedPos;
+    private List<Integer> nextMovements;
 
     public StrategoView(Activity activity) {
         super();
@@ -28,6 +31,7 @@ public class StrategoView {
         strategoViewBase = new StrategoViewBase(activity);
         inflater = (LayoutInflater) parent.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
         strategoControl = new StrategoControl();
+        selectedPos=-1;
         View.OnClickListener ocl = new View.OnClickListener() {
             public void onClick(View arg0) {
                 handleClick(strategoViewBase.getIndexOfButton(arg0));
@@ -59,22 +63,26 @@ public class StrategoView {
 
     public void handleClick(int index) {
         Log.d(TAG, "handleClick at index:" + index);
-
         if (strategoControl.selectPiece(index)) {
             Log.d (TAG, "Piece at position:" + index + " has been selected.");
-            int nextMov[] = strategoControl.getPossibleMovements (index);
+            nextMovements = strategoControl.getPossibleMovements (index);
+            selectedPos = index;
             StringBuilder sb = new StringBuilder();
-            for (int i : nextMov) {
+            for (Integer i : nextMovements) {
                 sb.append(i);
                 sb.append(",");
             }
             if (sb.length() > 0) sb.deleteCharAt(sb.length()-1);
             Log.d(TAG, "Possible movements at index:" + index + " = " + sb.toString());
         } else {
-            Log.d (TAG, "Move Piece to target index:" + index);
-            strategoControl.movePiece(index);
+            if (selectedPos != -1) {
+                Log.d (TAG, "Move Piece to target index:" + index);
+                strategoControl.movePiece(index);
+                selectedPos = -1;
+                nextMovements = Collections.emptyList();
+            }
         }
-        strategoViewBase.paintBoard(strategoControl, index, null);
+        strategoViewBase.paintBoard(strategoControl, selectedPos, nextMovements);
         updateStatus();
     }
 
@@ -165,7 +173,7 @@ public class StrategoView {
     }
 
     public void paintBoard () {
-        strategoViewBase.paintBoard(strategoControl, -1, null);
+        strategoViewBase.paintBoard(strategoControl, -1, Collections.emptyList());
     }
 
     public void showNext() {

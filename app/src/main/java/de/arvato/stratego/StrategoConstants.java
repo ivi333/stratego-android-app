@@ -5,7 +5,10 @@ public class StrategoConstants
 	//public static Valuation m_valuation = new Valuation();
 	
 	// states of the game ////////////////////////////////////////////////////////////////////////////
-	public static final int PLAY = 1;
+	public enum GameStatus {
+		INIT_BOARD, PLAY, FINISH, DRAW_REPEAT
+	}
+	/*public static final int PLAY = 1;
 	public static final int CHECK = 2;
 	public static final int INVALID = 3; // only occurs when king can be hit or when invalid number of pieces is on the board (more than one king). can be used when setting up a new position
 	public static final int DRAW_MATERIAL = 4; // no one can win (ie KING against KING)
@@ -13,6 +16,8 @@ public class StrategoConstants
 	public static final int MATE = 6;
 	public static final int STALEMATE = 7;
 	public static final int DRAW_REPEAT = 8; // draw by repetition (3 times same board position)
+
+	 */
 	// ///////////////////////////////////////////////////////////////////////////////////////////////
 	public static final int MAX_ROWS=10;
 	public static final int MAX_COLS=10;
