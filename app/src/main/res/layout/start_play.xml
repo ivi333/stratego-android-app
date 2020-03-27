@@ -83,10 +83,62 @@
             android:animateFirstView="true"
             android:layout_marginBottom="1dip">
 
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:orientation="vertical">
+               <GridView
+                   android:id="@+id/startGameGrid"
+                   android:layout_width="fill_parent"
+                   android:layout_height="wrap_content"
+                   android:numColumns="10"
+                   android:gravity="center"
+                   android:columnWidth="150dp"
+                   android:stretchMode="columnWidth"
+                   android:verticalSpacing="10dp"
+                   android:horizontalSpacing="10dp"
+                   android:background="@drawable/gridborder"
+                   >
+               </GridView>
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <RelativeLayout
+                        android:id="@+id/relativeLayout1"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@android:color/black" >
+
+                        <Button
+                            android:id="@+id/PlayerReady"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Player Ready"
+                            style="@style/StrategoImageButton"
+                            android:layout_alignParentLeft="true" />
+
+                        <Button
+                            android:id="@+id/PlayerRandom"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Player Random"
+                            style="@style/StrategoImageButton"
+                            android:layout_alignParentRight="true"/>
+
+                    </RelativeLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
             <TableLayout
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content">
 
+                <!-- Captured Red -->
                 <TableRow
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content">
@@ -197,6 +249,7 @@
                 <TableRow>
                     <TextView android:padding="10dip"></TextView>
                 </TableRow>
+                <!-- Captured Blue -->
                 <TableRow
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content">

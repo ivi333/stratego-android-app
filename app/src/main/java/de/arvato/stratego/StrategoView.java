@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.GridView;
 import android.widget.TextView;
 import android.widget.ViewAnimator;
 
@@ -24,6 +26,7 @@ public class StrategoView {
     private TextView[][] arrTextCaptured;
     private int selectedPos;
     private List<Integer> nextMovements;
+    private int player;
 
     public StrategoView(Activity activity) {
         super();
@@ -32,6 +35,7 @@ public class StrategoView {
         inflater = (LayoutInflater) parent.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
         strategoControl = new StrategoControl();
         selectedPos=-1;
+        player = StrategoConstants.RED;
         View.OnClickListener ocl = new View.OnClickListener() {
             public void onClick(View arg0) {
                 handleClick(strategoViewBase.getIndexOfButton(arg0));
@@ -53,12 +57,15 @@ public class StrategoView {
             viewAnimator.setInAnimation(parent, R.anim.slide_right);
         }
 
-        View bottomPlayLayoutView = parent.findViewById(R.id.bottomPlayLayout);
+        //View bottomPlayLayoutView = parent.findViewById(R.id.bottomPlayLayout);
 
         initCapturedImages ();
-        
+
+        initDistributePieces () ;
+
         paintBoard();
     }
+
 
 
     public void handleClick(int index) {
@@ -84,6 +91,22 @@ public class StrategoView {
         }
         strategoViewBase.paintBoard(strategoControl, selectedPos, nextMovements);
         updateStatus();
+    }
+
+    private void initDistributePieces() {
+        GridView gridView = parent.findViewById(R.id.startGameGrid);
+        //GridView gridView = (GridView) viewAnimator.getCurrentView();
+        PieceEnum startPieces [] = StrategoControl.createStartPiece(this.player);
+        StrategoPieceAdapter strategoPieceAdapter = new StrategoPieceAdapter(parent.getApplicationContext(), startPieces, player);
+        gridView.setAdapter(strategoPieceAdapter);
+        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    Log.d(TAG, "Item clicked: " + position + " id:" + id);
+                    //stratePieceAdapter.notifyDataSetChanged();
+                }
+            }
+        );
     }
 
     private void initCapturedImages() {

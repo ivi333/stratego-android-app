@@ -16,7 +16,7 @@
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
-    <style name="ChessImageButton">
+    <style name="StrategoImageButton">
         <item name="android:padding">4dip</item>
         <item name="android:scaleType">centerInside</item>
         <item name="android:gravity">center_vertical</item>

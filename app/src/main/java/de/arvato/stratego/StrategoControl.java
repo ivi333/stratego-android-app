@@ -354,7 +354,7 @@ public class StrategoControl {
         //Log.d("StrategoControl", "Adding piece:" + piece + " boardPos:" + pos + " player:" + color);
         pieces [pos] = new Piece();
         pieces [pos].setPlayer(color);
-        pieces[pos].setPieceEnum(piece);
+        pieces [pos].setPieceEnum(piece);
     }
 
     public Piece getPieceAt(int i) {
@@ -401,4 +401,29 @@ public class StrategoControl {
     public static int randomBetween (int low, int high) {
         return rng.nextInt(high-low) + low;
     }
+
+    public static PieceEnum [] createStartPiece (int player) {
+        PieceEnum startPieces [] = new PieceEnum [40];
+        Map<PieceEnum, Integer> tmpPieces = new HashMap<PieceEnum, Integer>();
+        tmpPieces.put(PieceEnum.MARSHALL, StrategoConstants.MAR_MAX);
+        tmpPieces.put(PieceEnum.GENERAL, StrategoConstants.GEN_MAX);
+        tmpPieces.put(PieceEnum.COLONEL, StrategoConstants.COR_MAX);
+        tmpPieces.put(PieceEnum.MAJOR, StrategoConstants.COM_MAX);
+        tmpPieces.put(PieceEnum.CAPTAIN, StrategoConstants.CAP_MAX);
+        tmpPieces.put(PieceEnum.LIEUTENANT, StrategoConstants.TEN_MAX);
+        tmpPieces.put(PieceEnum.SERGEANT, StrategoConstants.SAR_MAX);
+        tmpPieces.put(PieceEnum.MINER, StrategoConstants.MIN_MAX);
+        tmpPieces.put(PieceEnum.SCOUT, StrategoConstants.EXP_MAX);
+        tmpPieces.put(PieceEnum.SPY, StrategoConstants.ESP_MAX);
+        tmpPieces.put(PieceEnum.FLAG, StrategoConstants.BAN_MAX);
+        tmpPieces.put(PieceEnum.BOMB, StrategoConstants.BOM_MAX);
+        int k=0;
+        for (Map.Entry<PieceEnum, Integer> entry : tmpPieces.entrySet()) {
+            for (int j=0;j<entry.getValue();j++) {
+                startPieces[k++] = entry.getKey();
+            }
+        }
+        return startPieces;
+    }
+
 }
