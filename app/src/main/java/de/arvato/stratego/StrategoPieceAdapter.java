@@ -9,6 +9,8 @@ import android.widget.ImageView;
 
 public class StrategoPieceAdapter extends BaseAdapter {
 
+    private static final Bitmap anyBitmap = StrategoImageView.arrPieceBitmaps[StrategoConstants.RED][PieceEnum.FLAG.getId()];
+
     private final Context context;
     private final PieceEnum [] pieces;
     private final int player;
@@ -36,11 +38,22 @@ public class StrategoPieceAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        Bitmap bmp = StrategoImageView.arrPieceBitmaps[player][pieces[position].getId()];
-        ImageView imageView = new ImageView(context);
-        imageView.setImageBitmap(bmp);
-        imageView.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
-        imageView.setAdjustViewBounds(true);
-        return imageView;
+        if (pieces[position] != null) {
+            Bitmap bmp = StrategoImageView.arrPieceBitmaps[player][pieces[position].getId()];
+            ImageView imageView = new ImageView(context);
+            imageView.setImageBitmap(bmp);
+            imageView.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
+            imageView.setAdjustViewBounds(true);
+            return imageView;
+        } else {
+            ImageView imageView = new ImageView(context);
+            imageView.setImageBitmap(anyBitmap);
+            imageView.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
+            imageView.setAdjustViewBounds(true);
+            imageView.setClickable(false);
+            imageView.setVisibility(View.INVISIBLE);
+            imageView.setEnabled(false);
+            return imageView;
+        }
     }
 }

@@ -243,6 +243,9 @@ public class StrategoViewBase {
                 StrategoImageView.arrFieldBitmap[k] = BitmapFactory.decodeStream(am.open(boardFolder + (k+1) + ".png" ));
             }
 
+            StrategoImageView.cover[StrategoConstants.RED] = BitmapFactory.decodeStream(am.open(sFolder + "base_red.png"));
+            StrategoImageView.cover[StrategoConstants.BLUE] = BitmapFactory.decodeStream(am.open(sFolder + "base_blue.png"));
+
             // captured pieces
 
 		}catch(Exception ex){

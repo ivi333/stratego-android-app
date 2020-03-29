@@ -17,7 +17,7 @@
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
     <style name="StrategoImageButton">
-        <item name="android:padding">4dip</item>
+        <item name="android:padding">14dip</item>
         <item name="android:scaleType">centerInside</item>
         <item name="android:gravity">center_vertical</item>
         <!--<item name="android:background">@android:color/background_dark</item>-->

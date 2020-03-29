@@ -21,6 +21,7 @@ public class StrategoImageView extends View {
         public static Bitmap[][] arrPieceBitmaps = new Bitmap[2][12];
         public static Bitmap bmpBorder, bmpSelect, bmpSelectLight;
         public static Bitmap bmpTile;
+        public static Bitmap [] cover = new Bitmap[2];
 
         public static Bitmap[] arrFieldBitmap = new Bitmap[100];
 

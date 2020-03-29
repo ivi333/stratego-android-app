@@ -4,9 +4,9 @@ import android.app.Activity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.GridView;
+import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ViewAnimator;
 
 import java.util.Collections;
@@ -59,6 +59,8 @@ public class StrategoView {
 
         //View bottomPlayLayoutView = parent.findViewById(R.id.bottomPlayLayout);
 
+        strategoControl.randomPieces(player);
+
         initCapturedImages ();
 
         initDistributePieces () ;
@@ -94,8 +96,8 @@ public class StrategoView {
     }
 
     private void initDistributePieces() {
-        GridView gridView = parent.findViewById(R.id.startGameGrid);
-        //GridView gridView = (GridView) viewAnimator.getCurrentView();
+        //TODO Add a grid with initial pieces? or just initialize it random
+        /*GridView gridView = parent.findViewById(R.id.startGameGrid);
         PieceEnum startPieces [] = StrategoControl.createStartPiece(this.player);
         StrategoPieceAdapter strategoPieceAdapter = new StrategoPieceAdapter(parent.getApplicationContext(), startPieces, player);
         gridView.setAdapter(strategoPieceAdapter);
@@ -103,9 +105,36 @@ public class StrategoView {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     Log.d(TAG, "Item clicked: " + position + " id:" + id);
-                    //stratePieceAdapter.notifyDataSetChanged();
+                    startPieces[position] = null;
+                    strategoPieceAdapter.notifyDataSetChanged();
                 }
             }
+        );*/
+
+        Button bPlayerReady = parent.findViewById(R.id.PlayerReady);
+        Button bPlayerRandom = parent.findViewById(R.id.PlayerRandom);
+
+        bPlayerReady.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                boolean b = strategoControl.startGame(player);
+                if (!b) {
+                    Toast.makeText(parent.getApplicationContext(), "Fill all pieces!", Toast.LENGTH_SHORT).show();
+                } else {
+                    //TODO Game can start
+                }
+
+            }
+        }
+        );
+
+        bPlayerRandom.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                strategoControl.randomPieces(player);
+                paintBoard ();
+            }
+        }
         );
     }
 

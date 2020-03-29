@@ -1,5 +1,7 @@
 package de.arvato.stratego;
 
+import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -8,14 +10,19 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.Set;
+import java.util.TreeMap;
 
 import de.arvato.stratego.util.Pos;
 
 public class StrategoControl {
 
+    public static final String TAG = "StrategoControl";
+
     private static final Random rng = new Random();
 
-    public static final boolean fake = true;
+    public static final boolean fakeAllPieces = false;
+    public static final boolean fakeGame = false;
+
 
     protected Piece [] pieces;
     protected int myColor;
@@ -27,17 +34,43 @@ public class StrategoControl {
     protected StrategoConstants.GameStatus gameStatus;
 
     public StrategoControl () {
-        startGame ();
-    }
-
-    public void startGame () {
-        turn = StrategoConstants.RED;
-        myColor = StrategoConstants.RED;
         pieces = new Piece [100];
         capturedPiecesBlue = new HashMap<PieceEnum, Integer>();
         capturedPiecesRed = new HashMap<PieceEnum, Integer>();
         gameStatus = StrategoConstants.GameStatus.INIT_BOARD;
-        if (!fake) {
+        turn = StrategoConstants.RED;
+        selectPos=-1;
+        if (fakeGame) {
+            startFakeGame();
+        }
+    }
+
+    public boolean startGame (int playerColor) {
+        myColor = playerColor;
+        boolean canStart=true;
+        int y, z;
+        if (myColor == StrategoConstants.RED) {
+            y = StrategoConstants.RED_PLAYER[0];
+            z = StrategoConstants.RED_PLAYER[1];
+        } else {
+            y = StrategoConstants.BLUE_PLAYER[0];
+            z = StrategoConstants.BLUE_PLAYER[1];
+        }
+        for (int x=y ; x < z && canStart; x++ ) {
+            if (pieces[x] == null) {
+                canStart=false;
+            }
+        }
+        if (canStart) {
+            gameStatus = StrategoConstants.GameStatus.PLAY;
+        }
+        return canStart;
+    }
+
+    public void startFakeGame () {
+        turn = StrategoConstants.RED;
+        myColor = StrategoConstants.RED;
+        if (fakeAllPieces) {
             randomPieces(StrategoConstants.RED);
             randomPieces(StrategoConstants.BLUE);
         } else {
@@ -46,6 +79,21 @@ public class StrategoControl {
     }
 
     public void movePiece (int to) {
+        Log.d(TAG, "movePiece to:" + to + " gameStatus:" + gameStatus.name());
+        switch (gameStatus) {
+            case PLAY:
+                play (to);
+                break;
+            case INIT_BOARD:
+                initBoard (to);
+                break;
+            case DRAW_REPEAT:
+                //TODO
+                break;
+        }
+    }
+
+    private void play (int to) {
         if (selectPos != -1 && isPlayablePosition(to)) {
             if (!isValidMovement (selectPos, to)) {
                 return;
@@ -60,10 +108,10 @@ public class StrategoControl {
             } else {
                 //same piece
                 if (pieceFrom.getPieceEnum() == pieceTo.getPieceEnum()) {
-                  pieces[selectPos] = null;
-                  pieces[to] = null;
-                  capturePiece(pieceFrom.getPlayer(), pieceFrom.getPieceEnum());
-                  capturePiece(pieceTo.getPlayer(), pieceTo.getPieceEnum());
+                    pieces[selectPos] = null;
+                    pieces[to] = null;
+                    capturePiece(pieceFrom.getPlayer(), pieceFrom.getPieceEnum());
+                    capturePiece(pieceTo.getPlayer(), pieceTo.getPieceEnum());
                 } else if (pieceTo.getPieceEnum() == PieceEnum.FLAG) {
                     pieces[to] = pieces[selectPos];
                     pieces[selectPos] = null;
@@ -107,6 +155,24 @@ public class StrategoControl {
         }
     }
 
+    private void initBoard (int to) {
+        int x1, x2;
+        if (myColor == StrategoConstants.RED) {
+            x1 = StrategoConstants.RED_PLAYER[0];
+            x2 = StrategoConstants.RED_PLAYER[1];
+        } else {
+            x1 = StrategoConstants.BLUE_PLAYER[0];
+            x2 = StrategoConstants.BLUE_PLAYER[1];
+        }
+        if (selectPos != -1 && to >= x1 && to < x2 ) {
+            //interchange pos
+            Piece tmp = pieces[to];
+            pieces[to] = pieces[selectPos];
+            pieces[selectPos] = tmp;
+        }
+        selectPos = -1;
+    }
+
     public void finishGame() {
         //TODO
     }
@@ -120,10 +186,27 @@ public class StrategoControl {
     }
 
     public boolean selectPiece (int pos) {
-        Piece piece = pieces[pos];
-        if (piece != null && piece.getPlayer() == turn) {
-            selectPos = pos;
-            return true;
+        switch(gameStatus) {
+            case INIT_BOARD:
+                if (selectPos == pos) {
+                    return true;
+                } else if (selectPos != -1) {
+                    return false;
+                } else {
+                    Piece piece = pieces[pos];
+                    if (piece != null && piece.getPlayer() == turn) {
+                        selectPos = pos;
+                        return true;
+                    }
+                    return false;
+                }
+            case PLAY:
+                Piece piece = pieces[pos];
+                if (piece != null && piece.getPlayer() == turn) {
+                    selectPos = pos;
+                    return true;
+                }
+                return false;
         }
         return false;
     }
@@ -314,7 +397,7 @@ public class StrategoControl {
         }
     }
 
-    private void randomPieces(int player) {
+    public void randomPieces(int player) {
         final Set<Integer> generated = new LinkedHashSet<Integer>();
         while (generated.size() < StrategoConstants.MAX_PIECES) {
             Integer next;
@@ -404,7 +487,7 @@ public class StrategoControl {
 
     public static PieceEnum [] createStartPiece (int player) {
         PieceEnum startPieces [] = new PieceEnum [40];
-        Map<PieceEnum, Integer> tmpPieces = new HashMap<PieceEnum, Integer>();
+        Map<PieceEnum, Integer> tmpPieces = new TreeMap<>();
         tmpPieces.put(PieceEnum.MARSHALL, StrategoConstants.MAR_MAX);
         tmpPieces.put(PieceEnum.GENERAL, StrategoConstants.GEN_MAX);
         tmpPieces.put(PieceEnum.COLONEL, StrategoConstants.COR_MAX);
@@ -419,6 +502,7 @@ public class StrategoControl {
         tmpPieces.put(PieceEnum.BOMB, StrategoConstants.BOM_MAX);
         int k=0;
         for (Map.Entry<PieceEnum, Integer> entry : tmpPieces.entrySet()) {
+            Log.d(TAG, "manage piece:" + entry.getKey().getName());
             for (int j=0;j<entry.getValue();j++) {
                 startPieces[k++] = entry.getKey();
             }
