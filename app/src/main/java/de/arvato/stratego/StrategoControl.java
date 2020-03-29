@@ -30,8 +30,10 @@ public class StrategoControl {
     protected int selectPos;
     protected Map<PieceEnum, Integer> capturedPiecesRed;
     protected Map<PieceEnum, Integer> capturedPiecesBlue;
-
     protected StrategoConstants.GameStatus gameStatus;
+    protected long lClockStartRed, lClockStartBlue, lClockRed, lClockBlue;
+    protected long lClockTotal = 120000;
+
 
     public StrategoControl (int player) {
         pieces = new Piece [100];
@@ -466,6 +468,47 @@ public class StrategoControl {
                 capturedPiecesBlue.put(piece, 1);
             }
         }
+    }
+
+    protected void switchTimer(){
+        final long lEnd = System.currentTimeMillis();
+        if(lClockStartRed > 0 && turn == StrategoConstants.RED){
+            lClockRed += (lEnd - lClockStartRed);
+            lClockStartRed = 0;
+            lClockStartBlue = lEnd;
+        } else if(lClockStartBlue > 0 && turn == StrategoConstants.BLUE){
+            lClockBlue += (lEnd - lClockStartBlue);
+            lClockStartBlue = 0;
+            lClockStartRed = lEnd;
+        }
+    }
+
+    public void resetTimer(){
+        lClockRed = 0;
+        lClockBlue = 0;
+        lClockStartRed = 0;
+        lClockStartBlue = 0;
+        continueTimer();
+    }
+
+    //TODO Use after pausing
+    protected void continueTimer(){
+        if(lClockTotal > 0){
+            if(turn == StrategoConstants.RED)
+                lClockStartRed = System.currentTimeMillis();
+            else
+                lClockStartBlue = System.currentTimeMillis();
+        }
+    }
+
+    protected long getBlueRemainClock(){
+        final long lDiff = lClockStartBlue > 0 ? (System.currentTimeMillis() - lClockStartBlue) : 0;
+        return (lClockTotal - (lClockBlue + lDiff));
+    }
+
+    protected long getRedRemainClock(){
+        final long lDiff = lClockStartRed > 0 ? (System.currentTimeMillis() - lClockStartRed) : 0;
+        return (lClockTotal - (lClockRed + lDiff));
     }
 
     public Map<PieceEnum, Integer> getCapturedPiecesRed() {

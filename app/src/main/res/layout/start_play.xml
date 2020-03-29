@@ -20,7 +20,7 @@
                     android:layout_height="12dip" android:layout_width="14dip"
                     />
             </ViewSwitcher>
-            <TextView android:id="@+id/TextViewClockTimeOpp"
+            <TextView android:id="@+id/TextViewClockTimeTop"
                 android:layout_height="wrap_content" android:layout_width="60dip"
                 android:text="00:00"
                 style="@style/MyNormalTextStyle"
@@ -57,7 +57,7 @@
                     android:layout_height="12dip" android:layout_width="14dip"
                     />
             </ViewSwitcher>
-            <TextView android:id="@+id/TextViewClockTimeMe"
+            <TextView android:id="@+id/TextViewClockTimeBottom"
                 android:layout_height="wrap_content" android:layout_width="60dip"
                 android:text="00:00"
                 style="@style/MyNormalTextStyle"

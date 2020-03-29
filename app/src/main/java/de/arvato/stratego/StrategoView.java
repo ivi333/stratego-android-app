@@ -1,6 +1,8 @@
 package de.arvato.stratego;
 
 import android.app.Activity;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,9 +11,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewAnimator;
 
+import java.lang.ref.WeakReference;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class StrategoView {
 
@@ -27,6 +32,38 @@ public class StrategoView {
     private int selectedPos;
     private List<Integer> nextMovements;
     private int player;
+    private Timer timer;
+    private TextView textViewClockTimeTop, textViewClockTimeBottom;
+
+    static class StrategoInnerHandler extends Handler {
+        WeakReference<StrategoView> _strategoView;
+
+        StrategoInnerHandler(StrategoView view) {
+            _strategoView = new WeakReference<StrategoView>(view);
+        }
+
+        @Override
+        public void handleMessage(Message msg) {
+            StrategoView strategoView = _strategoView.get();
+            if (strategoView != null) {
+                long lTmp;
+                lTmp = strategoView.getStrategoControl().getRedRemainClock();
+                if (lTmp < 0) {
+                    lTmp = -lTmp;
+                }
+                strategoView.textViewClockTimeBottom.setText(strategoView.formatTime(lTmp));
+
+                lTmp = strategoView.getStrategoControl().getBlueRemainClock();
+                if (lTmp < 0) {
+                    lTmp = -lTmp;
+                }
+                strategoView.textViewClockTimeTop.setText(strategoView.formatTime(lTmp));
+            }
+        }
+    }
+
+    protected StrategoInnerHandler m_timerHandler;
+
 
     public StrategoView(Activity activity) {
         super();
@@ -37,21 +74,22 @@ public class StrategoView {
         parent = (StrategoActivity) activity;
         strategoViewBase = new StrategoViewBase(activity, player);
         inflater = (LayoutInflater) parent.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
+
+        //Listeners
         View.OnClickListener ocl = new View.OnClickListener() {
             public void onClick(View arg0) {
                 handleClick(strategoViewBase.getIndexOfButton(arg0));
             }
         };
-
         View.OnLongClickListener olcl = new View.OnLongClickListener() {
             public boolean onLongClick(View view) {
                 handleClick(strategoViewBase.getIndexOfButton(view));
                 return true;
             }
         };
-
         strategoViewBase.init(ocl, olcl);
 
+        //View Animator
         viewAnimator = (ViewAnimator) parent.findViewById(R.id.ViewAnimatorMain);
         if (viewAnimator != null) {
             viewAnimator.setOutAnimation(parent, R.anim.slide_left);
@@ -60,21 +98,27 @@ public class StrategoView {
 
         //View bottomPlayLayoutView = parent.findViewById(R.id.bottomPlayLayout);
 
+        // Init the board with random pieces
         strategoControl.randomPieces(player);
-
         if (player == StrategoConstants.RED) {
             strategoControl.randomPieces(StrategoConstants.BLUE);
         } else {
             strategoControl.randomPieces(StrategoConstants.RED);
         }
 
+        // Init the captured View
         initCapturedImages ();
 
+        // TODO Distribute pieces on grid.
         initDistributePieces () ;
 
-        paintBoard();
-    }
+        // Timer
+        initTimer ();
 
+        // Paint
+        paintBoard();
+
+    }
 
     public void handleClick(int index) {
         Log.d(TAG, "handleClick at index:" + index);
@@ -194,7 +238,6 @@ public class StrategoView {
         arrImageCaptured[StrategoConstants.BLUE][PieceEnum.FLAG.getId()] = (StrategoCapturedImageView) parent.findViewById(R.id.ImageCapturedBlueFlag);
         arrImageCaptured[StrategoConstants.BLUE][PieceEnum.FLAG.getId()].initBitmap("bandera_blue.png");
 
-
         arrTextCaptured = new TextView[2][12];
         arrTextCaptured[StrategoConstants.RED][PieceEnum.MARSHALL.getId()] =  parent.findViewById(R.id.TextViewCapturedRedMarshall);
         arrTextCaptured[StrategoConstants.RED][PieceEnum.GENERAL.getId()] =  parent.findViewById(R.id.TextViewCapturedRedGeneral);
@@ -233,6 +276,24 @@ public class StrategoView {
         strategoViewBase.paintBoard(strategoControl, -1, Collections.emptyList());
     }
 
+    public void initTimer () {
+        textViewClockTimeTop = parent.findViewById(R.id.TextViewClockTimeTop);
+        textViewClockTimeBottom = parent.findViewById(R.id.TextViewClockTimeBottom);
+        m_timerHandler = new StrategoInnerHandler(this);
+        timer = new Timer(true);
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                Message msg = new Message();
+                msg.what = 1;
+                m_timerHandler.sendMessage(msg);
+            }
+        }, 1000, 1000);
+
+        //strategoControl.switchTimer();
+        //strategoControl.continueTimer();
+    }
+
     public void showNext() {
         viewAnimator.showNext();
     }
@@ -244,6 +305,15 @@ public class StrategoView {
     public void updateStatus () {
         updateCapturedPieces (StrategoConstants.RED, strategoControl.getCapturedPiecesRed());
         updateCapturedPieces (StrategoConstants.BLUE, strategoControl.getCapturedPiecesBlue());
+    }
+
+    private String formatTime(long msec) {
+        final String sTmp = String.format("%02d:%02d", (int) (Math.floor(msec / 60000)), ((int) (msec / 1000) % 60));
+        return sTmp;
+    }
+
+    public StrategoControl getStrategoControl() {
+        return strategoControl;
     }
 
     private void updateCapturedPieces(int player, Map<PieceEnum, Integer> capturedPieces) {
