@@ -32,14 +32,13 @@ public class StrategoViewBase {
 	public static final int MODE_BLINDFOLD_SHOWPIECELOCATION = 2;
 	public static boolean _showCoords = false;
 	//protected ImageView _imgOverlay;
+	protected int currentPlayer;
 
-
-	public StrategoViewBase(Activity activity) {
+	public StrategoViewBase(Activity activity, int player) {
 		_activity = activity;
 		_modeBlindfold = 0;
 		_arrImgCache = new ImageCacheObject[100];
-
-
+		currentPlayer = player;
 	}
 
 	public void init(OnClickListener ocl, OnLongClickListener olcl){
@@ -383,12 +382,17 @@ public class StrategoViewBase {
                 int tmp_color = piece != null ? piece.getPlayer() : -500;
                 boolean tmp_selected = (positionSelected!=-1 && positionSelected == i);
 				boolean tmpSelectedPos = arrPos.contains(i);
+				boolean tmpEnemy = false;
+				if (piece != null && piece.getPlayer() != currentPlayer ) {
+					tmpEnemy = true;
+				}
 
                 if (tmpCache.bPiece == tmp_bPiece &&
                     tmpCache.piece == tmp_piece &&
                     tmpCache.color == tmp_color &&
                     tmpCache.selected == tmp_selected &&
-					tmpCache.selectedPos == tmpSelectedPos ){
+					tmpCache.selectedPos == tmpSelectedPos &&
+					tmpCache.enemy == tmpEnemy){
                     continue;
                 }
             }
@@ -409,8 +413,10 @@ public class StrategoViewBase {
 				tmpCache.bPiece = true;
 				tmpCache.piece = piece.getPieceEnum().getId();
 				tmpCache.color = piece.getPlayer();
+				tmpCache.enemy = currentPlayer != piece.getPlayer();
 			} else {
 				tmpCache.bPiece = false;
+				tmpCache.enemy = false;
 			}
 
 			if (positionSelected != -1 && i == positionSelected) {

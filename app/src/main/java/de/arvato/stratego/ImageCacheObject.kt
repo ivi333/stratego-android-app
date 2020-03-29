@@ -19,6 +19,8 @@ class ImageCacheObject {
     var boardField = 0;
     @JvmField
     var initalized = false;
+    @JvmField
+    var enemy = false;
 
     companion object {
         @JvmField

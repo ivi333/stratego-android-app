@@ -133,7 +133,11 @@ public class StrategoImageView extends View {
                 }
 
                 if(ico.bPiece){
-                        bmp = arrPieceBitmaps[ico.color][ico.piece];
+                        if (ico.enemy) {
+                                bmp = cover[ico.color];
+                        } else {
+                                bmp = arrPieceBitmaps[ico.color][ico.piece];}
+
                         //sActivity = (StrategoImageView.get_ssActivity() == null) ?  "" : start.get_ssActivity();
                         // todo if it's fine then will put back && statements
                         /*
@@ -141,7 +145,7 @@ public class StrategoImageView extends View {
                                 if(options.is_sbFlipTopPieces()){
                                         if((options.is_sbPlayAsBlack() ? ico._color == 1 : ico._color == 0)) {   // flips top pieces for human vs human without
                                                 canvas.rotate(180, getWidth() / 2, getHeight() / 2);                 // autoflip on in Play mode
-                                        }
+                                       }
                                 }
                         }*/
                         canvas.drawBitmap(bmp, _matrix, _paint);

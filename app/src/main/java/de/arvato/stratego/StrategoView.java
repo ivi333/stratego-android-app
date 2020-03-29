@@ -30,12 +30,12 @@ public class StrategoView {
 
     public StrategoView(Activity activity) {
         super();
-        parent = (StrategoActivity) activity;
-        strategoViewBase = new StrategoViewBase(activity);
-        inflater = (LayoutInflater) parent.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
         strategoControl = new StrategoControl();
         selectedPos=-1;
         player = StrategoConstants.RED;
+        parent = (StrategoActivity) activity;
+        strategoViewBase = new StrategoViewBase(activity, player);
+        inflater = (LayoutInflater) parent.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
         View.OnClickListener ocl = new View.OnClickListener() {
             public void onClick(View arg0) {
                 handleClick(strategoViewBase.getIndexOfButton(arg0));
@@ -61,6 +61,12 @@ public class StrategoView {
 
         strategoControl.randomPieces(player);
 
+        if (player == StrategoConstants.RED) {
+            strategoControl.randomPieces(StrategoConstants.BLUE);
+        } else {
+            strategoControl.randomPieces(StrategoConstants.RED);
+        }
+
         initCapturedImages ();
 
         initDistributePieces () ;
@@ -69,9 +75,9 @@ public class StrategoView {
     }
 
 
-
     public void handleClick(int index) {
         Log.d(TAG, "handleClick at index:" + index);
+        nextMovements = Collections.emptyList();
         if (strategoControl.selectPiece(index)) {
             Log.d (TAG, "Piece at position:" + index + " has been selected.");
             nextMovements = strategoControl.getPossibleMovements (index);
@@ -88,7 +94,6 @@ public class StrategoView {
                 Log.d (TAG, "Move Piece to target index:" + index);
                 strategoControl.movePiece(index);
                 selectedPos = -1;
-                nextMovements = Collections.emptyList();
             }
         }
         strategoViewBase.paintBoard(strategoControl, selectedPos, nextMovements);

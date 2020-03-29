@@ -225,20 +225,24 @@ public class StrategoControl {
     }
 
     public List<Integer> getPossibleMovements (int pos) {
-        Piece piece = pieces[pos];
-        if (piece == null) {
-            return null;
-        }
         List<Integer> res = Collections.emptyList();
-        if (piece.getPieceEnum().isAllowMovement()) {
-            switch (piece.getPieceEnum()) {
-                case SCOUT:
-                    res = calculateMovement (piece, pos, true);
-                    break;
-                default:
-                    res = calculateMovement (piece, pos, false);
-                    break;
-            }
+        switch (gameStatus) {
+            case PLAY:
+                Piece piece = pieces[pos];
+                if (piece == null) {
+                    return res;
+                }
+                if (piece.getPieceEnum().isAllowMovement()) {
+                    switch (piece.getPieceEnum()) {
+                        case SCOUT:
+                            res = calculateMovement (piece, pos, true);
+                            break;
+                        default:
+                            res = calculateMovement (piece, pos, false);
+                            break;
+                    }
+                }
+                break;
         }
        return res;
     }
