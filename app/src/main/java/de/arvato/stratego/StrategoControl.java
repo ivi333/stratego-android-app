@@ -25,7 +25,7 @@ public class StrategoControl {
 
 
     protected Piece [] pieces;
-    protected int myColor;
+    protected int myPlayer;
     protected int turn;
     protected int selectPos;
     protected Map<PieceEnum, Integer> capturedPiecesRed;
@@ -33,23 +33,25 @@ public class StrategoControl {
 
     protected StrategoConstants.GameStatus gameStatus;
 
-    public StrategoControl () {
+    public StrategoControl (int player) {
         pieces = new Piece [100];
         capturedPiecesBlue = new HashMap<PieceEnum, Integer>();
         capturedPiecesRed = new HashMap<PieceEnum, Integer>();
         gameStatus = StrategoConstants.GameStatus.INIT_BOARD;
+        //Define who start the game
         turn = StrategoConstants.RED;
+        //Define my player color
+        myPlayer = player;
         selectPos=-1;
         if (fakeGame) {
             startFakeGame();
         }
     }
 
-    public boolean startGame (int playerColor) {
-        myColor = playerColor;
+    public boolean startGame () {
         boolean canStart=true;
         int y, z;
-        if (myColor == StrategoConstants.RED) {
+        if (myPlayer == StrategoConstants.RED) {
             y = StrategoConstants.RED_PLAYER[0];
             z = StrategoConstants.RED_PLAYER[1];
         } else {
@@ -69,7 +71,7 @@ public class StrategoControl {
 
     public void startFakeGame () {
         turn = StrategoConstants.RED;
-        myColor = StrategoConstants.RED;
+        myPlayer = StrategoConstants.RED;
         if (fakeAllPieces) {
             randomPieces(StrategoConstants.RED);
             randomPieces(StrategoConstants.BLUE);
@@ -157,7 +159,7 @@ public class StrategoControl {
 
     private void initBoard (int to) {
         int x1, x2;
-        if (myColor == StrategoConstants.RED) {
+        if (myPlayer == StrategoConstants.RED) {
             x1 = StrategoConstants.RED_PLAYER[0];
             x2 = StrategoConstants.RED_PLAYER[1];
         } else {
@@ -194,7 +196,7 @@ public class StrategoControl {
                     return false;
                 } else {
                     Piece piece = pieces[pos];
-                    if (piece != null && piece.getPlayer() == turn) {
+                    if (piece != null && piece.getPlayer() == myPlayer) {
                         selectPos = pos;
                         return true;
                     }
@@ -513,5 +515,4 @@ public class StrategoControl {
         }
         return startPieces;
     }
-
 }

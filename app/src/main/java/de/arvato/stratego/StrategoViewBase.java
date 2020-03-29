@@ -359,7 +359,7 @@ public class StrategoViewBase {
 	}
 
 	public void paintBoard(StrategoControl gameControl, int positionSelected, List<Integer> arrPos){
-		int iFieldColor1, iFieldColor2, iFieldColor;
+		int iFieldColor;
 
 		System.gc();
 

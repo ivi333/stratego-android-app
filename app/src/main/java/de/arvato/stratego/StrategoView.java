@@ -30,9 +30,10 @@ public class StrategoView {
 
     public StrategoView(Activity activity) {
         super();
-        strategoControl = new StrategoControl();
         selectedPos=-1;
+        //select your player
         player = StrategoConstants.RED;
+        strategoControl = new StrategoControl(player);
         parent = (StrategoActivity) activity;
         strategoViewBase = new StrategoViewBase(activity, player);
         inflater = (LayoutInflater) parent.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
@@ -122,13 +123,12 @@ public class StrategoView {
         bPlayerReady.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                boolean b = strategoControl.startGame(player);
+                boolean b = strategoControl.startGame();
                 if (!b) {
                     Toast.makeText(parent.getApplicationContext(), "Fill all pieces!", Toast.LENGTH_SHORT).show();
                 } else {
-                    //TODO Game can start
+                    //TODO Game can start waiting for oponent in multiplayer?
                 }
-
             }
         }
         );

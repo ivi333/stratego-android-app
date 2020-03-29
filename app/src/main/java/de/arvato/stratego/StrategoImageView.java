@@ -133,7 +133,8 @@ public class StrategoImageView extends View {
                 }
 
                 if(ico.bPiece){
-                        if (ico.enemy) {
+                        //TODO delete 1==2
+                        if (ico.enemy && 1==2) {
                                 bmp = cover[ico.color];
                         } else {
                                 bmp = arrPieceBitmaps[ico.color][ico.piece];}
