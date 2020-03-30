@@ -289,9 +289,6 @@ public class StrategoView {
                 m_timerHandler.sendMessage(msg);
             }
         }, 1000, 1000);
-
-        //strategoControl.switchTimer();
-        //strategoControl.continueTimer();
     }
 
     public void showNext() {

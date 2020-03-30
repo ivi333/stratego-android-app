@@ -32,7 +32,7 @@ public class StrategoControl {
     protected Map<PieceEnum, Integer> capturedPiecesBlue;
     protected StrategoConstants.GameStatus gameStatus;
     protected long lClockStartRed, lClockStartBlue, lClockRed, lClockBlue;
-    protected long lClockTotal = 120000;
+    protected long lClockTotal = 500000;
 
 
     public StrategoControl (int player) {
@@ -67,6 +67,7 @@ public class StrategoControl {
         }
         if (canStart) {
             gameStatus = StrategoConstants.GameStatus.PLAY;
+            continueTimer();
         }
         return canStart;
     }
@@ -182,6 +183,7 @@ public class StrategoControl {
     }
 
     private void changeTurn() {
+        switchTimer();
         if (turn == StrategoConstants.RED) {
             turn = StrategoConstants.BLUE;
         } else {
