@@ -109,4 +109,12 @@
         <item name="android:windowAnimationStyle">@null</item>
         <item name="android:windowBackground">@color/colorPrimaryDark</item>
     </style>
+
+    <style name="FightStyle">
+        <item name="android:typeface">monospace</item>
+        <item name="android:textSize">30sp</item>
+        <!--<item name="android:padding">40dip</item>-->
+        <item name="android:textColor">@color/white</item>
+    </style>
+
 </resources>

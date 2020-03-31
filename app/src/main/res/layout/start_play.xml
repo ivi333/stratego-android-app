@@ -22,7 +22,7 @@
             </ViewSwitcher>
             <TextView android:id="@+id/TextViewClockTimeTop"
                 android:layout_height="wrap_content" android:layout_width="wrap_content"
-                android:paddingRight="5dip"
+                android:paddingRight="10dip"
                 android:text="00:00"
                 style="@style/MyNormalTextStyle"
                 />
@@ -60,8 +60,8 @@
             </ViewSwitcher>
             <TextView android:id="@+id/TextViewClockTimeBottom"
                 android:layout_height="wrap_content" android:layout_width="wrap_content"
-                android:paddingRight="5dip"
-                android:text="33:33"
+                android:paddingRight="10dip"
+                android:text="00:00"
                 style="@style/MyNormalTextStyle"
                 />
             <TextView android:id="@+id/TextViewTitle"
@@ -363,29 +363,66 @@
 
             </TableLayout>
 
-            <!--
-            <RelativeLayout
+            <FrameLayout
+                android:id="@+id/FrameLayout1"
                 android:layout_width="fill_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="fill_parent"
+                >
 
-                <TextView
-                    android:id="@+id/TextViewEngine2"
-                    style="@style/DarkThemeTextStyle"
-                    android:layout_width="fill_parent"
+                <RelativeLayout
+                    android:id="@+id/p1vsp2"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Engine Info:"
-                    android:padding="4dip" />
+                    android:paddingLeft="100dip"
+                    android:paddingRight="100dip"
+                    android:paddingTop="75dip"
+                    android:paddingBottom="75dip"
+                    android:background="@drawable/border_fight"
+                    android:layout_gravity="center">
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:orientation="horizontal">
+                        <FrameLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:foreground="@drawable/fight_win"
+                            android:foregroundGravity="bottom|right">
+                            <ImageView
+                                android:id="@+id/pieceFightRed"
+                                android:layout_width="175dip"
+                                android:layout_height="175dip"
+                                android:scaleType="fitXY">
+                            </ImageView>
+                        </FrameLayout>
 
-                <TextView
-                    android:id="@+id/TextViewEngineValue2"
-                    style="@style/DarkThemeTextStyle"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/TextViewEngine2"
-                    android:text="Text View Engine Value 2"
-                    android:padding="4dip" />
-            </RelativeLayout>
-            -->
+                        <TextView
+                            android:layout_height="wrap_content"
+                            android:layout_width="wrap_content"
+                            style="@style/FightStyle"
+                            android:gravity="center"
+                            android:text="VS"
+                            />
+
+                        <FrameLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:foreground="@drawable/fight_lost"
+                            android:foregroundGravity="bottom|right">
+
+                            <ImageView
+                                android:id="@+id/pieceFightBlue"
+                                android:layout_width="175dip"
+                                android:layout_height="175dip"
+                                android:scaleType="fitXY">
+                            </ImageView>
+
+                        </FrameLayout>
+                    </LinearLayout>
+                </RelativeLayout>
+            </FrameLayout>
+
         </ViewAnimator>
 
 

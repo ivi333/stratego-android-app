@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewAnimator;
@@ -34,6 +35,8 @@ public class StrategoView {
     private int player;
     private Timer timer;
     private TextView textViewClockTimeTop, textViewClockTimeBottom;
+    private ImageView pieceFightRed, pieceFightBlue;
+    private View fightView;
 
     static class StrategoInnerHandler extends Handler {
         WeakReference<StrategoView> _strategoView;
@@ -99,21 +102,24 @@ public class StrategoView {
         //View bottomPlayLayoutView = parent.findViewById(R.id.bottomPlayLayout);
 
         // Init the board with random pieces
-        strategoControl.randomPieces(player);
-        if (player == StrategoConstants.RED) {
-            strategoControl.randomPieces(StrategoConstants.BLUE);
-        } else {
-            strategoControl.randomPieces(StrategoConstants.RED);
+        if (!strategoControl.fakeGame) {
+            strategoControl.randomPieces(player);
+            if (player == StrategoConstants.RED) {
+                strategoControl.randomPieces(StrategoConstants.BLUE);
+            } else {
+                strategoControl.randomPieces(StrategoConstants.RED);
+            }
         }
 
         // Init the captured View
         initCapturedImages ();
 
-        // TODO Distribute pieces on grid.
         initDistributePieces () ;
 
         // Timer
         initTimer ();
+
+        initFightView();
 
         // Paint
         paintBoard();
@@ -289,6 +295,15 @@ public class StrategoView {
                 m_timerHandler.sendMessage(msg);
             }
         }, 1000, 1000);
+    }
+
+    public void initFightView () {
+        pieceFightRed = parent.findViewById(R.id.pieceFightRed);
+        pieceFightBlue =  parent.findViewById(R.id.pieceFightBlue);
+        fightView = parent.findViewById(R.id.p1vsp2);
+        pieceFightRed.setImageBitmap(StrategoImageView.arrPieceBitmaps[StrategoConstants.RED][PieceEnum.MINER.getId()]);
+        pieceFightBlue.setImageBitmap(StrategoImageView.arrPieceBitmaps[StrategoConstants.BLUE][PieceEnum.SCOUT.getId()]);
+
     }
 
     public void showNext() {

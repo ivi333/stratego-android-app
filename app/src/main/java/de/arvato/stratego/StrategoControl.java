@@ -21,7 +21,7 @@ public class StrategoControl {
     private static final Random rng = new Random();
 
     public static final boolean fakeAllPieces = false;
-    public static final boolean fakeGame = false;
+    public static final boolean fakeGame = true;
 
 
     protected Piece [] pieces;
@@ -32,7 +32,7 @@ public class StrategoControl {
     protected Map<PieceEnum, Integer> capturedPiecesBlue;
     protected StrategoConstants.GameStatus gameStatus;
     protected long lClockStartRed, lClockStartBlue, lClockRed, lClockBlue;
-    protected long lClockTotal = 500000;
+    protected long lClockTotal = 600000;
 
 
     public StrategoControl (int player) {
@@ -81,6 +81,7 @@ public class StrategoControl {
         } else {
             randomFake ();
         }
+        gameStatus= StrategoConstants.GameStatus.PLAY;
     }
 
     public void movePiece (int to) {
