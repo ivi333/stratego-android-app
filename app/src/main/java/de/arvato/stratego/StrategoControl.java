@@ -1,6 +1,7 @@
 package de.arvato.stratego;
 
 import android.util.Log;
+import android.util.Pair;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -17,12 +18,10 @@ import de.arvato.stratego.util.Pos;
 public class StrategoControl {
 
     public static final String TAG = "StrategoControl";
-
-    private static final Random rng = new Random();
-
     public static final boolean fakeAllPieces = false;
     public static final boolean fakeGame = true;
 
+    private static final Random rng = new Random();
 
     protected Piece [] pieces;
     protected int myPlayer;
@@ -33,7 +32,7 @@ public class StrategoControl {
     protected StrategoConstants.GameStatus gameStatus;
     protected long lClockStartRed, lClockStartBlue, lClockRed, lClockBlue;
     protected long lClockTotal = 600000;
-
+    protected List<Pair> fights;
 
     public StrategoControl (int player) {
         pieces = new Piece [100];
@@ -45,6 +44,7 @@ public class StrategoControl {
         //Define my player color
         myPlayer = player;
         selectPos=-1;
+        fights = new ArrayList<Pair>();
         if (fakeGame) {
             startFakeGame();
         }
@@ -88,7 +88,7 @@ public class StrategoControl {
         Log.d(TAG, "movePiece to:" + to + " gameStatus:" + gameStatus.name());
         switch (gameStatus) {
             case PLAY:
-                play (to);
+                move (to);
                 break;
             case INIT_BOARD:
                 initBoard (to);
@@ -99,7 +99,7 @@ public class StrategoControl {
         }
     }
 
-    private void play (int to) {
+    private void move (int to) {
         if (selectPos != -1 && isPlayablePosition(to)) {
             if (!isValidMovement (selectPos, to)) {
                 return;
@@ -107,55 +107,34 @@ public class StrategoControl {
             Piece pieceFrom = pieces[selectPos];
             Piece pieceTo = pieces[to];
 
-            //target board is not a piece
-            if (pieceTo == null) {
+            PieceFight.PieceFlighStatus fightStatus = PieceFight.fight(pieceFrom, pieceTo);
+            if (fightStatus == PieceFight.PieceFlighStatus.NO_FIGHT) {
                 pieces[to] = pieces[selectPos];
                 pieces[selectPos] = null;
-            } else {
-                //same piece
-                if (pieceFrom.getPieceEnum() == pieceTo.getPieceEnum()) {
-                    pieces[selectPos] = null;
-                    pieces[to] = null;
-                    capturePiece(pieceFrom.getPlayer(), pieceFrom.getPieceEnum());
-                    capturePiece(pieceTo.getPlayer(), pieceTo.getPieceEnum());
-                } else if (pieceTo.getPieceEnum() == PieceEnum.FLAG) {
-                    pieces[to] = pieces[selectPos];
-                    pieces[selectPos] = null;
-                    capturePiece(pieceTo.getPlayer(), pieceTo.getPieceEnum());
-                    finishGame ();
-                } else {
-                    boolean specialCasesWinPlayer1 = false;
-                    // lets fight
-                    //special case
-                    switch (pieceFrom.getPieceEnum()) {
-                        case SPY:
-                            if (pieceTo.getPieceEnum() == PieceEnum.MARSHALL) {
-                                specialCasesWinPlayer1=true;
-                            }
-                            break;
-                        case MINER:
-                            if (pieceTo.getPieceEnum() == PieceEnum.BOMB) {
-                                specialCasesWinPlayer1=true;
-                            }
-                    }
-
-                    if (specialCasesWinPlayer1) {
-                        pieces[to] = pieces[selectPos];
-                        pieces[selectPos] = null;
-                        capturePiece(pieceTo.getPlayer(), pieceTo.getPieceEnum());
-                    } else {
-                        //fight one vs one
-                        if (pieceFrom.getPieceEnum().getPoints() > pieceTo.getPieceEnum().getPoints()) {
-                            pieces[to] = pieces[selectPos];
-                            pieces[selectPos] = null;
-                            capturePiece(pieceTo.getPlayer(), pieceTo.getPieceEnum());
-                        } else {
-                            pieces[selectPos] = null;
-                            capturePiece(pieceFrom.getPlayer(), pieceFrom.getPieceEnum());
-                        }
-                    }
-                }
+            } else if (fightStatus == PieceFight.PieceFlighStatus.TIE) {
+                pieces[selectPos] = null;
+                pieces[to] = null;
+                capturePiece(pieceFrom.getPlayer(), pieceFrom.getPieceEnum());
+                capturePiece(pieceTo.getPlayer(), pieceTo.getPieceEnum());
+            } else if (fightStatus == PieceFight.PieceFlighStatus.FLAG_CAPTURED) {
+                pieces[to] = pieces[selectPos];
+                pieces[selectPos] = null;
+                capturePiece(pieceTo.getPlayer(), pieceTo.getPieceEnum());
+                finishGame ();
+            } else if (fightStatus == PieceFight.PieceFlighStatus.PIECE1_WIN) {
+                pieces[to] = pieces[selectPos];
+                pieces[selectPos] = null;
+                capturePiece(pieceTo.getPlayer(), pieceTo.getPieceEnum());
+            } else if (fightStatus == PieceFight.PieceFlighStatus.PIECE2_WIN) {
+                pieces[selectPos] = null;
+                capturePiece(pieceFrom.getPlayer(), pieceFrom.getPieceEnum());
             }
+
+            if (fightStatus != PieceFight.PieceFlighStatus.NO_FIGHT) {
+                Pair e = new Pair(pieceFrom, pieceTo);
+                fights.add(e);
+            }
+
             selectPos = -1;
             changeTurn ();
         }
@@ -180,7 +159,7 @@ public class StrategoControl {
     }
 
     public void finishGame() {
-        //TODO
+        gameStatus = StrategoConstants.GameStatus.FINISH;
     }
 
     private void changeTurn() {
@@ -504,27 +483,6 @@ public class StrategoControl {
         }
     }
 
-    protected long getBlueRemainClock(){
-        final long lDiff = lClockStartBlue > 0 ? (System.currentTimeMillis() - lClockStartBlue) : 0;
-        return (lClockTotal - (lClockBlue + lDiff));
-    }
-
-    protected long getRedRemainClock(){
-        final long lDiff = lClockStartRed > 0 ? (System.currentTimeMillis() - lClockStartRed) : 0;
-        return (lClockTotal - (lClockRed + lDiff));
-    }
-
-    public Map<PieceEnum, Integer> getCapturedPiecesRed() {
-        return capturedPiecesRed;
-    }
-
-    public Map<PieceEnum, Integer> getCapturedPiecesBlue() {
-        return capturedPiecesBlue;
-    }
-
-    public StrategoConstants.GameStatus getGameStatus() {
-        return gameStatus;
-    }
 
     public static boolean isPlayablePosition (final int pos) {
         return pos != StrategoConstants.c6 && pos != StrategoConstants.d6
@@ -561,4 +519,36 @@ public class StrategoControl {
         }
         return startPieces;
     }
+
+    // GETTER / SETTER
+    public List<Pair> getFights() {
+        return fights;
+    }
+
+    protected long getBlueRemainClock(){
+        final long lDiff = lClockStartBlue > 0 ? (System.currentTimeMillis() - lClockStartBlue) : 0;
+        return (lClockTotal - (lClockBlue + lDiff));
+    }
+
+    protected long getRedRemainClock(){
+        final long lDiff = lClockStartRed > 0 ? (System.currentTimeMillis() - lClockStartRed) : 0;
+        return (lClockTotal - (lClockRed + lDiff));
+    }
+
+    public Map<PieceEnum, Integer> getCapturedPiecesRed() {
+        return capturedPiecesRed;
+    }
+
+    public Map<PieceEnum, Integer> getCapturedPiecesBlue() {
+        return capturedPiecesBlue;
+    }
+
+    public StrategoConstants.GameStatus getGameStatus() {
+        return gameStatus;
+    }
+
+    public boolean isFinished () {
+        return gameStatus == StrategoConstants.GameStatus.FINISH;
+    }
+
 }

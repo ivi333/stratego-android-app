@@ -13,15 +13,18 @@ public class Piece {
         this.pieceEnum = pieceEnum;
     }
 
-     public int getPlayer() {
+    public int getPlayer() {
         return player;
     }
+
     public void setPlayer(int player) {
         this.player = player;
     }
+
     public void setPieceDiscovered(boolean pieceDiscovered) {
         this.pieceDiscovered = pieceDiscovered;
     }
+
     public boolean isPieceDiscovered() {
         return pieceDiscovered;
     }
