@@ -19,6 +19,23 @@
             android:label="@string/app_name"
             android:theme="@style/Theme.AppCompat"
             tools:ignore="LockedOrientationActivity">
+            <!--
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            -->
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".StrategoPortraitActivity"
+            android:label="@string/app_name"
+            android:theme="@style/Theme.AppCompat"
+            tools:ignore="LockedOrientationActivity">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -27,6 +44,7 @@
                 <action android:name="android.intent.action.VIEW" />
             </intent-filter>
         </activity>
+
         <activity
             android:name=".HtmlActivity"
             android:label="@string/app_name_help">

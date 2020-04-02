@@ -43,6 +43,7 @@ public class StrategoView {
     private ImageView pieceFight1, pieceFight2;
     private View fightView;
     private Drawable drawableFightWin, drawableFightLost;
+    private Pair latestFight;
 
     static class StrategoInnerHandler extends Handler {
         WeakReference<StrategoView> _strategoView;
@@ -341,6 +342,10 @@ public class StrategoView {
         List<Pair> fights = strategoControl.getFights();
         if (!fights.isEmpty()) {
             Pair fight = fights.get(fights.size() - 1);
+            if (fight.equals(latestFight)) {
+                return;
+            }
+            latestFight = fight;
             Piece piece1 = (Piece) fight.first;
             Piece piece2 = (Piece) fight.second;
 

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.widget.RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.widget.RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/LayoutMain"
     android:layout_width="match_parent" android:layout_height="match_parent">
 
@@ -109,29 +110,29 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
 
-                    <RelativeLayout
-                        android:id="@+id/relativeLayout1"
-                        android:layout_width="fill_parent"
+                    <Button
+                        android:id="@+id/PlayerReady"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:background="@android:color/black" >
+                        android:text="Player Ready"
+                        style="@style/StrategoImageButton"
+                         />
 
-                        <Button
-                            android:id="@+id/PlayerReady"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Player Ready"
-                            style="@style/StrategoImageButton"
-                            android:layout_alignParentLeft="true" />
+                    <Button
+                        android:id="@+id/PlayerReset"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Reset Game"
+                        style="@style/StrategoImageButton"
+                         />
 
-                        <Button
-                            android:id="@+id/PlayerRandom"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Player Random"
-                            style="@style/StrategoImageButton"
-                            android:layout_alignParentRight="true"/>
-
-                    </RelativeLayout>
+                    <Button
+                        android:id="@+id/PlayerRandom"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Player Random"
+                        style="@style/StrategoImageButton"
+                        />
 
                 </LinearLayout>
 

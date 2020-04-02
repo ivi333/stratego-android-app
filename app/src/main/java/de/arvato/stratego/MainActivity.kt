@@ -119,7 +119,7 @@ class MainActivity : Activity() {
     override fun onPostResume() {
         super.onPostResume()
         val getData =
-            getSharedPreferences("ChessPlayer", Context.MODE_PRIVATE)
+            getSharedPreferences("StrategoPlayer", Context.MODE_PRIVATE)
         if (getData.getBoolean("RESTART", false)) {
             finish()
             val intent = Intent(this, MainActivity::class.java)

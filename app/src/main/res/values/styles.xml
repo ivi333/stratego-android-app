@@ -117,4 +117,14 @@
         <item name="android:textColor">@color/white</item>
     </style>
 
+    <style name="PortraitButton">
+        <item name="android:minWidth">150dip</item>
+        <item name="android:minHeight">75dip</item>
+        <item name="android:textSize">35sp</item>
+        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Large</item>
+        <item name="android:layout_gravity">center_horizontal</item>
+        <item name="android:layout_marginTop">15dip</item>
+        <item name="android:padding">20dip</item>
+    </style>
+
 </resources>
