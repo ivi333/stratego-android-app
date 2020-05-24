@@ -1,50 +1,43 @@
 package de.arvato.stratego;
 
 import android.util.Log;
-import android.util.Pair;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Observable;
 import java.util.Random;
+import java.util.Scanner;
 import java.util.Set;
 import java.util.TreeMap;
 
-import de.arvato.stratego.util.Pos;
+import de.arvato.stratego.ai.Board;
+import de.arvato.stratego.ai.Piece;
+import de.arvato.stratego.ai.PieceEnum;
+import de.arvato.stratego.ai.StrategoAI;
+import de.arvato.stratego.ai.StrategoAIListener;
+import de.arvato.stratego.ai.StrategoConstants.GameStatus;
 
-public class StrategoControl {
+
+public class StrategoControl extends Observable implements StrategoAIListener {
 
     public static final String TAG = "StrategoControl";
     public static final boolean fakeAllPieces = false;
-    public static final boolean fakeGame = true;
-
+    public static final boolean fakeGame = false;
     private static final Random rng = new Random();
-
-    protected Piece [] pieces;
-    protected int myPlayer;
-    protected int turn;
     protected int selectPos;
-    protected Map<PieceEnum, Integer> capturedPiecesRed;
-    protected Map<PieceEnum, Integer> capturedPiecesBlue;
-    protected StrategoConstants.GameStatus gameStatus;
     protected long lClockStartRed, lClockStartBlue, lClockRed, lClockBlue;
     protected long lClockTotal = 600000;
-    protected List<Pair> fights;
+    protected Board board;
 
     public StrategoControl (int player) {
-        pieces = new Piece [100];
-        capturedPiecesBlue = new HashMap<PieceEnum, Integer>();
-        capturedPiecesRed = new HashMap<PieceEnum, Integer>();
-        gameStatus = StrategoConstants.GameStatus.INIT_BOARD;
-        //Define who start the game
-        turn = StrategoConstants.RED;
-        //Define my player color
-        myPlayer = player;
+        board = new Board();
+        board.changeGameStatus(GameStatus.INIT_BOARD);
+        board.initTurn(player);
+        board.humanPlayer(player);
         selectPos=-1;
-        fights = new ArrayList<Pair>();
         if (fakeGame) {
             startFakeGame();
         }
@@ -53,7 +46,7 @@ public class StrategoControl {
     public boolean startGame () {
         boolean canStart=true;
         int y, z;
-        if (myPlayer == StrategoConstants.RED) {
+        if (board.getHumanPlayer() == StrategoConstants.RED) {
             y = StrategoConstants.RED_PLAYER[0];
             z = StrategoConstants.RED_PLAYER[1];
         } else {
@@ -61,296 +54,89 @@ public class StrategoControl {
             z = StrategoConstants.BLUE_PLAYER[1];
         }
         for (int x=y ; x < z && canStart; x++ ) {
-            if (pieces[x] == null) {
+            if (board.getPieceAt(x) == null) {
                 canStart=false;
             }
         }
         if (canStart) {
-            gameStatus = StrategoConstants.GameStatus.PLAY;
+            board.initPossibleBombs (y, z);
+            board.changeGameStatus(GameStatus.PLAY);
             continueTimer();
         }
         return canStart;
     }
 
     public void startFakeGame () {
-        turn = StrategoConstants.RED;
-        myPlayer = StrategoConstants.RED;
+        board.initTurn(StrategoConstants.RED);
+        board.humanPlayer(StrategoConstants.RED);
         if (fakeAllPieces) {
             randomPieces(StrategoConstants.RED);
             randomPieces(StrategoConstants.BLUE);
         } else {
             randomFake ();
         }
-        gameStatus= StrategoConstants.GameStatus.PLAY;
+        board.changeGameStatus(GameStatus.PLAY);
     }
 
     public void movePiece (int to) {
-        Log.d(TAG, "movePiece to:" + to + " gameStatus:" + gameStatus.name());
-        switch (gameStatus) {
+//        System.out.println("movePiece from:" + selectPos + " to:" + to + " gameStatus:" + board.getGameStatus().name());
+        switch (board.getGameStatus()) {
             case PLAY:
-                move (to);
+                board.move (to, selectPos);
+                changeTurn();
+                selectPos=-1;
                 break;
             case INIT_BOARD:
-                initBoard (to);
+                board.initBoard (to, selectPos);
+                selectPos=-1;
                 break;
             case DRAW_REPEAT:
                 //TODO
                 break;
+            default:
+                break;
         }
     }
 
-    private void move (int to) {
-        if (selectPos != -1 && isPlayablePosition(to)) {
-            if (!isValidMovement (selectPos, to)) {
-                return;
-            }
-            Piece pieceFrom = pieces[selectPos];
-            Piece pieceTo = pieces[to];
-
-            PieceFight.PieceFlighStatus fightStatus = PieceFight.fight(pieceFrom, pieceTo);
-            if (fightStatus == PieceFight.PieceFlighStatus.NO_FIGHT) {
-                pieces[to] = pieces[selectPos];
-                pieces[selectPos] = null;
-            } else if (fightStatus == PieceFight.PieceFlighStatus.TIE) {
-                pieces[selectPos] = null;
-                pieces[to] = null;
-                capturePiece(pieceFrom.getPlayer(), pieceFrom.getPieceEnum());
-                capturePiece(pieceTo.getPlayer(), pieceTo.getPieceEnum());
-            } else if (fightStatus == PieceFight.PieceFlighStatus.FLAG_CAPTURED) {
-                pieces[to] = pieces[selectPos];
-                pieces[selectPos] = null;
-                capturePiece(pieceTo.getPlayer(), pieceTo.getPieceEnum());
-                finishGame ();
-            } else if (fightStatus == PieceFight.PieceFlighStatus.PIECE1_WIN) {
-                pieces[to] = pieces[selectPos];
-                pieces[selectPos] = null;
-                capturePiece(pieceTo.getPlayer(), pieceTo.getPieceEnum());
-            } else if (fightStatus == PieceFight.PieceFlighStatus.PIECE2_WIN) {
-                pieces[selectPos] = null;
-                capturePiece(pieceFrom.getPlayer(), pieceFrom.getPieceEnum());
-            }
-
-            if (fightStatus != PieceFight.PieceFlighStatus.NO_FIGHT) {
-                Pair e = new Pair(pieceFrom, pieceTo);
-                fights.add(e);
-            }
-
-            selectPos = -1;
-            changeTurn ();
-        }
-    }
-
-    private void initBoard (int to) {
-        int x1, x2;
-        if (myPlayer == StrategoConstants.RED) {
-            x1 = StrategoConstants.RED_PLAYER[0];
-            x2 = StrategoConstants.RED_PLAYER[1];
-        } else {
-            x1 = StrategoConstants.BLUE_PLAYER[0];
-            x2 = StrategoConstants.BLUE_PLAYER[1];
-        }
-        if (selectPos != -1 && to >= x1 && to < x2 ) {
-            //interchange pos
-            Piece tmp = pieces[to];
-            pieces[to] = pieces[selectPos];
-            pieces[selectPos] = tmp;
-        }
-        selectPos = -1;
-    }
-
-    public void finishGame() {
-        gameStatus = StrategoConstants.GameStatus.FINISH;
-    }
 
     private void changeTurn() {
         switchTimer();
-        if (turn == StrategoConstants.RED) {
-            turn = StrategoConstants.BLUE;
-        } else {
-            turn = StrategoConstants.RED;
+        board.changeTurn();
+        if (board.getTurn() == board.getAIPlayer()) {
+            playAI ();
         }
     }
 
+    public void playAI () {
+        Thread searchThread = new Thread(new StrategoAI(getBoard(), this));
+        searchThread.start();
+    }
+
     public boolean selectPiece (int pos) {
-        switch(gameStatus) {
+        switch(board.getGameStatus()) {
             case INIT_BOARD:
                 if (selectPos == pos) {
                     return true;
                 } else if (selectPos != -1) {
                     return false;
                 } else {
-                    Piece piece = pieces[pos];
-                    if (piece != null && piece.getPlayer() == myPlayer) {
+                    Piece piece = board.getPieceAt(pos);
+                    if (piece != null && piece.getPlayer() == board.getHumanPlayer()) {
                         selectPos = pos;
                         return true;
                     }
                     return false;
                 }
             case PLAY:
-                Piece piece = pieces[pos];
-                if (piece != null && piece.getPlayer() == turn) {
+                Piece piece = board.getPieceAt(pos);
+                if (piece != null && piece.getPlayer() == board.getTurn()) {
                     selectPos = pos;
                     return true;
                 }
                 return false;
-        }
-        return false;
-    }
-
-    public boolean isValidMovement (int selectedPos, int pos) {
-        //int [] possibilities = getPossibleMovements(selectedPos);
-        List<Integer> possibilities = getPossibleMovements(selectedPos);
-        boolean res=false;
-        for (Integer x : possibilities) {
-            if (x.equals(pos)) {
-                res=true;
-                break;
-            }
-        }
-        return res;
-    }
-
-    public List<Integer> getPossibleMovements (int pos) {
-        List<Integer> res = Collections.emptyList();
-        switch (gameStatus) {
-            case PLAY:
-                Piece piece = pieces[pos];
-                if (piece == null) {
-                    return res;
-                }
-                if (piece.getPieceEnum().isAllowMovement()) {
-                    switch (piece.getPieceEnum()) {
-                        case SCOUT:
-                            res = calculateMovement (piece, pos, true);
-                            break;
-                        default:
-                            res = calculateMovement (piece, pos, false);
-                            break;
-                    }
-                }
+            default:
                 break;
         }
-       return res;
-    }
-
-    private List<Integer> calculateMovement(final Piece piece, final int pos, final boolean isMultiple) {
-        int row = Pos.row(pos);
-        int col = Pos.col(pos);
-        List<Integer> freePos = new ArrayList<Integer>();
-        int nextPos;
-        if (isMultiple) {
-            int tmpRow = row;
-            boolean available=true;
-            while ( ((tmpRow -1) >=0) && available) {
-                nextPos = Pos.fromColAndRow(col, (tmpRow-1));
-                if (nextPos >= 0 && nextPos < 100) {
-                    available = nextPositionAvailable(piece, nextPos);
-                    if (available) {
-                        freePos.add(nextPos);
-                    }
-                    if (pieces[nextPos] != null) break;
-                }
-                tmpRow--;
-            }
-
-            tmpRow = row;
-            available = true;
-            while ( ((tmpRow + 1) < 10) && available) {
-                nextPos = Pos.fromColAndRow(col, (tmpRow +1));
-                if (nextPos >= 0 && nextPos < 100) {
-                    available = nextPositionAvailable(piece, nextPos);
-                    if (available) {
-                        freePos.add(nextPos);
-                    }
-                    if (pieces[nextPos] != null) break;
-                }
-                tmpRow++;
-            }
-
-            available = true;
-            int tmpPos = pos;
-            int tmpCol = col;
-            while ( (Pos.row(tmpPos+1) == row) && available) {
-                nextPos = Pos.fromColAndRow((tmpCol+1), row);
-                if (nextPos >= 0 && nextPos < 100) {
-                    available = nextPositionAvailable(piece, nextPos);
-                    if (available) {
-                        freePos.add(nextPos);
-                    }
-                    if (pieces[nextPos] != null) break;
-                }
-                tmpPos++;
-                tmpCol++;
-            }
-
-            tmpPos=pos;
-            tmpCol=col;
-            available=true;
-            while ( (Pos.row(tmpPos-1) == row) && available) {
-                nextPos = Pos.fromColAndRow((tmpCol-1), row);
-                if (nextPos >= 0 && nextPos < 100) {
-                    available = nextPositionAvailable (piece, nextPos);
-                    if (available) {
-                        freePos.add(nextPos);
-                    }
-                    if (pieces[nextPos] != null) break;
-                }
-                tmpPos--;
-                tmpCol--;
-            }
-        } else {
-            if ( (row -1) >= 0) {
-                nextPos = Pos.fromColAndRow(col, (row -1));
-                if (nextPos >= 0 && nextPos < 100) {
-                    boolean available = nextPositionAvailable(piece, nextPos);
-                    if (available) {
-                        freePos.add(nextPos);
-                    }
-                }
-            }
-
-            if ( (row + 1) < 10) {
-                nextPos = Pos.fromColAndRow(col, (row +1));
-                if (nextPos >= 0 && nextPos < 100) {
-                    boolean available = nextPositionAvailable(piece, nextPos);
-                    if (available) {
-                        freePos.add(nextPos);
-                    }
-                }
-            }
-
-            if ( Pos.row(pos+1) == row ) {
-                nextPos = Pos.fromColAndRow((col+1), row);
-                if (nextPos >= 0 && nextPos < 100) {
-                    boolean available = nextPositionAvailable(piece, nextPos);
-                    if (available) {
-                        freePos.add(nextPos);
-                    }
-                }
-            }
-
-            if ( Pos.row(pos-1) == row) {
-                nextPos = Pos.fromColAndRow((col-1), row);
-                if (nextPos >= 0 && nextPos < 100) {
-                    boolean available = nextPositionAvailable (piece, nextPos);
-                    if (available) {
-                        freePos.add(nextPos);
-                    }
-                }
-            }
-        }
-        return freePos;
-    }
-
-    private boolean nextPositionAvailable(Piece piece, int nextPos) {
-        // not playable position
-        if (!isPlayablePosition(nextPos)) return false;
-        // Board position is free
-        Piece nextPiece = pieces[nextPos];
-        if (nextPiece == null) return true;
-        //Opposite piece
-        if (nextPiece.getPlayer() != piece.getPlayer()) return true;
-        // by default is not playable
         return false;
     }
 
@@ -358,8 +144,8 @@ public class StrategoControl {
         final Set<Integer> generated = new LinkedHashSet<Integer>();
         Integer next;
         while (generated.size() < StrategoConstants.MAX_PIECES) {
-            next = StrategoControl.randomBetween(0, 100);
-            if (isPlayablePosition(next))
+            next = StrategoControl.randomBetween(0, StrategoConstants.BOARD_SIZE);
+            if (Board.isPlayablePosition(next))
                 generated.add(next);
         }
         List<Integer> boardPosList = new ArrayList<Integer>(generated.size());
@@ -424,41 +210,20 @@ public class StrategoControl {
     }
 
     public void putPiece(int pos, int color, PieceEnum piece) {
-        //Log.d("StrategoControl", "Adding piece:" + piece + " boardPos:" + pos + " player:" + color);
-        pieces [pos] = new Piece();
-        pieces [pos].setPlayer(color);
-        pieces [pos].setPieceEnum(piece);
-    }
-
-    public Piece getPieceAt(int i) {
-        return pieces[i];
-    }
-
-    public void capturePiece (final int player, PieceEnum piece) {
-        if (StrategoConstants.RED == player) {
-            if (capturedPiecesRed.containsKey(piece)) {
-                Integer i = capturedPiecesRed.get(piece);
-                capturedPiecesRed.put(piece, ++i);
-            } else {
-                capturedPiecesRed.put(piece, 1);
-            }
-        } else {
-            if (capturedPiecesBlue.containsKey(piece)) {
-                Integer i = capturedPiecesBlue.get(piece);
-                capturedPiecesBlue.put(piece, ++i);
-            } else {
-                capturedPiecesBlue.put(piece, 1);
-            }
-        }
+        //System.out.println("StrategoControl", "Adding piece:" + piece + " boardPos:" + pos + " player:" + color);
+        Piece tmpPiece = new Piece();
+        tmpPiece.setPlayer(color);
+        tmpPiece.setPieceEnum(piece);
+        board.setPieceAt(tmpPiece, pos);
     }
 
     protected void switchTimer(){
         final long lEnd = System.currentTimeMillis();
-        if(lClockStartRed > 0 && turn == StrategoConstants.RED){
+        if(lClockStartRed > 0 && board.getTurn() == StrategoConstants.RED){
             lClockRed += (lEnd - lClockStartRed);
             lClockStartRed = 0;
             lClockStartBlue = lEnd;
-        } else if(lClockStartBlue > 0 && turn == StrategoConstants.BLUE){
+        } else if(lClockStartBlue > 0 && board.getTurn() == StrategoConstants.BLUE){
             lClockBlue += (lEnd - lClockStartBlue);
             lClockStartBlue = 0;
             lClockStartRed = lEnd;
@@ -476,19 +241,11 @@ public class StrategoControl {
     //TODO Use after pausing
     protected void continueTimer(){
         if(lClockTotal > 0){
-            if(turn == StrategoConstants.RED)
+            if(board.getTurn() == StrategoConstants.RED)
                 lClockStartRed = System.currentTimeMillis();
             else
                 lClockStartBlue = System.currentTimeMillis();
         }
-    }
-
-
-    public static boolean isPlayablePosition (final int pos) {
-        return pos != StrategoConstants.c6 && pos != StrategoConstants.d6
-                && pos != StrategoConstants.c5 && pos != StrategoConstants.d5
-                && pos != StrategoConstants.g6 && pos != StrategoConstants.h6
-                && pos != StrategoConstants.g5 && pos != StrategoConstants.h5;
     }
 
     public static int randomBetween (int low, int high) {
@@ -512,17 +269,12 @@ public class StrategoControl {
         tmpPieces.put(PieceEnum.BOMB, StrategoConstants.BOM_MAX);
         int k=0;
         for (Map.Entry<PieceEnum, Integer> entry : tmpPieces.entrySet()) {
-            Log.d(TAG, "manage piece:" + entry.getKey().getName());
+//            System.out.println("manage piece:" + entry.getKey().getName());
             for (int j=0;j<entry.getValue();j++) {
                 startPieces[k++] = entry.getKey();
             }
         }
         return startPieces;
-    }
-
-    // GETTER / SETTER
-    public List<Pair> getFights() {
-        return fights;
     }
 
     protected long getBlueRemainClock(){
@@ -535,20 +287,43 @@ public class StrategoControl {
         return (lClockTotal - (lClockRed + lDiff));
     }
 
-    public Map<PieceEnum, Integer> getCapturedPiecesRed() {
-        return capturedPiecesRed;
+    public Board getBoard() {
+        return board;
     }
 
-    public Map<PieceEnum, Integer> getCapturedPiecesBlue() {
-        return capturedPiecesBlue;
+    public static boolean isPlayablePosition (final int pos) {
+        return pos != StrategoConstants.c6 && pos != StrategoConstants.d6
+                && pos != StrategoConstants.c5 && pos != StrategoConstants.d5
+                && pos != StrategoConstants.g6 && pos != StrategoConstants.h6
+                && pos != StrategoConstants.g5 && pos != StrategoConstants.h5;
     }
 
-    public StrategoConstants.GameStatus getGameStatus() {
-        return gameStatus;
+    public static void main (String args[]) throws Exception{
+        StrategoControl control = new StrategoControl(StrategoConstants.RED);
+        control.randomPieces(StrategoConstants.RED);
+        control.randomPieces(StrategoConstants.BLUE);
+        control.board.printPieces();
+        Scanner sc = new Scanner(System.in);
+        while (true) {
+            int from = sc.nextInt();
+            int to = sc.nextInt();
+            System.out.println(from + " ->" + to);
+            Thread searchThread = new Thread(new StrategoAI(control.getBoard(), control));
+            searchThread.start();
+        }
     }
 
-    public boolean isFinished () {
-        return gameStatus == StrategoConstants.GameStatus.FINISH;
+    @Override
+    public void moveAI(int from, int to) {
+        System.out.println("AI is moving:" + from + "->" + to);
+        if (from != -1 && to != -1) {
+            selectPiece(from);
+            movePiece(to);
+            setChanged();
+            notifyObservers();
+        } else {
+            //TODO Throw Error
+            Log.e(TAG, "Wrong position got from AI!");
+        }
     }
-
 }

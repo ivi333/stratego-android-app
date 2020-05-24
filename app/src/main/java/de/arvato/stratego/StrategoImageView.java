@@ -14,6 +14,8 @@ import android.view.View;
 
 import androidx.annotation.Nullable;
 
+import de.arvato.stratego.ai.PieceEnum;
+
 public class StrategoImageView extends View {
 
         public static final String TAG = "ChessImageView";

@@ -9,7 +9,6 @@ import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -21,10 +20,14 @@ import java.lang.ref.WeakReference;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Observable;
+import java.util.Observer;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class StrategoView {
+import de.arvato.stratego.ai.PieceEnum;
+
+public class StrategoView implements Observer {
 
     public static final String TAG = "StrategoView";
 
@@ -44,6 +47,12 @@ public class StrategoView {
     private View fightView;
     private Drawable drawableFightWin, drawableFightLost;
     private Pair latestFight;
+
+    @Override
+    public void update(Observable o, Object arg) {
+        updateStatus ();
+        paintBoard();
+    }
 
     static class StrategoInnerHandler extends Handler {
         WeakReference<StrategoView> _strategoView;
@@ -81,6 +90,8 @@ public class StrategoView {
         //select your player
         player = StrategoConstants.RED;
         strategoControl = new StrategoControl(player);
+        strategoControl.addObserver(this);
+
         parent = (StrategoActivity) activity;
         strategoViewBase = new StrategoViewBase(activity, player);
         inflater = (LayoutInflater) parent.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
@@ -141,7 +152,7 @@ public class StrategoView {
         nextMovements = Collections.emptyList();
         if (strategoControl.selectPiece(index)) {
             Log.d (TAG, "Piece at position:" + index + " has been selected.");
-            nextMovements = strategoControl.getPossibleMovements (index);
+            nextMovements = strategoControl.getBoard().getPossibleMovements (index);
             selectedPos = index;
             StringBuilder sb = new StringBuilder();
             for (Integer i : nextMovements) {
@@ -325,8 +336,8 @@ public class StrategoView {
 
     public void updateStatus () {
         updateFight ();
-        updateCapturedPieces (StrategoConstants.RED, strategoControl.getCapturedPiecesRed());
-        updateCapturedPieces (StrategoConstants.BLUE, strategoControl.getCapturedPiecesBlue());
+        updateCapturedPieces (StrategoConstants.RED, strategoControl.getBoard().getCapturedPiecesRed());
+        updateCapturedPieces (StrategoConstants.BLUE, strategoControl.getBoard().getCapturedPiecesBlue());
     }
 
     private String formatTime(long msec) {
@@ -339,38 +350,39 @@ public class StrategoView {
     }
 
     private void updateFight () {
-        List<Pair> fights = strategoControl.getFights();
-        if (!fights.isEmpty()) {
-            Pair fight = fights.get(fights.size() - 1);
-            if (fight.equals(latestFight)) {
-                return;
-            }
-            latestFight = fight;
-            Piece piece1 = (Piece) fight.first;
-            Piece piece2 = (Piece) fight.second;
-
-            PieceFight.PieceFlighStatus pieceFightStatus = PieceFight.fight(piece1, piece2);
-            pieceFight1.setImageBitmap(StrategoImageView.arrPieceBitmaps[piece1.getPlayer()][piece1.getPieceEnum().getId()]);
-            pieceFight2.setImageBitmap(StrategoImageView.arrPieceBitmaps[piece2.getPlayer()][piece2.getPieceEnum().getId()]);
-
-            FrameLayout parentFight1 = (FrameLayout) pieceFight1.getParent();
-            FrameLayout parentFight2 = (FrameLayout) pieceFight2.getParent();
-
-            //NO_FIGHT, PIECE1_WIN, PIECE2_WIN, TIE, FLAG_CAPTURED
-            if (pieceFightStatus == PieceFight.PieceFlighStatus.PIECE1_WIN ||
-                    pieceFightStatus == PieceFight.PieceFlighStatus.FLAG_CAPTURED) {
-                parentFight1.setForeground(drawableFightWin);
-                parentFight2.setForeground(drawableFightLost);
-            } else if (pieceFightStatus == PieceFight.PieceFlighStatus.PIECE2_WIN) {
-                parentFight2.setForeground(drawableFightWin);
-                parentFight1.setForeground(drawableFightLost);
-            } else if (pieceFightStatus == PieceFight.PieceFlighStatus.TIE) {
-                parentFight2.setForeground(drawableFightLost);
-                parentFight1.setForeground(drawableFightLost);
-            } else {
-                Log.e(TAG, "Pieces are not fighting!");
-            }
-        }
+        //TODO
+//        List<Pair> fights = strategoControl.getFights();
+//        if (!fights.isEmpty()) {
+//            Pair fight = fights.get(fights.size() - 1);
+//            if (fight.equals(latestFight)) {
+//                return;
+//            }
+//            latestFight = fight;
+//            Piece piece1 = (Piece) fight.first;
+//            Piece piece2 = (Piece) fight.second;
+//
+//            PieceFight.PieceFighStatus pieceFightStatus = PieceFight.fight(piece1, piece2);
+//            pieceFight1.setImageBitmap(StrategoImageView.arrPieceBitmaps[piece1.getPlayer()][piece1.getPieceEnum().getId()]);
+//            pieceFight2.setImageBitmap(StrategoImageView.arrPieceBitmaps[piece2.getPlayer()][piece2.getPieceEnum().getId()]);
+//
+//            FrameLayout parentFight1 = (FrameLayout) pieceFight1.getParent();
+//            FrameLayout parentFight2 = (FrameLayout) pieceFight2.getParent();
+//
+//            //NO_FIGHT, PIECE1_WIN, PIECE2_WIN, TIE, FLAG_CAPTURED
+//            if (pieceFightStatus == PieceFight.PieceFighStatus.PIECE1_WIN ||
+//                    pieceFightStatus == PieceFight.PieceFighStatus.FLAG_CAPTURED) {
+//                parentFight1.setForeground(drawableFightWin);
+//                parentFight2.setForeground(drawableFightLost);
+//            } else if (pieceFightStatus == PieceFight.PieceFighStatus.PIECE2_WIN) {
+//                parentFight2.setForeground(drawableFightWin);
+//                parentFight1.setForeground(drawableFightLost);
+//            } else if (pieceFightStatus == PieceFight.PieceFighStatus.TIE) {
+//                parentFight2.setForeground(drawableFightLost);
+//                parentFight1.setForeground(drawableFightLost);
+//            } else {
+//                Log.e(TAG, "Pieces are not fighting!");
+//            }
+//        }
     }
 
     private void updateCapturedPieces(int player, Map<PieceEnum, Integer> capturedPieces) {

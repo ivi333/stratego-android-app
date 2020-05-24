@@ -25,7 +25,7 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             style="@style/PortraitButton"
-            android:text="Play">
+            android:text="Single Player">
         </Button>
 
         <Button
@@ -34,7 +34,7 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             style="@style/PortraitButton"
-            android:text="Play Online">
+            android:text="Multiplayer">
         </Button>
     </LinearLayout>
 

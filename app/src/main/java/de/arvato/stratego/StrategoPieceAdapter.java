@@ -7,6 +7,8 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 
+import de.arvato.stratego.ai.PieceEnum;
+
 public class StrategoPieceAdapter extends BaseAdapter {
 
     private static final Bitmap anyBitmap = StrategoImageView.arrPieceBitmaps[StrategoConstants.RED][PieceEnum.FLAG.getId()];

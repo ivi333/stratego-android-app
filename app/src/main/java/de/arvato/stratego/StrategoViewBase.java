@@ -15,6 +15,9 @@ import android.widget.TableRow.LayoutParams;
 
 import java.util.List;
 
+import de.arvato.stratego.ai.Piece;
+import de.arvato.stratego.ai.PieceEnum;
+
 public class StrategoViewBase {
 
 	public static final String TAG = "StrategoViewBase";
@@ -370,7 +373,7 @@ public class StrategoViewBase {
 
 		boolean change=true;
 		for(int i = 0; i < 100; i++) {
-			Piece piece = gameControl.getPieceAt (i);
+			Piece piece = gameControl.getBoard().getPieceAt (i);
 			ImageCacheObject tmpCache = _arrImgCache[i];
 
 			if (!tmpCache.initalized) {
