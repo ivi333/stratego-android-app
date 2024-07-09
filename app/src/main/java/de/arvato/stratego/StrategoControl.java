@@ -1,7 +1,5 @@
 package de.arvato.stratego;
 
-import android.util.Log;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
@@ -9,22 +7,18 @@ import java.util.List;
 import java.util.Map;
 import java.util.Observable;
 import java.util.Random;
-import java.util.Scanner;
 import java.util.Set;
 import java.util.TreeMap;
 
-import de.arvato.stratego.ai.Board;
-import de.arvato.stratego.ai.Piece;
-import de.arvato.stratego.ai.PieceEnum;
-import de.arvato.stratego.ai.StrategoAI;
-import de.arvato.stratego.ai.StrategoAIListener;
-import de.arvato.stratego.ai.StrategoConstants.GameStatus;
+import de.arvato.stratego.game.Board;
+import de.arvato.stratego.game.Piece;
+import de.arvato.stratego.game.PieceEnum;
 
 
-public class StrategoControl extends Observable implements StrategoAIListener {
+public class StrategoControl extends Observable  {
 
     public static final String TAG = "StrategoControl";
-    public static final boolean fakeAllPieces = false;
+    public static final boolean fakeAllPieces = true;
     public static final boolean fakeGame = false;
     private static final Random rng = new Random();
     protected int selectPos;
@@ -34,7 +28,7 @@ public class StrategoControl extends Observable implements StrategoAIListener {
 
     public StrategoControl (int player) {
         board = new Board();
-        board.changeGameStatus(GameStatus.INIT_BOARD);
+        board.changeGameStatus(StrategoConstants.GameStatus.INIT_BOARD);
         board.initTurn(player);
         board.humanPlayer(player);
         selectPos=-1;
@@ -60,7 +54,7 @@ public class StrategoControl extends Observable implements StrategoAIListener {
         }
         if (canStart) {
             board.initPossibleBombs (y, z);
-            board.changeGameStatus(GameStatus.PLAY);
+            board.changeGameStatus(StrategoConstants.GameStatus.PLAY);
             continueTimer();
         }
         return canStart;
@@ -75,7 +69,7 @@ public class StrategoControl extends Observable implements StrategoAIListener {
         } else {
             randomFake ();
         }
-        board.changeGameStatus(GameStatus.PLAY);
+        board.changeGameStatus(StrategoConstants.GameStatus.PLAY);
     }
 
     public void movePiece (int to) {
@@ -103,14 +97,14 @@ public class StrategoControl extends Observable implements StrategoAIListener {
         switchTimer();
         board.changeTurn();
         if (board.getTurn() == board.getAIPlayer()) {
-            playAI ();
+            //playAI ();
         }
     }
 
-    public void playAI () {
+    /*public void playAI () {
         Thread searchThread = new Thread(new StrategoAI(getBoard(), this));
         searchThread.start();
-    }
+    }*/
 
     public boolean selectPiece (int pos) {
         switch(board.getGameStatus()) {
@@ -298,7 +292,7 @@ public class StrategoControl extends Observable implements StrategoAIListener {
                 && pos != StrategoConstants.g5 && pos != StrategoConstants.h5;
     }
 
-    public static void main (String args[]) throws Exception{
+    /*public static void main (String args[]) throws Exception{
         StrategoControl control = new StrategoControl(StrategoConstants.RED);
         control.randomPieces(StrategoConstants.RED);
         control.randomPieces(StrategoConstants.BLUE);
@@ -311,9 +305,9 @@ public class StrategoControl extends Observable implements StrategoAIListener {
             Thread searchThread = new Thread(new StrategoAI(control.getBoard(), control));
             searchThread.start();
         }
-    }
+    }*/
 
-    @Override
+    /*@Override
     public void moveAI(int from, int to) {
         System.out.println("AI is moving:" + from + "->" + to);
         if (from != -1 && to != -1) {
@@ -325,5 +319,5 @@ public class StrategoControl extends Observable implements StrategoAIListener {
             //TODO Throw Error
             Log.e(TAG, "Wrong position got from AI!");
         }
-    }
+    }*/
 }

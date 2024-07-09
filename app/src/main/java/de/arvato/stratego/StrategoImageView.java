@@ -14,7 +14,7 @@ import android.view.View;
 
 import androidx.annotation.Nullable;
 
-import de.arvato.stratego.ai.PieceEnum;
+import de.arvato.stratego.game.PieceEnum;
 
 public class StrategoImageView extends View {
 
@@ -135,11 +135,13 @@ public class StrategoImageView extends View {
                 }
 
                 if(ico.bPiece){
-                        //TODO delete 1==2
-                        if (ico.enemy && 1==2) {
-                                bmp = cover[ico.color];
+                        if (ico.enemy) {
+                                //bmp = cover[ico.color];
+                                //TODO show temporary the enemy pieces
+                                bmp = arrPieceBitmaps[ico.color][ico.piece];
                         } else {
-                                bmp = arrPieceBitmaps[ico.color][ico.piece];}
+                                bmp = arrPieceBitmaps[ico.color][ico.piece];
+                        }
 
                         //sActivity = (StrategoImageView.get_ssActivity() == null) ?  "" : start.get_ssActivity();
                         // todo if it's fine then will put back && statements

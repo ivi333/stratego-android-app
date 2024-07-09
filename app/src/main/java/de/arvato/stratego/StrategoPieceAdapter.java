@@ -7,14 +7,14 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 
-import de.arvato.stratego.ai.PieceEnum;
+import de.arvato.stratego.game.PieceEnum;
 
 public class StrategoPieceAdapter extends BaseAdapter {
 
     private static final Bitmap anyBitmap = StrategoImageView.arrPieceBitmaps[StrategoConstants.RED][PieceEnum.FLAG.getId()];
 
     private final Context context;
-    private final PieceEnum [] pieces;
+    private final PieceEnum[] pieces;
     private final int player;
 
     public StrategoPieceAdapter (Context context, PieceEnum [] pieces, int player) {

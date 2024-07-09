@@ -25,7 +25,7 @@ import java.util.Observer;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import de.arvato.stratego.ai.PieceEnum;
+import de.arvato.stratego.game.PieceEnum;
 
 public class StrategoView implements Observer {
 
@@ -319,9 +319,10 @@ public class StrategoView implements Observer {
     }
 
     public void initFightView () {
-        pieceFight1 = parent.findViewById(R.id.pieceFightRed);
-        pieceFight2 =  parent.findViewById(R.id.pieceFightBlue);
-        fightView = parent.findViewById(R.id.p1vsp2);
+        //TODO
+        //pieceFight1 = parent.findViewById(R.id.pieceFightRed);
+        //pieceFight2 =  parent.findViewById(R.id.pieceFightBlue);
+        //fightView = parent.findViewById(R.id.p1vsp2);
         //pieceFight1.setImageBitmap(StrategoImageView.arrPieceBitmaps[StrategoConstants.RED][PieceEnum.MINER.getId()]);
         //pieceFight2.setImageBitmap(StrategoImageView.arrPieceBitmaps[StrategoConstants.BLUE][PieceEnum.SCOUT.getId()]);
     }

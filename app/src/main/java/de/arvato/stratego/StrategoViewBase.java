@@ -15,8 +15,8 @@ import android.widget.TableRow.LayoutParams;
 
 import java.util.List;
 
-import de.arvato.stratego.ai.Piece;
-import de.arvato.stratego.ai.PieceEnum;
+import de.arvato.stratego.game.Piece;
+import de.arvato.stratego.game.PieceEnum;
 
 public class StrategoViewBase {
 

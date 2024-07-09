@@ -363,7 +363,7 @@
                 </TableRow>
 
             </TableLayout>
-
+            <!--
             <FrameLayout
                 android:id="@+id/FrameLayout1"
                 android:layout_width="fill_parent"
@@ -423,7 +423,7 @@
                     </LinearLayout>
                 </RelativeLayout>
             </FrameLayout>
-
+            -->
         </ViewAnimator>
 
 
