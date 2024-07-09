@@ -117,8 +117,9 @@ open class MyBaseActivity : Activity() {
     companion object Factory{
         const val TAG = "MyBaseActivity"
         // @see http://stackoverflow.com/questions/9739498/android-action-bar-not-showing-overflow
-        @JvmOverloads
+        /*@JvmOverloads
         fun makeActionOverflowMenuShown(activity: Activity?) { //devices with hardware menu button (e.g. Samsung Note) don't show action overflow menu
+            if (activity == null ) return;
             try {
                 val config = ViewConfiguration.get(activity)
                 val menuKeyField =
@@ -130,7 +131,7 @@ open class MyBaseActivity : Activity() {
             } catch (e: Exception) {
                 Log.d("main", e.localizedMessage)
             }
-        }
+        }*/
 
         fun getPrefs(activity: Activity): SharedPreferences {
             return activity.getSharedPreferences("ChessPlayer", MODE_PRIVATE)
