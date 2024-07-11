@@ -1,5 +1,7 @@
 package de.arvato.stratego;
 
+import android.widget.Toast;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
@@ -27,14 +29,15 @@ public class StrategoControl extends Observable  {
     protected Board board;
 
     public StrategoControl (int player) {
-        board = new Board();
+        /*board = new Board();
         board.changeGameStatus(StrategoConstants.GameStatus.INIT_BOARD);
         board.initTurn(player);
         board.humanPlayer(player);
         selectPos=-1;
         if (fakeGame) {
             startFakeGame();
-        }
+        }*/
+        resetGame();
     }
 
     public boolean startGame () {
@@ -53,7 +56,7 @@ public class StrategoControl extends Observable  {
             }
         }
         if (canStart) {
-            board.initPossibleBombs (y, z);
+            //board.initPossibleBombs (y, z);
             board.changeGameStatus(StrategoConstants.GameStatus.PLAY);
             continueTimer();
         }
@@ -72,24 +75,27 @@ public class StrategoControl extends Observable  {
         board.changeGameStatus(StrategoConstants.GameStatus.PLAY);
     }
 
-    public void movePiece (int to) {
-//        System.out.println("movePiece from:" + selectPos + " to:" + to + " gameStatus:" + board.getGameStatus().name());
+    public boolean movePiece (int to) {
+        boolean canMove = false;
         switch (board.getGameStatus()) {
             case PLAY:
-                board.move (to, selectPos);
-                changeTurn();
-                selectPos=-1;
+                canMove = board.move (to, selectPos);
+                if (canMove) {
+                    changeTurn();
+                    selectPos = -1;
+                }
                 break;
             case INIT_BOARD:
-                board.initBoard (to, selectPos);
+                canMove = board.initBoard (to, selectPos);
                 selectPos=-1;
                 break;
-            case DRAW_REPEAT:
+            /*case DRAW_REPEAT:
                 //TODO
-                break;
+                break;*/
             default:
                 break;
         }
+        return canMove;
     }
 
 
@@ -224,15 +230,30 @@ public class StrategoControl extends Observable  {
         }
     }
 
+    protected void stopTimer () {
+        lClockStartRed = 0;
+        lClockStartBlue = 0;
+    }
+
+    protected void resetGame () {
+        int player = StrategoConstants.RED;
+        board = new Board();
+        board.changeGameStatus(StrategoConstants.GameStatus.INIT_BOARD);
+        board.initTurn(player);
+        board.humanPlayer(player);
+        selectPos=-1;
+        randomPieces(StrategoConstants.RED);
+        randomPieces(StrategoConstants.BLUE);
+        resetTimer();
+    }
+
     public void resetTimer(){
         lClockRed = 0;
         lClockBlue = 0;
         lClockStartRed = 0;
         lClockStartBlue = 0;
-        continueTimer();
     }
 
-    //TODO Use after pausing
     protected void continueTimer(){
         if(lClockTotal > 0){
             if(board.getTurn() == StrategoConstants.RED)
@@ -244,31 +265,6 @@ public class StrategoControl extends Observable  {
 
     public static int randomBetween (int low, int high) {
         return rng.nextInt(high-low) + low;
-    }
-
-    public static PieceEnum [] createStartPiece (int player) {
-        PieceEnum startPieces [] = new PieceEnum [40];
-        Map<PieceEnum, Integer> tmpPieces = new TreeMap<>();
-        tmpPieces.put(PieceEnum.MARSHALL, StrategoConstants.MAR_MAX);
-        tmpPieces.put(PieceEnum.GENERAL, StrategoConstants.GEN_MAX);
-        tmpPieces.put(PieceEnum.COLONEL, StrategoConstants.COR_MAX);
-        tmpPieces.put(PieceEnum.MAJOR, StrategoConstants.COM_MAX);
-        tmpPieces.put(PieceEnum.CAPTAIN, StrategoConstants.CAP_MAX);
-        tmpPieces.put(PieceEnum.LIEUTENANT, StrategoConstants.TEN_MAX);
-        tmpPieces.put(PieceEnum.SERGEANT, StrategoConstants.SAR_MAX);
-        tmpPieces.put(PieceEnum.MINER, StrategoConstants.MIN_MAX);
-        tmpPieces.put(PieceEnum.SCOUT, StrategoConstants.EXP_MAX);
-        tmpPieces.put(PieceEnum.SPY, StrategoConstants.ESP_MAX);
-        tmpPieces.put(PieceEnum.FLAG, StrategoConstants.BAN_MAX);
-        tmpPieces.put(PieceEnum.BOMB, StrategoConstants.BOM_MAX);
-        int k=0;
-        for (Map.Entry<PieceEnum, Integer> entry : tmpPieces.entrySet()) {
-//            System.out.println("manage piece:" + entry.getKey().getName());
-            for (int j=0;j<entry.getValue();j++) {
-                startPieces[k++] = entry.getKey();
-            }
-        }
-        return startPieces;
     }
 
     protected long getBlueRemainClock(){
@@ -291,33 +287,4 @@ public class StrategoControl extends Observable  {
                 && pos != StrategoConstants.g6 && pos != StrategoConstants.h6
                 && pos != StrategoConstants.g5 && pos != StrategoConstants.h5;
     }
-
-    /*public static void main (String args[]) throws Exception{
-        StrategoControl control = new StrategoControl(StrategoConstants.RED);
-        control.randomPieces(StrategoConstants.RED);
-        control.randomPieces(StrategoConstants.BLUE);
-        control.board.printPieces();
-        Scanner sc = new Scanner(System.in);
-        while (true) {
-            int from = sc.nextInt();
-            int to = sc.nextInt();
-            System.out.println(from + " ->" + to);
-            Thread searchThread = new Thread(new StrategoAI(control.getBoard(), control));
-            searchThread.start();
-        }
-    }*/
-
-    /*@Override
-    public void moveAI(int from, int to) {
-        System.out.println("AI is moving:" + from + "->" + to);
-        if (from != -1 && to != -1) {
-            selectPiece(from);
-            movePiece(to);
-            setChanged();
-            notifyObservers();
-        } else {
-            //TODO Throw Error
-            Log.e(TAG, "Wrong position got from AI!");
-        }
-    }*/
 }

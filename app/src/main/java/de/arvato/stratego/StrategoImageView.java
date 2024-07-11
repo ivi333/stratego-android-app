@@ -18,7 +18,7 @@ import de.arvato.stratego.game.PieceEnum;
 
 public class StrategoImageView extends View {
 
-        public static final String TAG = "ChessImageView";
+        public static final String TAG = "StrategoImageView";
 
         public static Bitmap[][] arrPieceBitmaps = new Bitmap[2][12];
         public static Bitmap bmpBorder, bmpSelect, bmpSelectLight;

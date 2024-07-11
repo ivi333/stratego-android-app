@@ -8,6 +8,8 @@ import android.util.Log;
 import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -47,6 +49,7 @@ public class StrategoView implements Observer {
     private View fightView;
     private Drawable drawableFightWin, drawableFightLost;
     private Pair latestFight;
+    private TextView winnerTextView;
 
     @Override
     public void update(Observable o, Object arg) {
@@ -120,18 +123,6 @@ public class StrategoView implements Observer {
             viewAnimator.setInAnimation(parent, R.anim.slide_right);
         }
 
-        //View bottomPlayLayoutView = parent.findViewById(R.id.bottomPlayLayout);
-
-        // Init the board with random pieces
-        if (!strategoControl.fakeGame) {
-            strategoControl.randomPieces(player);
-            if (player == StrategoConstants.RED) {
-                strategoControl.randomPieces(StrategoConstants.BLUE);
-            } else {
-                strategoControl.randomPieces(StrategoConstants.RED);
-            }
-        }
-
         // Init the captured View
         initCapturedImages ();
 
@@ -165,11 +156,21 @@ public class StrategoView implements Observer {
             if (selectedPos != -1) {
                 Log.d (TAG, "Move Piece to target index:" + index);
                 strategoControl.movePiece(index);
+                checkFinishedGame ();
                 selectedPos = -1;
             }
         }
         strategoViewBase.paintBoard(strategoControl, selectedPos, nextMovements);
         updateStatus();
+    }
+
+    private void checkFinishedGame() {
+        if (strategoControl.getBoard().getGameStatus() == StrategoConstants.GameStatus.FINISH) {
+            strategoControl.stopTimer();
+            winnerTextView.setVisibility(View.VISIBLE);
+            Animation bounceAnimation = AnimationUtils.loadAnimation(parent.getApplicationContext(), R.anim.bounce);
+            winnerTextView.startAnimation(bounceAnimation);
+        }
     }
 
     private void initDistributePieces() {
@@ -189,7 +190,9 @@ public class StrategoView implements Observer {
         );*/
 
         Button bPlayerReady = parent.findViewById(R.id.PlayerReady);
+        Button bPlayerReset = parent.findViewById(R.id.PlayerReset);
         Button bPlayerRandom = parent.findViewById(R.id.PlayerRandom);
+        winnerTextView = parent.findViewById(R.id.winnerTextView);
 
         bPlayerReady.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -197,12 +200,30 @@ public class StrategoView implements Observer {
                 boolean b = strategoControl.startGame();
                 if (!b) {
                     Toast.makeText(parent.getApplicationContext(), "Fill all pieces!", Toast.LENGTH_SHORT).show();
-                } else {
-                    //TODO Game can start waiting for oponent in multiplayer?
                 }
             }
         }
         );
+
+        bPlayerReset.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                winnerTextView.setVisibility(View.GONE);
+
+                // Init the captured View
+                //initCapturedImages ();
+
+                // Timer
+                //initTimer ();
+
+                strategoControl.resetGame();
+
+                // Paint
+                paintBoard();
+
+            }
+        });
 
         bPlayerRandom.setOnClickListener(new View.OnClickListener() {
             @Override

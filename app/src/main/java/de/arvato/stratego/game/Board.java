@@ -1,5 +1,8 @@
 package de.arvato.stratego.game;
 
+import android.util.Log;
+import android.widget.Toast;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -21,6 +24,7 @@ public class Board {
     protected List<Integer> possibleBombsHuman;
     protected List<HistoryPiece> historyMoves;
 
+    private static final String TAG ="Board";
 
     public Board () {
         this.pieces = new Piece [StrategoConstants.BOARD_SIZE];
@@ -62,7 +66,7 @@ public class Board {
         }
     }
 
-    public void initBoard (int to, int selectPos) {
+    public boolean initBoard (int to, int selectPos) {
         int x1, x2;
         if (humanPlayer == StrategoConstants.RED) {
             x1 = StrategoConstants.RED_PLAYER[0];
@@ -76,15 +80,16 @@ public class Board {
             Piece tmp = pieces[to];
             pieces[to] = pieces[selectPos];
             pieces[selectPos] = tmp;
+            return true;
         }
-        selectPos = -1;
+        return false;
     }
 
-    public void move (int to, int selectPos) {
+    public boolean move (int to, int selectPos) {
         if (selectPos != -1 && isPlayablePosition(to)) {
             if (!isValidMovement (selectPos, to)) {
-                System.out.println("Move no possible from:" + selectPos + " to:" + to);
-                return;
+                Log.e(TAG, "Move no possible from:" + selectPos + " to:" + to);
+                return false;
             }
             Piece pieceFrom = pieces[selectPos];
             Piece pieceTo = pieces[to];
@@ -114,18 +119,17 @@ public class Board {
                 pieceTo.setPieceDiscovered(true);
             }
 
-            if (fightStatus != PieceFightStatus.NO_FIGHT) {
-                //TODO
-            }
-            boolean updatedBomb = updatePossibleBoms (selectPos);
-            addHistory (selectPos, to, pieceFrom, pieceTo, fightStatus, updatedBomb, getTurn());
+            //boolean updatedBomb = updatePossibleBoms (selectPos);
+            //addHistory (selectPos, to, pieceFrom, pieceTo, fightStatus, updatedBomb, getTurn());
             countMoves++;
-            selectPos = -1;
         } else {
-            System.out.println("Move no possible from:" + selectPos + " to:" + to);
+            Log.e(TAG, "Move no possible from:" + selectPos + " to:" + to);
+            return false;
         }
+        return true;
     }
 
+    //TODO Ivan review
     private void addHistory(int selectPos, int to, Piece pieceFrom, Piece pieceTo, PieceFightStatus fightStatus, boolean updatedBomb, int player) {
         HistoryPiece history = new HistoryPiece();
         history.moveFrom = selectPos;
@@ -189,7 +193,8 @@ public class Board {
         }
     }
 
-    private boolean updatePossibleBoms(int selectPos) {
+    //TODO ivan review
+    /*private boolean updatePossibleBoms(int selectPos) {
         if (turn == getHumanPlayer()) {
             Integer i = Integer.valueOf(selectPos);
             if (possibleBombsHuman.contains(i)) {
@@ -198,7 +203,7 @@ public class Board {
             }
         }
         return false;
-    }
+    }*/
 
     /*public Board cloneBoard () {
         Board newBoard = new Board();
@@ -281,7 +286,7 @@ public class Board {
         return res;
     }
 
-    public Map<Integer, List<Integer>> getPiecesWithMovement () {
+    /*public Map<Integer, List<Integer>> getPiecesWithMovement () {
         Map<Integer, List<Integer>> mapPieces = new HashMap<Integer, List<Integer>>();
         for (int z=0;z<StrategoConstants.BOARD_SIZE;z++) {
             if (getPieceAt(z) != null && getPieceAt(z).getPlayer() == this.turn) {
@@ -292,9 +297,9 @@ public class Board {
             }
         }
         return mapPieces;
-    }
+    }*/
 
-    public Map<Integer, List<Integer>> getPiecesDiscoveredWithMovement (int player) {
+    /*public Map<Integer, List<Integer>> getPiecesDiscoveredWithMovement (int player) {
         Map<Integer, List<Integer>> mapPieces = new HashMap<Integer, List<Integer>>();
         for (int z=0;z<StrategoConstants.BOARD_SIZE;z++) {
             if (getPieceAt(z) != null && getPieceAt(z).getPlayer() == player && getPieceAt(z).isPieceDiscovered()) {
@@ -305,7 +310,7 @@ public class Board {
             }
         }
         return mapPieces;
-    }
+    }*/
 
     private List<Integer> calculateMovement(final Piece piece, final int pos, final boolean isMultiple) {
         int row = Pos.row(pos);
@@ -457,7 +462,7 @@ public class Board {
                 sb.append("    ---    ");
             }
         }
-        System.out.println(sb.toString());
+        Log.d(TAG, sb.toString());
     }
 
     public StrategoConstants.GameStatus getGameStatus() {
@@ -478,7 +483,7 @@ public class Board {
         return res;
     }
 
-    public int piecesDiscoveredCount (int player) {
+    /*public int piecesDiscoveredCount (int player) {
         int total=0;
         for (int z=0;z<StrategoConstants.BOARD_SIZE;z++) {
             if (pieces[z]!=null && pieces[z].getPlayer() == player && pieces[z].isPieceDiscovered()) {
@@ -486,9 +491,9 @@ public class Board {
             }
         }
         return total;
-    }
+    }*/
 
-    public boolean hasDiscoveredPiece (int player, PieceEnum piece) {
+    /*public boolean hasDiscoveredPiece (int player, PieceEnum piece) {
         boolean res=false;
         for (int z=0;z<StrategoConstants.BOARD_SIZE && !res;z++) {
             if (pieces[z]!=null && pieces[z].getPlayer() == player && pieces[z].getPieceEnum() == piece && pieces[z].isPieceDiscovered()) {
@@ -496,14 +501,9 @@ public class Board {
             }
         }
         return res;
-    }
+    }*/
 
-    /**
-     * @param player
-     * @param discovered
-     * @return
-     */
-    public Map<PieceEnum, List<Integer>> getPositionsPiecesByDiscovered (int player, boolean discovered) {
+    /*public Map<PieceEnum, List<Integer>> getPositionsPiecesByDiscovered (int player, boolean discovered) {
         Map<PieceEnum, List<Integer>> result = new HashMap<>();
         for (int z=0;z<StrategoConstants.BOARD_SIZE;z++) {
             if (pieces[z]!=null && pieces[z].getPlayer() == player && pieces[z].isPieceDiscovered() == discovered) {
@@ -515,7 +515,7 @@ public class Board {
             }
         }
         return result;
-    }
+    }*/
 
     public Map<PieceEnum, List<Integer>> getPositionPieces (int player) {
         Map<PieceEnum, List<Integer>> result = new HashMap<>();
@@ -559,11 +559,12 @@ public class Board {
         return countMoves;
     }
 
+    /* TODO What the fuck does it?
     public void initPossibleBombs(int y, int z) {
         for (int x=y ; x < z; x++ ) {
             possibleBombsHuman.add(x);
         }
-    }
+    }*/
 
     public int getPointsCapturedPieces(int player) {
         Map<PieceEnum, Integer> tmp;
@@ -637,13 +638,13 @@ public class Board {
         builder.append(", \ncountMoves=");
         builder.append(countMoves);
         builder.append("]");
-        System.out.println(builder.toString());
+        Log.d(TAG, builder.toString());
     }
 
     public void printDiscoveredPieces () {
         for (int z=0;z<StrategoConstants.BOARD_SIZE ;z++) {
             if (pieces[z]!=null && pieces[z].isPieceDiscovered()) {
-                System.out.println("Disc.Piece Pos:" + z + " " + pieces[z]);
+                Log.d(TAG, "Disc.Piece Pos:" + z + " " + pieces[z]);
             }
         }
     }
