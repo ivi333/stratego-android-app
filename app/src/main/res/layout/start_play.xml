@@ -114,7 +114,7 @@
                         android:id="@+id/PlayerReady"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Player Ready"
+                        android:text="Ready"
                         style="@style/StrategoImageButton"
                          />
 
@@ -122,7 +122,7 @@
                         android:id="@+id/PlayerReset"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Reset Game"
+                        android:text="Reset"
                         style="@style/StrategoImageButton"
                          />
 
@@ -130,16 +130,34 @@
                         android:id="@+id/PlayerRandom"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Player Random"
+                        android:text="Random"
                         style="@style/StrategoImageButton"
                         />
+
 
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/SimulateMovement"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Simulate"
+                        style="@style/StrategoImageButton"
+                        />
+
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
                     android:gravity="center"
+                    android:background="@color/red"
                     android:orientation="vertical">
 
                     <TextView
@@ -148,7 +166,7 @@
                         android:layout_height="wrap_content"
                         android:text="You Win!"
                         android:textSize="24sp"
-                        android:visibility="gone"
+                        android:visibility="visible"
                         android:textColor="@android:color/holo_green_dark" />
 
                 </LinearLayout>
