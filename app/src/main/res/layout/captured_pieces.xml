@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:padding="1dp">
+
+    <de.arvato.stratego.StrategoCapturedImageView
+        android:id="@+id/capturedImage"
+        style="@style/CaptureImageStyle" />
+
+    <TextView
+        android:id="@+id/capturedText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:paddingTop="10dp"
+        android:textSize="20sp" />
+
+</LinearLayout>

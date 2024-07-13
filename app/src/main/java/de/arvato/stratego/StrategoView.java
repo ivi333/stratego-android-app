@@ -17,8 +17,11 @@ import android.widget.Toast;
 import android.widget.ViewAnimator;
 
 import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.lang.ref.WeakReference;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -28,6 +31,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import de.arvato.stratego.game.PieceEnum;
+import de.arvato.stratego.util.SpacingItemDecoration;
 
 public class StrategoView implements Observer {
 
@@ -50,6 +54,8 @@ public class StrategoView implements Observer {
     private Drawable drawableFightWin, drawableFightLost;
     private Pair latestFight;
     private TextView winnerTextView;
+
+    private RecyclerView recyclerView;
 
     @Override
     public void update(Observable o, Object arg) {
@@ -139,7 +145,7 @@ public class StrategoView implements Observer {
     }
 
     public void handleClick(int index) {
-        Log.d(TAG, "handleClick at index:" + index);
+        Log.i(TAG, "handleClick at index:" + index);
         nextMovements = Collections.emptyList();
         if (strategoControl.selectPiece(index)) {
             Log.d (TAG, "Piece at position:" + index + " has been selected.");
@@ -236,7 +242,7 @@ public class StrategoView implements Observer {
     }
 
     private void initCapturedImages() {
-        arrImageCaptured = new StrategoCapturedImageView[2][12];
+        /*arrImageCaptured = new StrategoCapturedImageView[2][12];
         arrImageCaptured[StrategoConstants.RED][PieceEnum.MARSHALL.getId()] = (StrategoCapturedImageView) parent.findViewById(R.id.ImageCapturedRedMarshall);
         arrImageCaptured[StrategoConstants.RED][PieceEnum.MARSHALL.getId()].initBitmap("mariscal_red.png");
         arrImageCaptured[StrategoConstants.RED][PieceEnum.GENERAL.getId()] = (StrategoCapturedImageView) parent.findViewById(R.id.ImageCapturedRedGeneral);
@@ -260,8 +266,10 @@ public class StrategoView implements Observer {
         arrImageCaptured[StrategoConstants.RED][PieceEnum.BOMB.getId()] = (StrategoCapturedImageView) parent.findViewById(R.id.ImageCapturedRedBomb);
         arrImageCaptured[StrategoConstants.RED][PieceEnum.BOMB.getId()].initBitmap("bomb_red.png");
         arrImageCaptured[StrategoConstants.RED][PieceEnum.FLAG.getId()] = (StrategoCapturedImageView) parent.findViewById(R.id.ImageCapturedRedFlag);
-        arrImageCaptured[StrategoConstants.RED][PieceEnum.FLAG.getId()].initBitmap("bandera_red.png");
-        arrImageCaptured[StrategoConstants.BLUE][PieceEnum.MARSHALL.getId()] = (StrategoCapturedImageView) parent.findViewById(R.id.ImageCapturedBlueMarshall);
+        arrImageCaptured[StrategoConstants.RED][PieceEnum.FLAG.getId()].initBitmap("bandera_red.png");*/
+
+
+        /*arrImageCaptured[StrategoConstants.BLUE][PieceEnum.MARSHALL.getId()] = (StrategoCapturedImageView) parent.findViewById(R.id.ImageCapturedBlueMarshall);
         arrImageCaptured[StrategoConstants.BLUE][PieceEnum.MARSHALL.getId()].initBitmap("mariscal_blue.png");
         arrImageCaptured[StrategoConstants.BLUE][PieceEnum.GENERAL.getId()] = (StrategoCapturedImageView) parent.findViewById(R.id.ImageCapturedBlueGeneral);
         arrImageCaptured[StrategoConstants.BLUE][PieceEnum.GENERAL.getId()].initBitmap("general_blue.png");
@@ -284,10 +292,10 @@ public class StrategoView implements Observer {
         arrImageCaptured[StrategoConstants.BLUE][PieceEnum.BOMB.getId()] = (StrategoCapturedImageView) parent.findViewById(R.id.ImageCapturedBlueBomb);
         arrImageCaptured[StrategoConstants.BLUE][PieceEnum.BOMB.getId()].initBitmap("bomb_blue.png");
         arrImageCaptured[StrategoConstants.BLUE][PieceEnum.FLAG.getId()] = (StrategoCapturedImageView) parent.findViewById(R.id.ImageCapturedBlueFlag);
-        arrImageCaptured[StrategoConstants.BLUE][PieceEnum.FLAG.getId()].initBitmap("bandera_blue.png");
+        arrImageCaptured[StrategoConstants.BLUE][PieceEnum.FLAG.getId()].initBitmap("bandera_blue.png");*/
 
         arrTextCaptured = new TextView[2][12];
-        arrTextCaptured[StrategoConstants.RED][PieceEnum.MARSHALL.getId()] =  parent.findViewById(R.id.TextViewCapturedRedMarshall);
+        /*arrTextCaptured[StrategoConstants.RED][PieceEnum.MARSHALL.getId()] =  parent.findViewById(R.id.TextViewCapturedRedMarshall);
         arrTextCaptured[StrategoConstants.RED][PieceEnum.GENERAL.getId()] =  parent.findViewById(R.id.TextViewCapturedRedGeneral);
         arrTextCaptured[StrategoConstants.RED][PieceEnum.COLONEL.getId()] =  parent.findViewById(R.id.TextViewCapturedRedColonel);
         arrTextCaptured[StrategoConstants.RED][PieceEnum.LIEUTENANT.getId()] =  parent.findViewById(R.id.TextViewCapturedRedLieutenant);
@@ -310,14 +318,54 @@ public class StrategoView implements Observer {
         arrTextCaptured[StrategoConstants.BLUE][PieceEnum.SCOUT.getId()] =  parent.findViewById(R.id.TextViewCapturedBlueScout);
         arrTextCaptured[StrategoConstants.BLUE][PieceEnum.SPY.getId()] =  parent.findViewById(R.id.TextViewCapturedBlueSpy);
         arrTextCaptured[StrategoConstants.BLUE][PieceEnum.BOMB.getId()] =  parent.findViewById(R.id.TextViewCapturedBlueBomb);
-        arrTextCaptured[StrategoConstants.BLUE][PieceEnum.FLAG.getId()] =  parent.findViewById(R.id.TextViewCapturedBlueFlag);
+        arrTextCaptured[StrategoConstants.BLUE][PieceEnum.FLAG.getId()] =  parent.findViewById(R.id.TextViewCapturedBlueFlag);*/
 
-        for (int i=0;i<2;i++) {
+        /*for (int i=0;i<2;i++) {
             for (int j=0;j<12;j++) {
-                arrImageCaptured[i][j].setVisibility(View.INVISIBLE);
-                arrTextCaptured[i][j].setVisibility(View.INVISIBLE);
+                if (arrImageCaptured[i][j]!=null) {
+                    arrImageCaptured[i][j].setVisibility(View.VISIBLE);
+                }
+                //arrTextCaptured[i][j].setVisibility(View.INVISIBLE);
             }
-        }
+        }*/
+
+        recyclerView = parent.findViewById(R.id.recyclerView);
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(parent, 2);
+        recyclerView.setLayoutManager(gridLayoutManager);
+        //set spacing between columns
+        int spacingInPixels = parent.getResources().getDimensionPixelSize(R.dimen.grid_item_spacing);
+        recyclerView.addItemDecoration(new SpacingItemDecoration(spacingInPixels));
+
+        /*LinearLayoutManager layout = new LinearLayoutManager(parent);
+        layout.setOrientation(RecyclerView.VERTICAL);
+        recyclerView.setLayoutManager(layout);*/
+
+        List<CapturedPieceItem> listCapturedPieces = new ArrayList<>();
+        listCapturedPieces.add(new CapturedPieceItem(PieceEnum.MARSHALL, 1, 1));
+        listCapturedPieces.add(new CapturedPieceItem(PieceEnum.BOMB, 1, 1));
+        listCapturedPieces.add(new CapturedPieceItem(PieceEnum.BOMB, 1, 2));
+        listCapturedPieces.add(new CapturedPieceItem(PieceEnum.BOMB, 1, 3));
+        listCapturedPieces.add(new CapturedPieceItem(PieceEnum.BOMB, 1, 4));
+        listCapturedPieces.add(new CapturedPieceItem(PieceEnum.BOMB, 1, 5));
+        listCapturedPieces.add(new CapturedPieceItem(PieceEnum.BOMB, 1, 6));
+        StrategoCapturedPieceAdapter adapter = new StrategoCapturedPieceAdapter(listCapturedPieces);
+        recyclerView.setAdapter(adapter);
+
+        /**
+         recyclerView = findViewById(R.id.recycler_view);
+         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+         itemList = new ArrayList<>();
+         // Add sample data
+         itemList.add(new Item(R.drawable.sample_image, "Item 1"));
+         itemList.add(new Item(R.drawable.sample_image, "Item 2"));
+         // Add more items as needed
+
+         itemAdapter = new ItemAdapter(itemList);
+         recyclerView.setAdapter(itemAdapter);         *
+         */
+
+
     }
 
     public void paintBoard () {
@@ -408,10 +456,10 @@ public class StrategoView implements Observer {
     }
 
     private void updateCapturedPieces(int player, Map<PieceEnum, Integer> capturedPieces) {
-        for (Map.Entry<PieceEnum, Integer> entry : capturedPieces.entrySet()) {
+        /*for (Map.Entry<PieceEnum, Integer> entry : capturedPieces.entrySet()) {
             arrImageCaptured[player][entry.getKey().getId()].setVisibility(View.VISIBLE);
             arrTextCaptured[player][entry.getKey().getId()].setVisibility(View.VISIBLE);
             arrTextCaptured[player][entry.getKey().getId()].setText(String.valueOf(entry.getValue()));
-        }
+        }*/
     }
 }

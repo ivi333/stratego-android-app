@@ -53,7 +53,7 @@ public class StrategoCapturedImageView extends View {
             return;
         }
         //float scale = (float) getWidth() / _bitMap.getWidth();
-        float scale=1.0F;
+        float scale=1.00F;
         //Log.d (TAG, "scale:" + String.valueOf(scale) + " getWidth():" + getWidth() + " bitMap.getWidh():" + _bitMap.getWidth() );
         Matrix m = new Matrix();
         m.setScale(scale, scale);

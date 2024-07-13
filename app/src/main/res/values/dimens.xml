@@ -11,4 +11,5 @@
     <dimen name="headerPaddingY">4dp</dimen>
 
     <dimen name="titleTextSize">30sp</dimen>
+    <dimen name="grid_item_spacing">5dp</dimen>
 </resources>

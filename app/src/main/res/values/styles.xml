@@ -85,8 +85,8 @@
         <item name="android:textSize">12sp</item>
     </style>
     <style name="CaptureImageStyle">
-        <item name="android:layout_height">60dp</item>
-        <item name="android:layout_width">60dp</item>
+        <item name="android:layout_height">50dp</item>
+        <item name="android:layout_width">50dp</item>
     </style>
     <style name="CaptureTextStyle">
         <item name="android:gravity">center</item>
