@@ -55,7 +55,8 @@ public class StrategoView implements Observer {
     private Pair latestFight;
     private TextView winnerTextView;
 
-    private RecyclerView recyclerView;
+    private RecyclerView recyclerViewRed;
+    private RecyclerView recyclerViewBlue;
 
     @Override
     public void update(Observable o, Object arg) {
@@ -329,12 +330,13 @@ public class StrategoView implements Observer {
             }
         }*/
 
-        recyclerView = parent.findViewById(R.id.recyclerView);
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(parent, 2);
-        recyclerView.setLayoutManager(gridLayoutManager);
+        //Recycler view for Red
+        recyclerViewRed = parent.findViewById(R.id.recyclerViewRed);
+        GridLayoutManager gridLayoutManagerRed = new GridLayoutManager(parent, 2);
+        recyclerViewRed.setLayoutManager(gridLayoutManagerRed);
         //set spacing between columns
         int spacingInPixels = parent.getResources().getDimensionPixelSize(R.dimen.grid_item_spacing);
-        recyclerView.addItemDecoration(new SpacingItemDecoration(spacingInPixels));
+        recyclerViewRed.addItemDecoration(new SpacingItemDecoration(spacingInPixels));
 
         /*LinearLayoutManager layout = new LinearLayoutManager(parent);
         layout.setOrientation(RecyclerView.VERTICAL);
@@ -349,7 +351,26 @@ public class StrategoView implements Observer {
         listCapturedPieces.add(new CapturedPieceItem(PieceEnum.BOMB, 1, 5));
         listCapturedPieces.add(new CapturedPieceItem(PieceEnum.BOMB, 1, 6));
         StrategoCapturedPieceAdapter adapter = new StrategoCapturedPieceAdapter(listCapturedPieces);
-        recyclerView.setAdapter(adapter);
+        recyclerViewRed.setAdapter(adapter);
+
+        //Recycler view for Blue
+        recyclerViewBlue = parent.findViewById(R.id.recyclerViewBlue);
+        GridLayoutManager gridLayoutManagerBlue = new GridLayoutManager(parent, 2);
+        recyclerViewBlue.setLayoutManager(gridLayoutManagerBlue);
+
+        recyclerViewBlue.addItemDecoration(new SpacingItemDecoration(spacingInPixels));
+        List<CapturedPieceItem> listCapturedPiecesBlue = new ArrayList<>();
+        listCapturedPiecesBlue.add(new CapturedPieceItem(PieceEnum.MARSHALL, 0, 1));
+        listCapturedPiecesBlue.add(new CapturedPieceItem(PieceEnum.BOMB, 0, 1));
+        listCapturedPiecesBlue.add(new CapturedPieceItem(PieceEnum.BOMB, 0, 2));
+        listCapturedPiecesBlue.add(new CapturedPieceItem(PieceEnum.BOMB, 0, 3));
+        listCapturedPiecesBlue.add(new CapturedPieceItem(PieceEnum.BOMB, 0, 4));
+        listCapturedPiecesBlue.add(new CapturedPieceItem(PieceEnum.BOMB, 0, 5));
+        listCapturedPiecesBlue.add(new CapturedPieceItem(PieceEnum.BOMB, 0, 6));
+        StrategoCapturedPieceAdapter adapterBlue = new StrategoCapturedPieceAdapter(listCapturedPiecesBlue);
+        recyclerViewBlue.setAdapter(adapterBlue);
+
+
 
         /**
          recyclerView = findViewById(R.id.recycler_view);
