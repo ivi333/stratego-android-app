@@ -177,6 +177,7 @@ public class StrategoView implements Observer {
 
     private void checkFinishedGame() {
         if (strategoControl.getBoard().getGameStatus() == StrategoConstants.GameStatus.FINISH) {
+            viewAnimator.setDisplayedChild(0);
             strategoControl.stopTimer();
             winnerTextView.setVisibility(View.VISIBLE);
             Animation bounceAnimation = AnimationUtils.loadAnimation(parent.getApplicationContext(), R.anim.bounce);
@@ -203,7 +204,10 @@ public class StrategoView implements Observer {
         Button bPlayerReady = parent.findViewById(R.id.PlayerReady);
         Button bPlayerReset = parent.findViewById(R.id.PlayerReset);
         Button bPlayerRandom = parent.findViewById(R.id.PlayerRandom);
-        winnerTextView = parent.findViewById(R.id.InfoText);
+        TextView InfoText = parent.findViewById(R.id.InfoText);
+        TextView InfoText2 = parent.findViewById(R.id.InfoText2);
+        TextView InfoText3 = parent.findViewById(R.id.InfoText3);
+        winnerTextView = parent.findViewById(R.id.winnerTextView);
 
         bPlayerReady.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -213,6 +217,11 @@ public class StrategoView implements Observer {
                     Toast.makeText(parent.getApplicationContext(), "Fill all pieces!", Toast.LENGTH_SHORT).show();
                 } else {
                     viewAnimator.setDisplayedChild(1);
+                    InfoText.setVisibility(View.GONE);
+                    InfoText2.setVisibility(View.GONE);
+                    InfoText3.setVisibility(View.GONE);
+                    bPlayerReady.setEnabled(false);
+                    bPlayerRandom.setEnabled(false);
                 }
             }
         }
