@@ -1,6 +1,7 @@
 package de.arvato.stratego;
 
 import android.app.Activity;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.os.Message;
@@ -178,6 +179,14 @@ public class StrategoView implements Observer {
     private void checkFinishedGame() {
         if (strategoControl.getBoard().getGameStatus() == StrategoConstants.GameStatus.FINISH) {
             viewAnimator.setDisplayedChild(0);
+            int winner = strategoControl.getWinner ();
+            if (StrategoConstants.BLUE == winner) {
+                winnerTextView.setText("Blue Flag Captured!");
+                winnerTextView.setTextColor(Color.BLUE);
+            } else {
+                winnerTextView.setText("Red Flag Captured!");
+                winnerTextView.setTextColor(Color.RED);
+            }
             strategoControl.stopTimer();
             winnerTextView.setVisibility(View.VISIBLE);
             Animation bounceAnimation = AnimationUtils.loadAnimation(parent.getApplicationContext(), R.anim.bounce);

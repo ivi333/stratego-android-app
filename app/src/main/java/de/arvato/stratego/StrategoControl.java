@@ -287,4 +287,8 @@ public class StrategoControl extends Observable  {
                 && pos != StrategoConstants.g6 && pos != StrategoConstants.h6
                 && pos != StrategoConstants.g5 && pos != StrategoConstants.h5;
     }
+
+    public int getWinner() {
+        return board.getTurn();
+    }
 }
