@@ -39,24 +39,30 @@ public class StrategoView implements Observer {
 
     private StrategoViewBase strategoViewBase;
     private StrategoActivity parent;
-    private LayoutInflater inflater;
+    //private LayoutInflater inflater;
     private StrategoControl strategoControl;
     private ViewAnimator viewAnimator;
-    private StrategoCapturedImageView[][] arrImageCaptured;
-    private TextView[][] arrTextCaptured;
+    //private StrategoCapturedImageView[][] arrImageCaptured;
+    //private TextView[][] arrTextCaptured;
     private int selectedPos;
     private List<Integer> nextMovements;
     private int player;
     private Timer timer;
     private TextView textViewClockTimeTop, textViewClockTimeBottom;
-    private ImageView pieceFight1, pieceFight2;
-    private View fightView;
+    //private ImageView pieceFight1, pieceFight2;
+    //private View fightView;
     private Drawable drawableFightWin, drawableFightLost;
     private Pair latestFight;
     private TextView winnerTextView;
 
     private RecyclerView recyclerViewRed;
     private RecyclerView recyclerViewBlue;
+
+    private StrategoCapturedPieceAdapter adapterBlue;
+    private StrategoCapturedPieceAdapter adapterRed;
+
+    private List<CapturedPieceItem> listCapturedPiecesBlue;
+    private List<CapturedPieceItem> listCapturedPiecesRed;
 
     @Override
     public void update(Observable o, Object arg) {
@@ -104,7 +110,7 @@ public class StrategoView implements Observer {
 
         parent = (StrategoActivity) activity;
         strategoViewBase = new StrategoViewBase(activity, player);
-        inflater = (LayoutInflater) parent.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
+        //inflater = (LayoutInflater) parent.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
 
         drawableFightWin = ContextCompat.getDrawable(parent.getApplicationContext(), R.drawable.fight_win);
         drawableFightLost =  ContextCompat.getDrawable(parent.getApplicationContext(), R.drawable.fight_lost);
@@ -207,6 +213,8 @@ public class StrategoView implements Observer {
                 boolean b = strategoControl.startGame();
                 if (!b) {
                     Toast.makeText(parent.getApplicationContext(), "Fill all pieces!", Toast.LENGTH_SHORT).show();
+                } else {
+                    viewAnimator.setDisplayedChild(1);
                 }
             }
         }
@@ -243,93 +251,6 @@ public class StrategoView implements Observer {
     }
 
     private void initCapturedImages() {
-        /*arrImageCaptured = new StrategoCapturedImageView[2][12];
-        arrImageCaptured[StrategoConstants.RED][PieceEnum.MARSHALL.getId()] = (StrategoCapturedImageView) parent.findViewById(R.id.ImageCapturedRedMarshall);
-        arrImageCaptured[StrategoConstants.RED][PieceEnum.MARSHALL.getId()].initBitmap("mariscal_red.png");
-        arrImageCaptured[StrategoConstants.RED][PieceEnum.GENERAL.getId()] = (StrategoCapturedImageView) parent.findViewById(R.id.ImageCapturedRedGeneral);
-        arrImageCaptured[StrategoConstants.RED][PieceEnum.GENERAL.getId()].initBitmap("general_red.png");
-        arrImageCaptured[StrategoConstants.RED][PieceEnum.COLONEL.getId()] = (StrategoCapturedImageView) parent.findViewById(R.id.ImageCapturedRedColonel);
-        arrImageCaptured[StrategoConstants.RED][PieceEnum.COLONEL.getId()].initBitmap("coronel_red.png");
-        arrImageCaptured[StrategoConstants.RED][PieceEnum.LIEUTENANT.getId()] = (StrategoCapturedImageView) parent.findViewById(R.id.ImageCapturedRedLieutenant);
-        arrImageCaptured[StrategoConstants.RED][PieceEnum.LIEUTENANT.getId()].initBitmap("lituant_red.png");
-        arrImageCaptured[StrategoConstants.RED][PieceEnum.CAPTAIN.getId()] = (StrategoCapturedImageView) parent.findViewById(R.id.ImageCapturedRedCaptain);
-        arrImageCaptured[StrategoConstants.RED][PieceEnum.CAPTAIN.getId()].initBitmap("capitan_red.png");
-        arrImageCaptured[StrategoConstants.RED][PieceEnum.MAJOR.getId()] = (StrategoCapturedImageView) parent.findViewById(R.id.ImageCapturedRedMajor);
-        arrImageCaptured[StrategoConstants.RED][PieceEnum.MAJOR.getId()].initBitmap("major_red.png");
-        arrImageCaptured[StrategoConstants.RED][PieceEnum.SERGEANT.getId()] = (StrategoCapturedImageView) parent.findViewById(R.id.ImageCapturedRedSergeant);
-        arrImageCaptured[StrategoConstants.RED][PieceEnum.SERGEANT.getId()].initBitmap("sargento_red.png");
-        arrImageCaptured[StrategoConstants.RED][PieceEnum.MINER.getId()] = (StrategoCapturedImageView) parent.findViewById(R.id.ImageCapturedRedMiner);
-        arrImageCaptured[StrategoConstants.RED][PieceEnum.MINER.getId()].initBitmap("minero_red.png");
-        arrImageCaptured[StrategoConstants.RED][PieceEnum.SCOUT.getId()] = (StrategoCapturedImageView) parent.findViewById(R.id.ImageCapturedRedScout);
-        arrImageCaptured[StrategoConstants.RED][PieceEnum.SCOUT.getId()].initBitmap("scout_red.png");
-        arrImageCaptured[StrategoConstants.RED][PieceEnum.SPY.getId()] = (StrategoCapturedImageView) parent.findViewById(R.id.ImageCapturedRedSpy);
-        arrImageCaptured[StrategoConstants.RED][PieceEnum.SPY.getId()].initBitmap("spy_red.png");
-        arrImageCaptured[StrategoConstants.RED][PieceEnum.BOMB.getId()] = (StrategoCapturedImageView) parent.findViewById(R.id.ImageCapturedRedBomb);
-        arrImageCaptured[StrategoConstants.RED][PieceEnum.BOMB.getId()].initBitmap("bomb_red.png");
-        arrImageCaptured[StrategoConstants.RED][PieceEnum.FLAG.getId()] = (StrategoCapturedImageView) parent.findViewById(R.id.ImageCapturedRedFlag);
-        arrImageCaptured[StrategoConstants.RED][PieceEnum.FLAG.getId()].initBitmap("bandera_red.png");*/
-
-
-        /*arrImageCaptured[StrategoConstants.BLUE][PieceEnum.MARSHALL.getId()] = (StrategoCapturedImageView) parent.findViewById(R.id.ImageCapturedBlueMarshall);
-        arrImageCaptured[StrategoConstants.BLUE][PieceEnum.MARSHALL.getId()].initBitmap("mariscal_blue.png");
-        arrImageCaptured[StrategoConstants.BLUE][PieceEnum.GENERAL.getId()] = (StrategoCapturedImageView) parent.findViewById(R.id.ImageCapturedBlueGeneral);
-        arrImageCaptured[StrategoConstants.BLUE][PieceEnum.GENERAL.getId()].initBitmap("general_blue.png");
-        arrImageCaptured[StrategoConstants.BLUE][PieceEnum.COLONEL.getId()] = (StrategoCapturedImageView) parent.findViewById(R.id.ImageCapturedBlueColonel);
-        arrImageCaptured[StrategoConstants.BLUE][PieceEnum.COLONEL.getId()].initBitmap("coronel_blue.png");
-        arrImageCaptured[StrategoConstants.BLUE][PieceEnum.LIEUTENANT.getId()] = (StrategoCapturedImageView) parent.findViewById(R.id.ImageCapturedBlueLieutenant);
-        arrImageCaptured[StrategoConstants.BLUE][PieceEnum.LIEUTENANT.getId()].initBitmap("lituant_blue.png");
-        arrImageCaptured[StrategoConstants.BLUE][PieceEnum.CAPTAIN.getId()] = (StrategoCapturedImageView) parent.findViewById(R.id.ImageCapturedBlueCaptain);
-        arrImageCaptured[StrategoConstants.BLUE][PieceEnum.CAPTAIN.getId()].initBitmap("capitan_blue.png");
-        arrImageCaptured[StrategoConstants.BLUE][PieceEnum.MAJOR.getId()] = (StrategoCapturedImageView) parent.findViewById(R.id.ImageCapturedBlueMajor);
-        arrImageCaptured[StrategoConstants.BLUE][PieceEnum.MAJOR.getId()].initBitmap("major_blue.png");
-        arrImageCaptured[StrategoConstants.BLUE][PieceEnum.SERGEANT.getId()] = (StrategoCapturedImageView) parent.findViewById(R.id.ImageCapturedBlueSergeant);
-        arrImageCaptured[StrategoConstants.BLUE][PieceEnum.SERGEANT.getId()].initBitmap("sargento_blue.png");
-        arrImageCaptured[StrategoConstants.BLUE][PieceEnum.MINER.getId()] = (StrategoCapturedImageView) parent.findViewById(R.id.ImageCapturedBlueMiner);
-        arrImageCaptured[StrategoConstants.BLUE][PieceEnum.MINER.getId()].initBitmap("minero_blue.png");
-        arrImageCaptured[StrategoConstants.BLUE][PieceEnum.SCOUT.getId()] = (StrategoCapturedImageView) parent.findViewById(R.id.ImageCapturedBlueScout);
-        arrImageCaptured[StrategoConstants.BLUE][PieceEnum.SCOUT.getId()].initBitmap("scout_blue.png");
-        arrImageCaptured[StrategoConstants.BLUE][PieceEnum.SPY.getId()] = (StrategoCapturedImageView) parent.findViewById(R.id.ImageCapturedBlueSpy);
-        arrImageCaptured[StrategoConstants.BLUE][PieceEnum.SPY.getId()].initBitmap("spy_blue.png");
-        arrImageCaptured[StrategoConstants.BLUE][PieceEnum.BOMB.getId()] = (StrategoCapturedImageView) parent.findViewById(R.id.ImageCapturedBlueBomb);
-        arrImageCaptured[StrategoConstants.BLUE][PieceEnum.BOMB.getId()].initBitmap("bomb_blue.png");
-        arrImageCaptured[StrategoConstants.BLUE][PieceEnum.FLAG.getId()] = (StrategoCapturedImageView) parent.findViewById(R.id.ImageCapturedBlueFlag);
-        arrImageCaptured[StrategoConstants.BLUE][PieceEnum.FLAG.getId()].initBitmap("bandera_blue.png");*/
-
-        arrTextCaptured = new TextView[2][12];
-        /*arrTextCaptured[StrategoConstants.RED][PieceEnum.MARSHALL.getId()] =  parent.findViewById(R.id.TextViewCapturedRedMarshall);
-        arrTextCaptured[StrategoConstants.RED][PieceEnum.GENERAL.getId()] =  parent.findViewById(R.id.TextViewCapturedRedGeneral);
-        arrTextCaptured[StrategoConstants.RED][PieceEnum.COLONEL.getId()] =  parent.findViewById(R.id.TextViewCapturedRedColonel);
-        arrTextCaptured[StrategoConstants.RED][PieceEnum.LIEUTENANT.getId()] =  parent.findViewById(R.id.TextViewCapturedRedLieutenant);
-        arrTextCaptured[StrategoConstants.RED][PieceEnum.CAPTAIN.getId()] =  parent.findViewById(R.id.TextViewCapturedRedCaptain);
-        arrTextCaptured[StrategoConstants.RED][PieceEnum.MAJOR.getId()] =  parent.findViewById(R.id.TextViewCapturedRedMajor);
-        arrTextCaptured[StrategoConstants.RED][PieceEnum.SERGEANT.getId()] =  parent.findViewById(R.id.TextViewCapturedRedSergeant);
-        arrTextCaptured[StrategoConstants.RED][PieceEnum.MINER.getId()] =  parent.findViewById(R.id.TextViewCapturedRedMiner);
-        arrTextCaptured[StrategoConstants.RED][PieceEnum.SCOUT.getId()] =  parent.findViewById(R.id.TextViewCapturedRedScout);
-        arrTextCaptured[StrategoConstants.RED][PieceEnum.SPY.getId()] =  parent.findViewById(R.id.TextViewCapturedRedSpy);
-        arrTextCaptured[StrategoConstants.RED][PieceEnum.BOMB.getId()] =  parent.findViewById(R.id.TextViewCapturedRedBomb);
-        arrTextCaptured[StrategoConstants.RED][PieceEnum.FLAG.getId()] =  parent.findViewById(R.id.TextViewCapturedRedFlag);
-        arrTextCaptured[StrategoConstants.BLUE][PieceEnum.MARSHALL.getId()] =  parent.findViewById(R.id.TextViewCapturedBlueMarshall);
-        arrTextCaptured[StrategoConstants.BLUE][PieceEnum.GENERAL.getId()] =  parent.findViewById(R.id.TextViewCapturedBlueGeneral);
-        arrTextCaptured[StrategoConstants.BLUE][PieceEnum.COLONEL.getId()] =  parent.findViewById(R.id.TextViewCapturedBlueColonel);
-        arrTextCaptured[StrategoConstants.BLUE][PieceEnum.LIEUTENANT.getId()] =  parent.findViewById(R.id.TextViewCapturedBlueLieutenant);
-        arrTextCaptured[StrategoConstants.BLUE][PieceEnum.CAPTAIN.getId()] =  parent.findViewById(R.id.TextViewCapturedBlueCaptain);
-        arrTextCaptured[StrategoConstants.BLUE][PieceEnum.MAJOR.getId()] =  parent.findViewById(R.id.TextViewCapturedBlueMajor);
-        arrTextCaptured[StrategoConstants.BLUE][PieceEnum.SERGEANT.getId()] =  parent.findViewById(R.id.TextViewCapturedBlueSergeant);
-        arrTextCaptured[StrategoConstants.BLUE][PieceEnum.MINER.getId()] =  parent.findViewById(R.id.TextViewCapturedBlueMiner);
-        arrTextCaptured[StrategoConstants.BLUE][PieceEnum.SCOUT.getId()] =  parent.findViewById(R.id.TextViewCapturedBlueScout);
-        arrTextCaptured[StrategoConstants.BLUE][PieceEnum.SPY.getId()] =  parent.findViewById(R.id.TextViewCapturedBlueSpy);
-        arrTextCaptured[StrategoConstants.BLUE][PieceEnum.BOMB.getId()] =  parent.findViewById(R.id.TextViewCapturedBlueBomb);
-        arrTextCaptured[StrategoConstants.BLUE][PieceEnum.FLAG.getId()] =  parent.findViewById(R.id.TextViewCapturedBlueFlag);*/
-
-        /*for (int i=0;i<2;i++) {
-            for (int j=0;j<12;j++) {
-                if (arrImageCaptured[i][j]!=null) {
-                    arrImageCaptured[i][j].setVisibility(View.VISIBLE);
-                }
-                //arrTextCaptured[i][j].setVisibility(View.INVISIBLE);
-            }
-        }*/
-
         //Recycler view for Red
         recyclerViewRed = parent.findViewById(R.id.recyclerViewRed);
         GridLayoutManager gridLayoutManagerRed = new GridLayoutManager(parent, 2);
@@ -342,16 +263,21 @@ public class StrategoView implements Observer {
         layout.setOrientation(RecyclerView.VERTICAL);
         recyclerView.setLayoutManager(layout);*/
 
-        List<CapturedPieceItem> listCapturedPieces = new ArrayList<>();
-        listCapturedPieces.add(new CapturedPieceItem(PieceEnum.MARSHALL, 1, 1));
-        listCapturedPieces.add(new CapturedPieceItem(PieceEnum.BOMB, 1, 1));
-        listCapturedPieces.add(new CapturedPieceItem(PieceEnum.BOMB, 1, 2));
-        listCapturedPieces.add(new CapturedPieceItem(PieceEnum.BOMB, 1, 3));
-        listCapturedPieces.add(new CapturedPieceItem(PieceEnum.BOMB, 1, 4));
-        listCapturedPieces.add(new CapturedPieceItem(PieceEnum.BOMB, 1, 5));
-        listCapturedPieces.add(new CapturedPieceItem(PieceEnum.BOMB, 1, 6));
-        StrategoCapturedPieceAdapter adapter = new StrategoCapturedPieceAdapter(listCapturedPieces);
-        recyclerViewRed.setAdapter(adapter);
+        listCapturedPiecesRed = new ArrayList<>();
+        listCapturedPiecesRed.add(new CapturedPieceItem(PieceEnum.MARSHALL, StrategoConstants.RED, 0));
+        listCapturedPiecesRed.add(new CapturedPieceItem(PieceEnum.GENERAL, StrategoConstants.RED, 0));
+        listCapturedPiecesRed.add(new CapturedPieceItem(PieceEnum.COLONEL, StrategoConstants.RED, 0));
+        listCapturedPiecesRed.add(new CapturedPieceItem(PieceEnum.MAJOR, StrategoConstants.RED, 0));
+        listCapturedPiecesRed.add(new CapturedPieceItem(PieceEnum.CAPTAIN, StrategoConstants.RED, 0));
+        listCapturedPiecesRed.add(new CapturedPieceItem(PieceEnum.LIEUTENANT, StrategoConstants.RED, 0));
+        listCapturedPiecesRed.add(new CapturedPieceItem(PieceEnum.SERGEANT, StrategoConstants.RED, 0));
+        listCapturedPiecesRed.add(new CapturedPieceItem(PieceEnum.MINER, StrategoConstants.RED, 0));
+        listCapturedPiecesRed.add(new CapturedPieceItem(PieceEnum.SCOUT, StrategoConstants.RED, 0));
+        listCapturedPiecesRed.add(new CapturedPieceItem(PieceEnum.SPY, StrategoConstants.RED, 0));
+        listCapturedPiecesRed.add(new CapturedPieceItem(PieceEnum.BOMB, StrategoConstants.RED, 0));
+        listCapturedPiecesRed.add(new CapturedPieceItem(PieceEnum.FLAG, StrategoConstants.RED, 0));
+        adapterRed = new StrategoCapturedPieceAdapter(listCapturedPiecesRed);
+        recyclerViewRed.setAdapter(adapterRed);
 
         //Recycler view for Blue
         recyclerViewBlue = parent.findViewById(R.id.recyclerViewBlue);
@@ -359,34 +285,21 @@ public class StrategoView implements Observer {
         recyclerViewBlue.setLayoutManager(gridLayoutManagerBlue);
 
         recyclerViewBlue.addItemDecoration(new SpacingItemDecoration(spacingInPixels));
-        List<CapturedPieceItem> listCapturedPiecesBlue = new ArrayList<>();
-        listCapturedPiecesBlue.add(new CapturedPieceItem(PieceEnum.MARSHALL, 0, 1));
-        listCapturedPiecesBlue.add(new CapturedPieceItem(PieceEnum.BOMB, 0, 1));
-        listCapturedPiecesBlue.add(new CapturedPieceItem(PieceEnum.BOMB, 0, 2));
-        listCapturedPiecesBlue.add(new CapturedPieceItem(PieceEnum.BOMB, 0, 3));
-        listCapturedPiecesBlue.add(new CapturedPieceItem(PieceEnum.BOMB, 0, 4));
-        listCapturedPiecesBlue.add(new CapturedPieceItem(PieceEnum.BOMB, 0, 5));
-        listCapturedPiecesBlue.add(new CapturedPieceItem(PieceEnum.BOMB, 0, 6));
-        StrategoCapturedPieceAdapter adapterBlue = new StrategoCapturedPieceAdapter(listCapturedPiecesBlue);
+        listCapturedPiecesBlue = new ArrayList<>();
+        listCapturedPiecesBlue.add(new CapturedPieceItem(PieceEnum.MARSHALL, StrategoConstants.BLUE, 0));
+        listCapturedPiecesBlue.add(new CapturedPieceItem(PieceEnum.GENERAL, StrategoConstants.BLUE, 0));
+        listCapturedPiecesBlue.add(new CapturedPieceItem(PieceEnum.COLONEL, StrategoConstants.BLUE, 0));
+        listCapturedPiecesBlue.add(new CapturedPieceItem(PieceEnum.MAJOR, StrategoConstants.BLUE, 0));
+        listCapturedPiecesBlue.add(new CapturedPieceItem(PieceEnum.CAPTAIN, StrategoConstants.BLUE, 0));
+        listCapturedPiecesBlue.add(new CapturedPieceItem(PieceEnum.LIEUTENANT, StrategoConstants.BLUE, 0));
+        listCapturedPiecesBlue.add(new CapturedPieceItem(PieceEnum.SERGEANT, StrategoConstants.BLUE, 0));
+        listCapturedPiecesBlue.add(new CapturedPieceItem(PieceEnum.MINER, StrategoConstants.BLUE, 0));
+        listCapturedPiecesBlue.add(new CapturedPieceItem(PieceEnum.SCOUT, StrategoConstants.BLUE, 0));
+        listCapturedPiecesBlue.add(new CapturedPieceItem(PieceEnum.SPY, StrategoConstants.BLUE, 0));
+        listCapturedPiecesBlue.add(new CapturedPieceItem(PieceEnum.BOMB, StrategoConstants.BLUE, 0));
+        listCapturedPiecesBlue.add(new CapturedPieceItem(PieceEnum.FLAG, StrategoConstants.BLUE, 0));
+        adapterBlue = new StrategoCapturedPieceAdapter(listCapturedPiecesBlue);
         recyclerViewBlue.setAdapter(adapterBlue);
-
-
-
-        /**
-         recyclerView = findViewById(R.id.recycler_view);
-         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
-         itemList = new ArrayList<>();
-         // Add sample data
-         itemList.add(new Item(R.drawable.sample_image, "Item 1"));
-         itemList.add(new Item(R.drawable.sample_image, "Item 2"));
-         // Add more items as needed
-
-         itemAdapter = new ItemAdapter(itemList);
-         recyclerView.setAdapter(itemAdapter);         *
-         */
-
-
     }
 
     public void paintBoard () {
@@ -432,8 +345,7 @@ public class StrategoView implements Observer {
     }
 
     private String formatTime(long msec) {
-        final String sTmp = String.format("%02d:%02d", (int) (Math.floor(msec / 60000)), ((int) (msec / 1000) % 60));
-        return sTmp;
+        return  String.format("%02d:%02d", (int) (Math.floor(msec / 60000)), ((int) (msec / 1000) % 60));
     }
 
     public StrategoControl getStrategoControl() {
@@ -476,11 +388,26 @@ public class StrategoView implements Observer {
 //        }
     }
 
-    private void updateCapturedPieces(int player, Map<PieceEnum, Integer> capturedPieces) {
-        /*for (Map.Entry<PieceEnum, Integer> entry : capturedPieces.entrySet()) {
-            arrImageCaptured[player][entry.getKey().getId()].setVisibility(View.VISIBLE);
-            arrTextCaptured[player][entry.getKey().getId()].setVisibility(View.VISIBLE);
-            arrTextCaptured[player][entry.getKey().getId()].setText(String.valueOf(entry.getValue()));
-        }*/
+    private void updateCapturedPieces(int player, Map<PieceEnum, Integer> mapCapturedPieces) {
+        if (mapCapturedPieces == null) {
+            return;
+        }
+
+        List<CapturedPieceItem> temporary = StrategoConstants.RED == player ? listCapturedPiecesRed : listCapturedPiecesBlue;
+        StrategoCapturedPieceAdapter temporaryAdapter = StrategoConstants.RED == player ? adapterRed : adapterBlue;
+
+        boolean changes=false;
+        for (CapturedPieceItem capturePiece : temporary) {
+            if (mapCapturedPieces.containsKey(capturePiece.getPieceEnum())) {
+                Integer total = mapCapturedPieces.get(capturePiece.getPieceEnum());
+                if (total!=null && total >0 && capturePiece.getCaptured() != total) {
+                    capturePiece.setCaptured(total);
+                    changes=true;
+                }
+            }
+        }
+        if (changes) {
+            temporaryAdapter.notifyDataSetChanged();
+        }
     }
 }

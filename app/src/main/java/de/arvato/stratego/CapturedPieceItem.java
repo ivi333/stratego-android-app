@@ -5,8 +5,8 @@ import de.arvato.stratego.game.PieceEnum;
 public class CapturedPieceItem {
 
     private final PieceEnum pieceEnum;
-    private final int player;
-    private final int captured;
+    private int player;
+    private int captured;
 
     public CapturedPieceItem(PieceEnum pieceEnum, int player, int captured) {
         this.pieceEnum = pieceEnum;
@@ -24,5 +24,13 @@ public class CapturedPieceItem {
 
     public int getCaptured () {
         return captured;
+    }
+
+    public void setPlayer(int player) {
+        this.player = player;
+    }
+
+    public void setCaptured(int captured) {
+        this.captured = captured;
     }
 }

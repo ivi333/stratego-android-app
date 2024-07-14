@@ -1,5 +1,6 @@
 package de.arvato.stratego;
 
+import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +10,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
+
+import de.arvato.stratego.game.PieceEnum;
 
 public class StrategoCapturedPieceAdapter extends RecyclerView.Adapter<StrategoCapturedPieceAdapter.ViewHolder> {
 
@@ -29,11 +32,9 @@ public class StrategoCapturedPieceAdapter extends RecyclerView.Adapter<StrategoC
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
         CapturedPieceItem capturedPieceItem = listCapturedPieces.get(i);
+        //viewHolder.capturedText.setText(String.format("x %d", capturedPieceItem.getCaptured()));
         viewHolder.capturedText.setText(String.valueOf(capturedPieceItem.getCaptured()));
-        viewHolder.capturedImage.initBitmap("mariscal_red.png");
-        //capturedPieceItem.getPieceEnum();
-        //capturedPieceItem.getPlayer();
-        //return new ViewHolder(capturedPieceItem);
+        viewHolder.capturedImage.setBitmap(StrategoImageView.arrPieceBitmaps[capturedPieceItem.getPlayer()][capturedPieceItem.getPieceEnum().getId()]);
     }
 
     @Override

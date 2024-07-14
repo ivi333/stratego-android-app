@@ -196,62 +196,6 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-                <!--
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <de.arvato.stratego.StrategoCapturedImageView
-                        android:id="@+id/ImageCapturedRedMarshall"
-                        style="@style/CaptureImageStyle" />
-
-                    <de.arvato.stratego.StrategoCapturedImageView
-                        android:id="@+id/ImageCapturedRedGeneral"
-                        style="@style/CaptureImageStyle" />
-
-                    <de.arvato.stratego.StrategoCapturedImageView
-                        android:id="@+id/ImageCapturedRedColonel"
-                        style="@style/CaptureImageStyle" />
-
-                    <de.arvato.stratego.StrategoCapturedImageView
-                        android:id="@+id/ImageCapturedRedMajor"
-                        style="@style/CaptureImageStyle" />
-
-                    <de.arvato.stratego.StrategoCapturedImageView
-                        android:id="@+id/ImageCapturedRedCaptain"
-                        style="@style/CaptureImageStyle" />
-
-                    <de.arvato.stratego.StrategoCapturedImageView
-                        android:id="@+id/ImageCapturedRedLieutenant"
-                        style="@style/CaptureImageStyle" />
-
-                    <de.arvato.stratego.StrategoCapturedImageView
-                        android:id="@+id/ImageCapturedRedSergeant"
-                        style="@style/CaptureImageStyle" />
-
-                    <de.arvato.stratego.StrategoCapturedImageView
-                        android:id="@+id/ImageCapturedRedMiner"
-                        style="@style/CaptureImageStyle" />
-
-                    <de.arvato.stratego.StrategoCapturedImageView
-                        android:id="@+id/ImageCapturedRedScout"
-                        style="@style/CaptureImageStyle" />
-
-                    <de.arvato.stratego.StrategoCapturedImageView
-                        android:id="@+id/ImageCapturedRedSpy"
-                        style="@style/CaptureImageStyle" />
-
-                    <de.arvato.stratego.StrategoCapturedImageView
-                        android:id="@+id/ImageCapturedRedBomb"
-                        style="@style/CaptureImageStyle" />
-
-                    <de.arvato.stratego.StrategoCapturedImageView
-                        android:id="@+id/ImageCapturedRedFlag"
-                        style="@style/CaptureImageStyle" />
-                </LinearLayout>
-                -->
-
             <!--
             <FrameLayout
                 android:id="@+id/FrameLayout1"

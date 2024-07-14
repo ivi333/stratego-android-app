@@ -48,6 +48,10 @@ public class StrategoCapturedImageView extends View {
         _bHighlighted = highlighted;
     }
 
+    public void setBitmap (Bitmap bitmap) {
+        this._bitMap = bitmap;
+    }
+
     public void onDraw(Canvas canvas) {
         if(_bitMap == null){
             return;
