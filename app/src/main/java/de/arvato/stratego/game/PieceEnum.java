@@ -1,4 +1,7 @@
 package de.arvato.stratego.game;
+
+import de.arvato.stratego.StrategoConstants;
+
 public enum PieceEnum {
     FLAG 		("FLAG",	 	0,	-1, false),	/* 1 */
     BOMB 		("BOMB",	 	1, 	12, false),	/* 6 */
@@ -67,5 +70,34 @@ public enum PieceEnum {
             return PieceEnum.SPY;
         }
         return null;
+    }
+
+    public int maxLives () {
+        if (PieceEnum.MINER == this) {
+            return StrategoConstants.MIN_MAX;
+        } else if (PieceEnum.BOMB == this) {
+            return StrategoConstants.BOM_MAX;
+        } else if (PieceEnum.FLAG == this) {
+            return StrategoConstants.BAN_MAX;
+        } else if (PieceEnum.SPY == this) {
+            return StrategoConstants.ESP_MAX;
+        } else if (PieceEnum.GENERAL == this) {
+            return StrategoConstants.GEN_MAX;
+        } else if (PieceEnum.COLONEL == this) {
+            return StrategoConstants.COR_MAX;
+        } else if (PieceEnum.CAPTAIN == this) {
+            return StrategoConstants.CAP_MAX;
+        } else if (PieceEnum.LIEUTENANT == this) {
+            return StrategoConstants.TEN_MAX;
+        } else if (PieceEnum.MAJOR == this) {
+            return StrategoConstants.COM_MAX;
+        } else if (PieceEnum.MARSHALL == this) {
+            return StrategoConstants.MAR_MAX;
+        } else if (PieceEnum.SCOUT == this) {
+            return StrategoConstants.EXP_MAX;
+        } else if (PieceEnum.SERGEANT == this) {
+            return StrategoConstants.SAR_MAX;
+        }
+        return 0;
     }
 }

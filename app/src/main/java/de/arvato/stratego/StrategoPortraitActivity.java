@@ -13,7 +13,7 @@ public class StrategoPortraitActivity extends Activity {
 
     public static final String TAG = "StrategoPortActivity";
 
-    private Button playButton, playOnlineButton, profileButton, settingsButton;
+    private Button playButton, instructionsButton, playOnlineButton, profileButton, settingsButton;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -28,6 +28,7 @@ public class StrategoPortraitActivity extends Activity {
         }
 
         playButton = findViewById(R.id.PlayButton);
+        instructionsButton = findViewById(R.id.instructionsButton);
         playButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -37,6 +38,18 @@ public class StrategoPortraitActivity extends Activity {
                 startActivity(i);
             }
         });
+
+        instructionsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent();
+                i.setClass(getApplicationContext(), InstructionsActivity.class);
+                i.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                startActivity(i);
+            }
+        });
+
+
     }
 
     @Override

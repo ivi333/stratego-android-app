@@ -7,6 +7,7 @@ public class CapturedPieceItem {
     private final PieceEnum pieceEnum;
     private int player;
     private int captured;
+    private boolean dead;
 
     public CapturedPieceItem(PieceEnum pieceEnum, int player, int captured) {
         this.pieceEnum = pieceEnum;
@@ -32,5 +33,13 @@ public class CapturedPieceItem {
 
     public void setCaptured(int captured) {
         this.captured = captured;
+    }
+
+    public boolean isDead() {
+        return dead;
+    }
+
+    public void setDead(boolean dead) {
+        this.dead = dead;
     }
 }

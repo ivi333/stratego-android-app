@@ -406,5 +406,91 @@
     <string name="toast_could_not_start_activity">Could not start the activity</string>
     <string name="toast_challenge_posted">Challenge posted</string>
     <string name="prefs_icsshowclocksummary">In the PGN, show the clock times on each move</string>
+    <string name="game_instructions">
+        <![CDATA[
+        <html>
+        <head>
+            <meta charset="UTF-8">
+            <title>Stratego Instructions</title>
+        </head>
+        <body>
+            <h1>How to Play Stratego</h1>
 
+            <h2>Objective</h2>
+            <p>The objective of Stratego is to capture your opponent\'s Flag or to block them from making any legal moves. To achieve this, you must strategically move and attack with your army\'s pieces.</p>
+
+            <h2>Setup</h2>
+            <ul>
+                <li>The game is played on a 10x10 board.</li>
+                <li>Each player has 40 pieces, which include various ranks and special pieces.</li>
+                <li>Players arrange their pieces on their side of the board in secret. The arrangement is hidden from the opponent.</li>
+                <li>Each player\'s setup consists of:
+                    <ul>
+                        <li>1 Flag</li>
+                        <li>6 Bombs</li>
+                        <li>1 Marshal</li>
+                        <li>2 Generals</li>
+                        <li>3 Colonels</li>
+                        <li>4 Majors</li>
+                        <li>4 Captains</li>
+                        <li>4 Lieutenants</li>
+                        <li>4 Sergeants</li>
+                        <li>5 Miners</li>
+                        <li>5 Scouts</li>
+                        <li>1 Spy</li>
+                    </ul>
+                </li>
+            </ul>
+
+            <h2>Piece Ranks and Special Rules</h2>
+            <p>Each piece has a rank from 1 (highest) to 9 (lowest). Special pieces have unique rules:</p>
+            <ul>
+                <li><strong>Marshal (1)</strong>: The highest rank, can defeat any other piece except the Spy.</li>
+                <li><strong>General (2)</strong>: Can defeat any piece ranked 3 and below.</li>
+                <li><strong>Colonel (3)</strong>: Can defeat any piece ranked 4 and below.</li>
+                <li><strong>Major (4)</strong>: Can defeat any piece ranked 5 and below.</li>
+                <li><strong>Captain (5)</strong>: Can defeat any piece ranked 6 and below.</li>
+                <li><strong>Lieutenant (6)</strong>: Can defeat any piece ranked 7 and below.</li>
+                <li><strong>Sergeant (7)</strong>: Can defeat any piece ranked 8 and below.</li>
+                <li><strong>Miner (8)</strong>: Can defuse Bombs.</li>
+                <li><strong>Scout (9)</strong>: Can move any number of squares in a straight line.</li>
+                <li><strong>Spy</strong>: Can defeat the Marshal if it attacks first.</li>
+                <li><strong>Bomb</strong>: Stationary, destroys any piece that attacks them, except Miners.</li>
+                <li><strong>Flag</strong>: Stationary, must be protected at all costs.</li>
+            </ul>
+
+            <h2>How to Play</h2>
+            <ol>
+                <li>Decide who goes first by flipping a coin or any other method.</li>
+                <li>On your turn, you can either move one of your pieces or attack an opponent\'s piece.</li>
+                <li>When attacking, the pieces reveal their ranks. The higher-ranked piece wins, and the lower-ranked piece is removed from the board.</li>
+                <li>Special pieces have unique movement or abilities:
+                    <ul>
+                        <li>The <strong>Scout</strong> can move any number of squares in a straight line to reveal pieces.</li>
+                        <li>The <strong>Spy</strong> can defeat the Marshal if it attacks first.</li>
+                        <li>Bombs are stationary and will destroy any piece that attacks them except Miners.</li>
+                    </ul>
+                </li>
+                <li>Strategically move your pieces to uncover the opponent\'s setup and protect your Flag.</li>
+            </ol>
+
+            <h2>Winning the Game</h2>
+            <p>You win by:</p>
+            <ul>
+                <li>Capturing the opponent’s Flag, or</li>
+                <li>Forcing the opponent into a position where they cannot make a legal move.</li>
+            </ul>
+
+            <h2>Additional Tips</h2>
+            <ul>
+                <li><strong>Keep your Flag protected</strong>: Avoid placing it in obvious or easily reachable positions.</li>
+                <li><strong>Use Scouts wisely</strong>: They are valuable for revealing enemy pieces and planning your strategy.</li>
+                <li><strong>Be cautious with Bombs</strong>: They can protect key areas but are vulnerable to Miners.</li>
+            </ul>
+
+            <p>For more detailed strategies and information, visit the <a href="https://example.com" target="_blank">official Stratego website</a>.</p>
+        </body>
+        </html>
+        ]]>
+    </string>
 </resources>

@@ -42,8 +42,6 @@ public class StrategoView implements Observer {
     //private LayoutInflater inflater;
     private StrategoControl strategoControl;
     private ViewAnimator viewAnimator;
-    //private StrategoCapturedImageView[][] arrImageCaptured;
-    //private TextView[][] arrTextCaptured;
     private int selectedPos;
     private List<Integer> nextMovements;
     private int player;
@@ -402,6 +400,9 @@ public class StrategoView implements Observer {
                 Integer total = mapCapturedPieces.get(capturePiece.getPieceEnum());
                 if (total!=null && total >0 && capturePiece.getCaptured() != total) {
                     capturePiece.setCaptured(total);
+                    if (capturePiece.getPieceEnum().maxLives() == total) {
+                        capturePiece.setDead(true);
+                    }
                     changes=true;
                 }
             }

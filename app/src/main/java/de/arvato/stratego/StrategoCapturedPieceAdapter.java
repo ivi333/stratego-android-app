@@ -32,9 +32,9 @@ public class StrategoCapturedPieceAdapter extends RecyclerView.Adapter<StrategoC
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
         CapturedPieceItem capturedPieceItem = listCapturedPieces.get(i);
-        //viewHolder.capturedText.setText(String.format("x %d", capturedPieceItem.getCaptured()));
         viewHolder.capturedText.setText(String.valueOf(capturedPieceItem.getCaptured()));
         viewHolder.capturedImage.setBitmap(StrategoImageView.arrPieceBitmaps[capturedPieceItem.getPlayer()][capturedPieceItem.getPieceEnum().getId()]);
+        viewHolder.capturedImage.set_allDead(capturedPieceItem.isDead());
     }
 
     @Override

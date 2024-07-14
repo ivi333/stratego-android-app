@@ -20,10 +20,13 @@ public class StrategoCapturedImageView extends View {
     private Bitmap _bitMap;
     private boolean _bHighlighted;
 
+    private boolean _allDead;
+
     public StrategoCapturedImageView(Context context) {
         super(context);
         _bitMap = null;
         _bHighlighted = false;
+        _allDead = false;
         setFocusable(false);
     }
 
@@ -31,6 +34,7 @@ public class StrategoCapturedImageView extends View {
         super(context, atts);
         _bitMap = null;
         _bHighlighted = false;
+        _allDead = false;
         setFocusable(false);
     }
 
@@ -46,6 +50,10 @@ public class StrategoCapturedImageView extends View {
 
     public void setHighlighted(boolean highlighted) {
         _bHighlighted = highlighted;
+    }
+
+    public void set_allDead(boolean _allDead) {
+        this._allDead = _allDead;
     }
 
     public void setBitmap (Bitmap bitmap) {
@@ -73,6 +81,18 @@ public class StrategoCapturedImageView extends View {
             p.setColor(0xff999999);
             canvas.drawRect(new Rect(0, 0, getWidth(), getHeight()), p);
         }
+
+        if (_allDead) {
+            Paint xPaint = new Paint();
+            xPaint.setColor(Color.RED);
+            xPaint.setStrokeWidth(10);
+            xPaint.setAntiAlias(true);
+
+            // Draw a red X over the bitmap
+            canvas.drawLine(0, 0, getWidth(), getHeight(), xPaint);
+            canvas.drawLine(0, getHeight(), getWidth(), 0, xPaint);
+        }
+
         canvas.drawBitmap(_bitMap, m, p);
     }
 }
