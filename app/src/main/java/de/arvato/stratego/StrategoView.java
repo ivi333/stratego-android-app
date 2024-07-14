@@ -203,7 +203,7 @@ public class StrategoView implements Observer {
         Button bPlayerReady = parent.findViewById(R.id.PlayerReady);
         Button bPlayerReset = parent.findViewById(R.id.PlayerReset);
         Button bPlayerRandom = parent.findViewById(R.id.PlayerRandom);
-        winnerTextView = parent.findViewById(R.id.winnerTextView);
+        winnerTextView = parent.findViewById(R.id.InfoText);
 
         bPlayerReady.setOnClickListener(new View.OnClickListener() {
             @Override

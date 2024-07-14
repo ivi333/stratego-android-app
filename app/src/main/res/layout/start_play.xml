@@ -86,76 +86,105 @@
             android:animateFirstView="true"
             android:layout_marginBottom="1dip">
 
-            <LinearLayout
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:orientation="vertical">
-                <!--
-               <GridView
-                   android:id="@+id/startGameGrid"
-                   android:layout_width="fill_parent"
-                   android:layout_height="wrap_content"
-                   android:numColumns="10"
-                   android:gravity="center"
-                   android:columnWidth="150dp"
-                   android:stretchMode="columnWidth"
-                   android:verticalSpacing="10dp"
-                   android:horizontalSpacing="10dp"
-                   android:background="@drawable/gridborder"
-                   >
-               </GridView>
-                -->
+            <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="16dp">
+
+                <!-- LinearLayout containing buttons -->
                 <LinearLayout
-                    android:layout_width="fill_parent"
+                    android:id="@+id/ButtonsLayout"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5">
 
                     <Button
                         android:id="@+id/PlayerReady"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Ready"
-                        style="@style/StrategoImageButton"
-                         />
+                        style="@style/GameButtonStyle"
+                        android:textSize="14sp"
+                        android:layout_marginEnd="8dp" />
 
                     <Button
                         android:id="@+id/PlayerReset"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Reset"
-                        style="@style/StrategoImageButton"
-                         />
+                        android:visibility="invisible"
+                        style="@style/GameButtonStyle"
+                        android:textSize="14sp"
+                        android:layout_marginEnd="8dp" />
 
                     <Button
                         android:id="@+id/PlayerRandom"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Random"
-                        style="@style/StrategoImageButton"
-                        />
-
-
+                        style="@style/GameButtonStyle"
+                        android:textSize="14sp"/>
                 </LinearLayout>
 
-                <LinearLayout
-                    android:layout_width="fill_parent"
+                <!-- First TextView positioned below the LinearLayout with buttons -->
+                <TextView
+                    android:id="@+id/InfoText"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:text="Now is time to reorganize the pieces. Remember to protect your flag."
                     android:gravity="center"
-                    android:background="@color/red"
-                    android:orientation="vertical">
+                    android:padding="16dp"
+                    android:background="#80000000"
+                    android:textColor="@android:color/white"
+                    app:layout_constraintTop_toBottomOf="@id/ButtonsLayout"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintBottom_toTopOf="@id/InfoText2"
+                    app:layout_constraintVertical_bias="0.5"/>
 
-                    <TextView
-                        android:id="@+id/winnerTextView"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="You Win!"
-                        android:textSize="24sp"
-                        android:visibility="gone"
-                        android:textColor="@android:color/holo_green_dark" />
+                <!-- Second TextView positioned below the first TextView -->
+                <TextView
+                    android:id="@+id/InfoText2"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="1. Click READY when your pieces are OK!"
+                    android:gravity="center"
+                    android:padding="16dp"
+                    android:background="#80000000"
+                    android:textColor="@android:color/white"
+                    app:layout_constraintTop_toBottomOf="@id/InfoText"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintBottom_toTopOf="@id/InfoText3"
+                    app:layout_constraintVertical_bias="0.5"/>
 
-                </LinearLayout>
+                <!-- Third TextView positioned below the second TextView -->
+                <TextView
+                    android:id="@+id/InfoText3"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="2. Click RANDOM any times and reorganize the pieces again."
+                    android:gravity="center"
+                    android:padding="16dp"
+                    android:background="#80000000"
+                    android:textColor="@android:color/white"
+                    app:layout_constraintTop_toBottomOf="@id/InfoText2"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintVertical_bias="0.5"/>
 
-            </LinearLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
 
             <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 xmlns:app="http://schemas.android.com/apk/res-auto"
