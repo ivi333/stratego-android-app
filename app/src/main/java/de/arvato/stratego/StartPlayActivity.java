@@ -1,5 +1,6 @@
 package de.arvato.stratego;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.GestureDetector;
@@ -9,6 +10,10 @@ public class StartPlayActivity extends StrategoActivity implements GestureDetect
 
     private StrategoView strategoView;
     private GestureDetector gestureDetector;
+
+    private int selectedColor;
+
+    private static final String TAG = "StartPlayActivity";
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -1,6 +1,8 @@
 package de.arvato.stratego;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
@@ -102,8 +104,14 @@ public class StrategoView implements Observer {
     public StrategoView(Activity activity) {
         super();
         selectedPos=-1;
+
+        Intent intent = activity.getIntent();
+        player = intent.getIntExtra("select_color", StrategoConstants.RED);
+        Log.d(TAG, "Player Selected color: " + player);
+
         //select your player
-        player = StrategoConstants.RED;
+        //player = StrategoConstants.RED;
+
         strategoControl = new StrategoControl(player);
         strategoControl.addObserver(this);
 
@@ -139,6 +147,8 @@ public class StrategoView implements Observer {
         initCapturedImages ();
 
         initDistributePieces () ;
+
+        //initDialogSelectColor ();
 
         // Timer
         initTimer ();
@@ -231,6 +241,7 @@ public class StrategoView implements Observer {
                     InfoText3.setVisibility(View.GONE);
                     bPlayerReady.setEnabled(false);
                     bPlayerRandom.setEnabled(false);
+
                 }
             }
         }
