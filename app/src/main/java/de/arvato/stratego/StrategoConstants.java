@@ -36,8 +36,12 @@ public class StrategoConstants
 	public static final int FIELD = -1;
 
 	// Initial positions allowed for each player
-	public static final int [] BLUE_PLAYER = { 0, 40 };
-	public static final int [] RED_PLAYER = { 60, 100 };
+	//public static final int [] BLUE_PLAYER = { 0, 40 };
+	//public static final int [] RED_PLAYER = { 60, 100 };
+
+	public static final int [] UP_PLAYER = { 0, 40 };
+	public static final int [] DOWN_PLAYER = { 60, 100 };
+
 
 	public static final int BOARD_SIZE = 100;
 

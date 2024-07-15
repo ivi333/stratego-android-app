@@ -15,7 +15,6 @@ import de.arvato.stratego.util.Pos;
 
 public class Board {
     protected Piece [] pieces;
-    protected int humanPlayer;
     protected int turn;
     protected Map<PieceEnum, Integer> capturedPiecesRed;
     protected Map<PieceEnum, Integer> capturedPiecesBlue;
@@ -42,18 +41,6 @@ public class Board {
         this.turn = player;
     }
 
-    public void humanPlayer (final int player) {
-        this.humanPlayer = player;
-    }
-
-    public int getHumanPlayer () {
-        return this.humanPlayer;
-    }
-
-    public int getAIPlayer () {
-        return this.humanPlayer == StrategoConstants.RED ? StrategoConstants.BLUE : StrategoConstants.RED;
-    }
-
     public int getTurn () {
         return this.turn;
     }
@@ -68,13 +55,11 @@ public class Board {
 
     public boolean initBoard (int to, int selectPos) {
         int x1, x2;
-        if (humanPlayer == StrategoConstants.RED) {
-            x1 = StrategoConstants.RED_PLAYER[0];
-            x2 = StrategoConstants.RED_PLAYER[1];
-        } else {
-            x1 = StrategoConstants.BLUE_PLAYER[0];
-            x2 = StrategoConstants.BLUE_PLAYER[1];
-        }
+
+        // player is always shown down
+        x1 = StrategoConstants.DOWN_PLAYER[0];
+        x2 = StrategoConstants.DOWN_PLAYER[1];
+
         if (selectPos != -1 && to >= x1 && to < x2 ) {
             //interchange pos
             Piece tmp = pieces[to];
@@ -192,33 +177,6 @@ public class Board {
             }
         }
     }
-
-    //TODO ivan review
-    /*private boolean updatePossibleBoms(int selectPos) {
-        if (turn == getHumanPlayer()) {
-            Integer i = Integer.valueOf(selectPos);
-            if (possibleBombsHuman.contains(i)) {
-                possibleBombsHuman.remove(i);
-                return true;
-            }
-        }
-        return false;
-    }*/
-
-    /*public Board cloneBoard () {
-        Board newBoard = new Board();
-        newBoard.capturedPiecesBlue = CopyUtil.clone(this.capturedPiecesBlue);
-        newBoard.capturedPiecesRed = CopyUtil.clone(this.capturedPiecesRed);
-        newBoard.gameStatus = this.gameStatus;
-        newBoard.humanPlayer = this.humanPlayer;
-        newBoard.pieces = CopyUtil.clonePieces(this.pieces);
-        newBoard.turn = this.turn;
-        newBoard.countMoves = this.countMoves;
-        newBoard.possibleBombsHuman = CopyUtil.clone(this.possibleBombsHuman);
-        newBoard.historyMoves = CopyUtil.clone(this.historyMoves);
-        return newBoard;
-    }*/
-
     private void capturePiece (final int player, PieceEnum piece) {
         if (StrategoConstants.RED == player) {
             if (capturedPiecesRed.containsKey(piece)) {
@@ -285,32 +243,6 @@ public class Board {
         }
         return res;
     }
-
-    /*public Map<Integer, List<Integer>> getPiecesWithMovement () {
-        Map<Integer, List<Integer>> mapPieces = new HashMap<Integer, List<Integer>>();
-        for (int z=0;z<StrategoConstants.BOARD_SIZE;z++) {
-            if (getPieceAt(z) != null && getPieceAt(z).getPlayer() == this.turn) {
-                List<Integer> futureMoves = getPossibleMovements(z);
-                if (!futureMoves.isEmpty()) {
-                    mapPieces.put(z, futureMoves);
-                }
-            }
-        }
-        return mapPieces;
-    }*/
-
-    /*public Map<Integer, List<Integer>> getPiecesDiscoveredWithMovement (int player) {
-        Map<Integer, List<Integer>> mapPieces = new HashMap<Integer, List<Integer>>();
-        for (int z=0;z<StrategoConstants.BOARD_SIZE;z++) {
-            if (getPieceAt(z) != null && getPieceAt(z).getPlayer() == player && getPieceAt(z).isPieceDiscovered()) {
-                List<Integer> futureMoves = getPossibleMovements(z);
-                if (!futureMoves.isEmpty()) {
-                    mapPieces.put(z, futureMoves);
-                }
-            }
-        }
-        return mapPieces;
-    }*/
 
     private List<Integer> calculateMovement(final Piece piece, final int pos, final boolean isMultiple) {
         int row = Pos.row(pos);
@@ -469,10 +401,6 @@ public class Board {
         return gameStatus;
     }
 
-    public boolean hasPiecesDiscovered () {
-        return this.hasDiscoveredPieces(getHumanPlayer());
-    }
-
     public boolean hasDiscoveredPieces (int player) {
         boolean res=false;
         for (int z=0;z<StrategoConstants.BOARD_SIZE && !res;z++) {
@@ -482,40 +410,6 @@ public class Board {
         }
         return res;
     }
-
-    /*public int piecesDiscoveredCount (int player) {
-        int total=0;
-        for (int z=0;z<StrategoConstants.BOARD_SIZE;z++) {
-            if (pieces[z]!=null && pieces[z].getPlayer() == player && pieces[z].isPieceDiscovered()) {
-                total++;
-            }
-        }
-        return total;
-    }*/
-
-    /*public boolean hasDiscoveredPiece (int player, PieceEnum piece) {
-        boolean res=false;
-        for (int z=0;z<StrategoConstants.BOARD_SIZE && !res;z++) {
-            if (pieces[z]!=null && pieces[z].getPlayer() == player && pieces[z].getPieceEnum() == piece && pieces[z].isPieceDiscovered()) {
-                res=true;
-            }
-        }
-        return res;
-    }*/
-
-    /*public Map<PieceEnum, List<Integer>> getPositionsPiecesByDiscovered (int player, boolean discovered) {
-        Map<PieceEnum, List<Integer>> result = new HashMap<>();
-        for (int z=0;z<StrategoConstants.BOARD_SIZE;z++) {
-            if (pieces[z]!=null && pieces[z].getPlayer() == player && pieces[z].isPieceDiscovered() == discovered) {
-                Piece p = pieces[z];
-                if (!result.containsKey(p.getPieceEnum())) {
-                    result.put(p.getPieceEnum(), new ArrayList<Integer>());
-                }
-                result.get(p.getPieceEnum()).add(z);
-            }
-        }
-        return result;
-    }*/
 
     public Map<PieceEnum, List<Integer>> getPositionPieces (int player) {
         Map<PieceEnum, List<Integer>> result = new HashMap<>();
@@ -539,107 +433,7 @@ public class Board {
         return capturedPiecesBlue;
     }
 
-    public Map<PieceEnum, Integer> getCapturedPiecesHumanPlayer () {
-        if (humanPlayer == StrategoConstants.RED) {
-            return this.getCapturedPiecesRed();
-        } else {
-            return this.getCapturedPiecesBlue();
-        }
-    }
 
-    public Map<PieceEnum, Integer> getCapturedPiecesAI () {
-        if (getAIPlayer() == StrategoConstants.RED) {
-            return this.getCapturedPiecesRed();
-        } else {
-            return this.getCapturedPiecesBlue();
-        }
-    }
-
-    public int getCountMoves() {
-        return countMoves;
-    }
-
-    /* TODO What the fuck does it?
-    public void initPossibleBombs(int y, int z) {
-        for (int x=y ; x < z; x++ ) {
-            possibleBombsHuman.add(x);
-        }
-    }*/
-
-    public int getPointsCapturedPieces(int player) {
-        Map<PieceEnum, Integer> tmp;
-        if (player == getHumanPlayer()) {
-            tmp = this.getCapturedPiecesHumanPlayer();
-        } else {
-            tmp = this.getCapturedPiecesAI();
-        }
-        int total=0;
-        for (Map.Entry<PieceEnum, Integer> entry : tmp.entrySet()) {
-            int points = entry.getKey().getPoints();
-            int count = entry.getValue();
-            total += points * count;
-        }
-        return total;
-    }
-
-    public int getAmountPiecesCaptured (int player) {
-        Map<PieceEnum, Integer> tmp;
-        if (player == getHumanPlayer()) {
-            tmp = this.getCapturedPiecesHumanPlayer();
-        } else {
-            tmp = this.getCapturedPiecesAI();
-        }
-        int total=0;
-        for (Map.Entry<PieceEnum, Integer> entry : tmp.entrySet()) {
-            total+=entry.getValue();
-        }
-        return total;
-    }
-
-    public List<Integer> getPossibleBombsHuman() {
-        return possibleBombsHuman;
-    }
-
-    @Override
-    public String toString() {
-        StringBuilder builder = new StringBuilder();
-        builder.append("Board [pieces=");
-        builder.append(Arrays.toString(pieces));
-        builder.append(", humanPlayer=");
-        builder.append(humanPlayer);
-        builder.append(", turn=");
-        builder.append(turn);
-        builder.append(", capturedPiecesRed=");
-        builder.append(capturedPiecesRed);
-        builder.append(", capturedPiecesBlue=");
-        builder.append(capturedPiecesBlue);
-        builder.append(", gameStatus=");
-        builder.append(gameStatus);
-        builder.append(", countMoves=");
-        builder.append(countMoves);
-        builder.append("]");
-        return builder.toString();
-    }
-
-    public void printBoard () {
-        StringBuilder builder = new StringBuilder();
-        builder.append("humanPlayer=");
-        builder.append(humanPlayer);
-        builder.append(", \nturn=");
-        builder.append(turn);
-        builder.append(", \ncapturedPiecesRed=");
-        builder.append(capturedPiecesRed);
-        builder.append(", \ncapturedPiecesBlue=");
-        builder.append(capturedPiecesBlue);
-        builder.append(", \ngameStatus=");
-        builder.append(gameStatus);
-        builder.append("\npossibleHumanBombs=");
-        builder.append(possibleBombsHuman);
-        builder.append(", \ncountMoves=");
-        builder.append(countMoves);
-        builder.append("]");
-        Log.d(TAG, builder.toString());
-    }
 
     public void printDiscoveredPieces () {
         for (int z=0;z<StrategoConstants.BOARD_SIZE ;z++) {
@@ -657,5 +451,42 @@ public class Board {
 
     public boolean isGameOver() {
         return getGameStatus() == StrategoConstants.GameStatus.FINISH;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        builder.append("Board [pieces=");
+        builder.append(Arrays.toString(pieces));
+        builder.append(", turn=");
+        builder.append(turn);
+        builder.append(", capturedPiecesRed=");
+        builder.append(capturedPiecesRed);
+        builder.append(", capturedPiecesBlue=");
+        builder.append(capturedPiecesBlue);
+        builder.append(", gameStatus=");
+        builder.append(gameStatus);
+        builder.append(", countMoves=");
+        builder.append(countMoves);
+        builder.append("]");
+        return builder.toString();
+    }
+
+    public void printBoard () {
+        StringBuilder builder = new StringBuilder();
+        builder.append(", \nturn=");
+        builder.append(turn);
+        builder.append(", \ncapturedPiecesRed=");
+        builder.append(capturedPiecesRed);
+        builder.append(", \ncapturedPiecesBlue=");
+        builder.append(capturedPiecesBlue);
+        builder.append(", \ngameStatus=");
+        builder.append(gameStatus);
+        builder.append("\npossibleHumanBombs=");
+        builder.append(possibleBombsHuman);
+        builder.append(", \ncountMoves=");
+        builder.append(countMoves);
+        builder.append("]");
+        Log.d(TAG, builder.toString());
     }
 }

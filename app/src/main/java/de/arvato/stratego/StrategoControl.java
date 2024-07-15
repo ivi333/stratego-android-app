@@ -28,28 +28,21 @@ public class StrategoControl extends Observable  {
     protected long lClockTotal = 600000;
     protected Board board;
 
+    protected int player;
+
     public StrategoControl (int player) {
-        /*board = new Board();
-        board.changeGameStatus(StrategoConstants.GameStatus.INIT_BOARD);
-        board.initTurn(player);
-        board.humanPlayer(player);
-        selectPos=-1;
-        if (fakeGame) {
-            startFakeGame();
-        }*/
+        this.player = player;
         resetGame();
     }
 
     public boolean startGame () {
         boolean canStart=true;
         int y, z;
-        if (board.getHumanPlayer() == StrategoConstants.RED) {
-            y = StrategoConstants.RED_PLAYER[0];
-            z = StrategoConstants.RED_PLAYER[1];
-        } else {
-            y = StrategoConstants.BLUE_PLAYER[0];
-            z = StrategoConstants.BLUE_PLAYER[1];
-        }
+
+        // player is always shown down
+        y = StrategoConstants.DOWN_PLAYER[0];
+        z = StrategoConstants.DOWN_PLAYER[1];
+
         for (int x=y ; x < z && canStart; x++ ) {
             if (board.getPieceAt(x) == null) {
                 canStart=false;
@@ -65,7 +58,7 @@ public class StrategoControl extends Observable  {
 
     public void startFakeGame () {
         board.initTurn(StrategoConstants.RED);
-        board.humanPlayer(StrategoConstants.RED);
+        //board.humanPlayer(StrategoConstants.RED);
         if (fakeAllPieces) {
             randomPieces(StrategoConstants.RED);
             randomPieces(StrategoConstants.BLUE);
@@ -102,15 +95,7 @@ public class StrategoControl extends Observable  {
     private void changeTurn() {
         switchTimer();
         board.changeTurn();
-        if (board.getTurn() == board.getAIPlayer()) {
-            //playAI ();
-        }
     }
-
-    /*public void playAI () {
-        Thread searchThread = new Thread(new StrategoAI(getBoard(), this));
-        searchThread.start();
-    }*/
 
     public boolean selectPiece (int pos) {
         switch(board.getGameStatus()) {
@@ -121,7 +106,7 @@ public class StrategoControl extends Observable  {
                     return false;
                 } else {
                     Piece piece = board.getPieceAt(pos);
-                    if (piece != null && piece.getPlayer() == board.getHumanPlayer()) {
+                    if (piece != null && piece.getPlayer() == player) {
                         selectPos = pos;
                         return true;
                     }
@@ -173,14 +158,14 @@ public class StrategoControl extends Observable  {
         }
     }
 
-    public void randomPieces(int player) {
+    public void randomPieces(int color) {
         final Set<Integer> generated = new LinkedHashSet<Integer>();
         while (generated.size() < StrategoConstants.MAX_PIECES) {
             Integer next;
-            if (player == StrategoConstants.RED) {
-                next = StrategoControl.randomBetween(StrategoConstants.RED_PLAYER[0], StrategoConstants.RED_PLAYER[1]);
+            if (player == color) {
+                next = StrategoControl.randomBetween(StrategoConstants.DOWN_PLAYER[0], StrategoConstants.DOWN_PLAYER[1]);
             } else {
-                next = StrategoControl.randomBetween(StrategoConstants.BLUE_PLAYER[0], StrategoConstants.BLUE_PLAYER[1]);
+                next = StrategoControl.randomBetween(StrategoConstants.UP_PLAYER[0], StrategoConstants.UP_PLAYER[1]);
             }
             generated.add(next);
         }
@@ -204,13 +189,12 @@ public class StrategoControl extends Observable  {
             PieceEnum piece = entry.getKey();
             for (int j=0;j<entry.getValue();j++) {
                 int boardPos = boardPosList.get(k++);
-                putPiece(boardPos, player, piece);
+                putPiece(boardPos, color, piece);
             }
         }
     }
 
     public void putPiece(int pos, int color, PieceEnum piece) {
-        //System.out.println("StrategoControl", "Adding piece:" + piece + " boardPos:" + pos + " player:" + color);
         Piece tmpPiece = new Piece();
         tmpPiece.setPlayer(color);
         tmpPiece.setPieceEnum(piece);
@@ -236,11 +220,10 @@ public class StrategoControl extends Observable  {
     }
 
     protected void resetGame () {
-        int player = StrategoConstants.RED;
         board = new Board();
         board.changeGameStatus(StrategoConstants.GameStatus.INIT_BOARD);
         board.initTurn(player);
-        board.humanPlayer(player);
+        //board.humanPlayer(player);
         selectPos=-1;
         randomPieces(StrategoConstants.RED);
         randomPieces(StrategoConstants.BLUE);
