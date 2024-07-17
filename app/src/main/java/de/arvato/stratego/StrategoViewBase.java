@@ -386,6 +386,7 @@ public class StrategoViewBase {
                 boolean tmp_selected = (positionSelected!=-1 && positionSelected == i);
 				boolean tmpSelectedPos = arrPos.contains(i);
 				boolean tmpEnemy = false;
+				boolean tmpDiscovered = piece != null && piece.isPieceDiscovered();
 				if (piece != null && piece.getPlayer() != currentPlayer ) {
 					tmpEnemy = true;
 				}
@@ -395,6 +396,7 @@ public class StrategoViewBase {
                     tmpCache.color == tmp_color &&
                     tmpCache.selected == tmp_selected &&
 					tmpCache.selectedPos == tmpSelectedPos &&
+					tmpCache.discovered == tmpDiscovered &&
 					tmpCache.enemy == tmpEnemy){
                     continue;
                 }
@@ -417,6 +419,7 @@ public class StrategoViewBase {
 				tmpCache.piece = piece.getPieceEnum().getId();
 				tmpCache.color = piece.getPlayer();
 				tmpCache.enemy = currentPlayer != piece.getPlayer();
+				tmpCache.discovered = piece.isPieceDiscovered();
 			} else {
 				tmpCache.bPiece = false;
 				tmpCache.enemy = false;
@@ -443,9 +446,9 @@ public class StrategoViewBase {
 		_flippedBoard = flipped;
 	}
 
-	public boolean getFlippedBoard(){
+	/*public boolean getFlippedBoard(){
 		return _flippedBoard;
-	}
+	}*/
 
 	public void flipBoard(){
 		resetImageCache();
@@ -470,4 +473,5 @@ public class StrategoViewBase {
 			_arrImgCache[i].piece = -1;
 		}
 	}
+
 }

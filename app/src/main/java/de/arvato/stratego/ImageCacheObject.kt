@@ -21,6 +21,8 @@ class ImageCacheObject {
     var initalized = false;
     @JvmField
     var enemy = false;
+    @JvmField
+    var discovered = false;
 
     companion object {
         @JvmField

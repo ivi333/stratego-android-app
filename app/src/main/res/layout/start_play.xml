@@ -113,6 +113,7 @@
                         android:textSize="14sp"
                         android:layout_marginEnd="8dp" />
 
+                    <!--
                     <Button
                         android:id="@+id/PlayerReset"
                         android:layout_width="wrap_content"
@@ -122,7 +123,7 @@
                         style="@style/GameButtonStyle"
                         android:textSize="14sp"
                         android:layout_marginEnd="8dp" />
-
+                    -->
                     <Button
                         android:id="@+id/PlayerRandom"
                         android:layout_width="wrap_content"
@@ -130,6 +131,15 @@
                         android:text="Random"
                         style="@style/GameButtonStyle"
                         android:textSize="14sp"/>
+
+                    <Button
+                        android:id="@+id/ShowPiece"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Show Piece"
+                        style="@style/GameButtonStyle"
+                        android:textSize="14sp"/>
+
                 </LinearLayout>
 
                 <TextView

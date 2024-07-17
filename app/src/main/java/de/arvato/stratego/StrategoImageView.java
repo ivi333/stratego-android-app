@@ -136,9 +136,12 @@ public class StrategoImageView extends View {
 
                 if(ico.bPiece){
                         if (ico.enemy) {
-                                //bmp = cover[ico.color];
-                                //TODO show temporary the enemy pieces
-                                bmp = arrPieceBitmaps[ico.color][ico.piece];
+                                if (!ico.discovered) {
+                                        bmp = cover[ico.color];
+                                } else {
+                                        bmp = arrPieceBitmaps[ico.color][ico.piece];
+                                }
+
                         } else {
                                 bmp = arrPieceBitmaps[ico.color][ico.piece];
                         }

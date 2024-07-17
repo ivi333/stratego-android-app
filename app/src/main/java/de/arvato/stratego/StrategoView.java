@@ -33,6 +33,7 @@ import java.util.Observer;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import de.arvato.stratego.game.Piece;
 import de.arvato.stratego.game.PieceEnum;
 import de.arvato.stratego.util.SpacingItemDecoration;
 
@@ -221,8 +222,9 @@ public class StrategoView implements Observer {
         );*/
 
         Button bPlayerReady = parent.findViewById(R.id.PlayerReady);
-        Button bPlayerReset = parent.findViewById(R.id.PlayerReset);
+        //Button bPlayerReset = parent.findViewById(R.id.PlayerReset);
         Button bPlayerRandom = parent.findViewById(R.id.PlayerRandom);
+        Button bShowPiece = parent.findViewById(R.id.ShowPiece);
         TextView InfoText = parent.findViewById(R.id.InfoText);
         TextView InfoText2 = parent.findViewById(R.id.InfoText2);
         TextView InfoText3 = parent.findViewById(R.id.InfoText3);
@@ -247,7 +249,7 @@ public class StrategoView implements Observer {
         }
         );
 
-        bPlayerReset.setOnClickListener(new View.OnClickListener() {
+        /*bPlayerReset.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -265,7 +267,7 @@ public class StrategoView implements Observer {
                 paintBoard();
 
             }
-        });
+        });*/
 
         bPlayerRandom.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -275,6 +277,24 @@ public class StrategoView implements Observer {
             }
         }
         );
+
+        bShowPiece.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //strategoControl.randomPieces(player);
+                //paintBoard ();
+                //Toast.makeText(parent.getApplicationContext(), "Show piece at position test!", Toast.LENGTH_SHORT).show();
+                Piece piece = strategoControl.getBoard().getPieceAt(34);
+                //Log.d(TAG, piece.toString());
+                piece.setPieceDiscovered(true);
+                //StrategoImageView imageView = strategoViewBase.get_arrImages()[34];
+                //Log.d (TAG, imageView.toString());
+                //imageView.invalidate();
+                strategoViewBase.paintBoard(strategoControl, -1, Collections.emptyList());
+            }
+        }
+        );
+
     }
 
     private void initCapturedImages() {
