@@ -266,7 +266,7 @@
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="16dp"
                     android:textColor="@color/white"
-                    android:text="Fighting"
+                    android:text="Last Fight"
                     android:textSize="30sp"
                     android:textStyle="bold" />
 
@@ -317,7 +317,7 @@
                         android:layout_width="35dp"
                         android:layout_height="35dp"
                         android:layout_gravity="bottom"
-                        android:layout_marginLeft="10dp"
+                        android:layout_marginStart="10dp"
                         android:src="@drawable/fight_lost" />
 
                 </FrameLayout>

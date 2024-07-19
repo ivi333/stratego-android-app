@@ -437,6 +437,21 @@ public class StrategoView implements Observer {
             fightPiece1.setImageBitmap(StrategoImageView.arrPieceBitmaps[lastFight.pieceFrom.getPlayer()][lastFight.pieceFrom.getPieceEnum().getId()]);
             fightPiece2.setImageBitmap(StrategoImageView.arrPieceBitmaps[lastFight.pieceTo.getPlayer()][lastFight.pieceTo.getPieceEnum().getId()]);
 
+            if (lastFight.fightStatus == PieceFightStatus.PIECE1_WIN) {
+                fightPiece1Indicator.setImageDrawable(drawableFightWin);
+                fightPiece2Indicator.setImageDrawable(drawableFightLost);
+            } else if (lastFight.fightStatus == PieceFightStatus.PIECE2_WIN) {
+                fightPiece1Indicator.setImageDrawable(drawableFightLost);
+                fightPiece2Indicator.setImageDrawable(drawableFightWin);
+            } else if (lastFight.fightStatus == PieceFightStatus.TIE) {
+                fightPiece1Indicator.setImageDrawable(drawableFightLost);
+                fightPiece2Indicator.setImageDrawable(drawableFightLost);
+            } else {
+                // should not happen
+                fightPiece1Indicator.setImageDrawable(null);
+                fightPiece2Indicator.setImageDrawable(null);
+            }
+
             viewAnimator.setDisplayedChild(2);
 
             // Delay of 5 seconds
