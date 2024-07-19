@@ -5,7 +5,9 @@ import android.app.AlertDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.Message;
 import android.util.Log;
 import android.util.Pair;
@@ -32,9 +34,12 @@ import java.util.Observable;
 import java.util.Observer;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.stream.Collectors;
 
+import de.arvato.stratego.game.HistoryPiece;
 import de.arvato.stratego.game.Piece;
 import de.arvato.stratego.game.PieceEnum;
+import de.arvato.stratego.game.PieceFightStatus;
 import de.arvato.stratego.util.SpacingItemDecoration;
 
 public class StrategoView implements Observer {
@@ -65,6 +70,14 @@ public class StrategoView implements Observer {
 
     private List<CapturedPieceItem> listCapturedPiecesBlue;
     private List<CapturedPieceItem> listCapturedPiecesRed;
+
+    private ImageView fightPiece1;
+    private ImageView fightPiece2;
+
+    private ImageView fightPiece1Indicator;
+    private ImageView fightPiece2Indicator;
+
+    private int totalFighths=0;
 
     @Override
     public void update(Observable o, Object arg) {
@@ -284,13 +297,22 @@ public class StrategoView implements Observer {
                 //strategoControl.randomPieces(player);
                 //paintBoard ();
                 //Toast.makeText(parent.getApplicationContext(), "Show piece at position test!", Toast.LENGTH_SHORT).show();
-                Piece piece = strategoControl.getBoard().getPieceAt(34);
+
+                //Piece discovery test
+                //Piece piece = strategoControl.getBoard().getPieceAt(34);
                 //Log.d(TAG, piece.toString());
-                piece.setPieceDiscovered(true);
+                //piece.setPieceDiscovered(true);
                 //StrategoImageView imageView = strategoViewBase.get_arrImages()[34];
                 //Log.d (TAG, imageView.toString());
                 //imageView.invalidate();
-                strategoViewBase.paintBoard(strategoControl, -1, Collections.emptyList());
+                //strategoViewBase.paintBoard(strategoControl, -1, Collections.emptyList());
+
+                //history test
+                List<HistoryPiece> historyMoves = strategoControl.getBoard().getHistoryMoves();
+                Log.d(TAG, "History size:" + historyMoves.size());
+                for (HistoryPiece history : historyMoves) {
+                    Log.d(TAG, history.toString());
+                }
             }
         }
         );
@@ -369,12 +391,10 @@ public class StrategoView implements Observer {
     }
 
     public void initFightView () {
-        //TODO
-        //pieceFight1 = parent.findViewById(R.id.pieceFightRed);
-        //pieceFight2 =  parent.findViewById(R.id.pieceFightBlue);
-        //fightView = parent.findViewById(R.id.p1vsp2);
-        //pieceFight1.setImageBitmap(StrategoImageView.arrPieceBitmaps[StrategoConstants.RED][PieceEnum.MINER.getId()]);
-        //pieceFight2.setImageBitmap(StrategoImageView.arrPieceBitmaps[StrategoConstants.BLUE][PieceEnum.SCOUT.getId()]);
+        fightPiece1 = parent.findViewById(R.id.fightPiece1);
+        fightPiece2 = parent.findViewById(R.id.fightPiece2);
+        fightPiece1Indicator = parent.findViewById(R.id.fightPiece1Indicator);
+        fightPiece2Indicator = parent.findViewById(R.id.fightPiece2Indicator);
     }
 
     public void showNext() {
@@ -400,39 +420,35 @@ public class StrategoView implements Observer {
     }
 
     private void updateFight () {
-        //TODO
-//        List<Pair> fights = strategoControl.getFights();
-//        if (!fights.isEmpty()) {
-//            Pair fight = fights.get(fights.size() - 1);
-//            if (fight.equals(latestFight)) {
-//                return;
-//            }
-//            latestFight = fight;
-//            Piece piece1 = (Piece) fight.first;
-//            Piece piece2 = (Piece) fight.second;
-//
-//            PieceFight.PieceFighStatus pieceFightStatus = PieceFight.fight(piece1, piece2);
-//            pieceFight1.setImageBitmap(StrategoImageView.arrPieceBitmaps[piece1.getPlayer()][piece1.getPieceEnum().getId()]);
-//            pieceFight2.setImageBitmap(StrategoImageView.arrPieceBitmaps[piece2.getPlayer()][piece2.getPieceEnum().getId()]);
-//
-//            FrameLayout parentFight1 = (FrameLayout) pieceFight1.getParent();
-//            FrameLayout parentFight2 = (FrameLayout) pieceFight2.getParent();
-//
-//            //NO_FIGHT, PIECE1_WIN, PIECE2_WIN, TIE, FLAG_CAPTURED
-//            if (pieceFightStatus == PieceFight.PieceFighStatus.PIECE1_WIN ||
-//                    pieceFightStatus == PieceFight.PieceFighStatus.FLAG_CAPTURED) {
-//                parentFight1.setForeground(drawableFightWin);
-//                parentFight2.setForeground(drawableFightLost);
-//            } else if (pieceFightStatus == PieceFight.PieceFighStatus.PIECE2_WIN) {
-//                parentFight2.setForeground(drawableFightWin);
-//                parentFight1.setForeground(drawableFightLost);
-//            } else if (pieceFightStatus == PieceFight.PieceFighStatus.TIE) {
-//                parentFight2.setForeground(drawableFightLost);
-//                parentFight1.setForeground(drawableFightLost);
-//            } else {
-//                Log.e(TAG, "Pieces are not fighting!");
-//            }
-//        }
+        List<HistoryPiece> historyMoves = strategoControl.getBoard().getHistoryMoves();
+        List<HistoryPiece> fights = new ArrayList<>();
+        for (HistoryPiece h : historyMoves) {
+            if (h.fightStatus != PieceFightStatus.NO_FIGHT && h.fightStatus != PieceFightStatus.FLAG_CAPTURED) {
+                fights.add(h);
+            }
+        }
+
+        if (totalFighths != fights.size()) {
+            // new fight
+            totalFighths = fights.size();
+            HistoryPiece lastFight = fights.get(fights.size()-1);
+            Log.d(TAG, "Last Pieces fighting:" + lastFight.toString());
+
+            fightPiece1.setImageBitmap(StrategoImageView.arrPieceBitmaps[lastFight.pieceFrom.getPlayer()][lastFight.pieceFrom.getPieceEnum().getId()]);
+            fightPiece2.setImageBitmap(StrategoImageView.arrPieceBitmaps[lastFight.pieceTo.getPlayer()][lastFight.pieceTo.getPieceEnum().getId()]);
+
+            viewAnimator.setDisplayedChild(2);
+
+            // Delay of 5 seconds
+            int delayMillis = 2000;
+
+            // Using Handler to delay execution
+            new Handler(Looper.getMainLooper()).postDelayed(() -> {
+                // Code to execute after delay
+                viewAnimator.setDisplayedChild(1);
+            }, delayMillis);
+        }
+
     }
 
     private void updateCapturedPieces(int player, Map<PieceEnum, Integer> mapCapturedPieces) {

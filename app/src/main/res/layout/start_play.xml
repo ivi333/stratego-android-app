@@ -252,6 +252,87 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
+            <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:context=".FightActivity">
+
+                <!-- "Fighting" Text -->
+                <TextView
+                    android:id="@+id/text_fighting"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="16dp"
+                    android:textColor="@color/white"
+                    android:text="Fighting"
+                    android:textSize="30sp"
+                    android:textStyle="bold" />
+
+                <!-- FrameLayout for Piece 1 and its Indicator -->
+                <FrameLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/text_fighting"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="24dp">
+
+                    <ImageView
+                        android:id="@+id/fightPiece1"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        />
+
+                    <!-- Winner/Loser Indicator for Piece 1 (Overlay) -->
+                    <ImageView
+                        android:id="@+id/fightPiece1Indicator"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_gravity="bottom"
+                        android:layout_marginStart="16dp"
+                        android:src="@drawable/fight_win" />
+
+                </FrameLayout>
+
+                <!-- FrameLayout for Piece 2 and its Indicator -->
+                <FrameLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/text_fighting"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginTop="24dp">
+
+                    <ImageView
+                        android:id="@+id/fightPiece2"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        />
+
+                    <!-- Winner/Loser Indicator for Piece 2 (Overlay) -->
+                    <ImageView
+                        android:id="@+id/fightPiece2Indicator"
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:layout_gravity="bottom"
+                        android:layout_marginLeft="10dp"
+                        android:src="@drawable/fight_lost" />
+
+                </FrameLayout>
+
+                <!-- Fight Icon (Center) -->
+                <ImageView
+                    android:id="@+id/image_fight"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/text_fighting"
+                    android:layout_centerHorizontal="true"
+                    android:src="@drawable/fight_vs" />
+
+            </RelativeLayout>
+
 
             <!--
             <FrameLayout

@@ -7,7 +7,6 @@ public class HistoryPiece {
     public PieceFightStatus fightStatus;;
     public Piece pieceFrom;
     public Piece pieceTo;
-    public boolean possibleBomb;
     public int player;
 
     @Override
@@ -23,8 +22,6 @@ public class HistoryPiece {
         builder.append(pieceFrom);
         builder.append(", pieceTo=");
         builder.append(pieceTo);
-        builder.append(", possibleBomb=");
-        builder.append(possibleBomb);
         builder.append(", player=");
         builder.append(player);
         builder.append("]");

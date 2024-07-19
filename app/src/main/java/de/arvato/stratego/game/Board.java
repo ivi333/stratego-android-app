@@ -105,7 +105,7 @@ public class Board {
             }
 
             //boolean updatedBomb = updatePossibleBoms (selectPos);
-            //addHistory (selectPos, to, pieceFrom, pieceTo, fightStatus, updatedBomb, getTurn());
+            addHistory (selectPos, to, pieceFrom, pieceTo, fightStatus, getTurn());
             countMoves++;
         } else {
             Log.e(TAG, "Move no possible from:" + selectPos + " to:" + to);
@@ -115,19 +115,18 @@ public class Board {
     }
 
     //TODO Ivan review
-    private void addHistory(int selectPos, int to, Piece pieceFrom, Piece pieceTo, PieceFightStatus fightStatus, boolean updatedBomb, int player) {
+    private void addHistory(int selectPos, int to, Piece pieceFrom, Piece pieceTo, PieceFightStatus fightStatus, int player) {
         HistoryPiece history = new HistoryPiece();
         history.moveFrom = selectPos;
         history.moveTo = to;
         history.pieceFrom = pieceFrom;
         history.pieceTo = pieceTo;
         history.fightStatus = fightStatus;
-        history.possibleBomb = updatedBomb;
         history.player = player;
         historyMoves.add(history);
     }
 
-    public void undoLastMove () {
+    /*public void undoLastMove () {
         HistoryPiece history = historyMoves.remove(historyMoves.size()-1);
         if (history!=null) {
             pieces[history.moveFrom] = history.pieceFrom;
@@ -149,12 +148,9 @@ public class Board {
                     undoCapturePiece (history.pieceTo);
                     break;
             }
-            if (history.possibleBomb) {
-                possibleBombsHuman.add(history.moveFrom);
-            }
             countMoves--;
         }
-    }
+    }*/
 
     private void undoCapturePiece(Piece piece) {
         if (piece.getPlayer() == StrategoConstants.RED) {
@@ -451,6 +447,10 @@ public class Board {
 
     public boolean isGameOver() {
         return getGameStatus() == StrategoConstants.GameStatus.FINISH;
+    }
+
+    public List<HistoryPiece> getHistoryMoves() {
+        return historyMoves;
     }
 
     @Override

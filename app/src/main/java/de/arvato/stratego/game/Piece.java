@@ -29,14 +29,6 @@ public class Piece {
         return pieceDiscovered;
     }
 
-    /*public Piece copy () {
-        Piece newPiece = new Piece();
-        newPiece.player = this.player;
-        newPiece.pieceEnum = this.pieceEnum;
-        newPiece.pieceDiscovered = this.pieceDiscovered;
-        return newPiece;
-    }*/
-
     @Override
     public String toString() {
         StringBuilder builder = new StringBuilder();
@@ -49,5 +41,4 @@ public class Piece {
         builder.append("]");
         return builder.toString();
     }
-
 }

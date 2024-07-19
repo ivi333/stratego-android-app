@@ -22,11 +22,14 @@ public class StrategoCapturedImageView extends View {
 
     private boolean _allDead;
 
+    private float scale;
+
     public StrategoCapturedImageView(Context context) {
         super(context);
         _bitMap = null;
         _bHighlighted = false;
         _allDead = false;
+        scale = 1.0F;
         setFocusable(false);
     }
 
@@ -35,6 +38,7 @@ public class StrategoCapturedImageView extends View {
         _bitMap = null;
         _bHighlighted = false;
         _allDead = false;
+        scale = 1.0F;
         setFocusable(false);
     }
 
@@ -60,12 +64,20 @@ public class StrategoCapturedImageView extends View {
         this._bitMap = bitmap;
     }
 
+    public float getScale() {
+        return scale;
+    }
+
+    public void setScale(float scale) {
+        this.scale = scale;
+    }
+
     public void onDraw(Canvas canvas) {
         if(_bitMap == null){
             return;
         }
         //float scale = (float) getWidth() / _bitMap.getWidth();
-        float scale=1.00F;
+        //float scale=1.00F;
         //Log.d (TAG, "scale:" + String.valueOf(scale) + " getWidth():" + getWidth() + " bitMap.getWidh():" + _bitMap.getWidth() );
         Matrix m = new Matrix();
         m.setScale(scale, scale);
