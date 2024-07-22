@@ -1,0 +1,120 @@
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp">
+
+    <!-- Text indicating selection -->
+    <TextView
+        android:id="@+id/textSelectColor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Select your preferred color"
+        android:textSize="18sp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/blueMultiPlayerSelector"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintVertical_bias="0.2"/>
+
+    <!-- Blue player selector -->
+    <ImageView
+        android:id="@+id/blueMultiPlayerSelector"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/spaceMulti"
+        app:layout_constraintWidth_percent="0.4"
+        app:layout_constraintTop_toBottomOf="@id/textSelectColor"
+        app:layout_constraintBottom_toTopOf="@id/btnCreateRoom"
+        android:clickable="true"
+        android:focusable="true"
+        android:background="@drawable/image_selector"
+        android:layout_marginTop="16dp"/>
+
+    <!-- Space between the images -->
+    <View
+        android:id="@+id/spaceMulti"
+        android:layout_width="4dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toEndOf="@id/blueMultiPlayerSelector"
+        app:layout_constraintEnd_toStartOf="@id/redMultiPlayerSelector"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+    <!-- Red player selector -->
+    <ImageView
+        android:id="@+id/redMultiPlayerSelector"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        app:layout_constraintStart_toEndOf="@id/spaceMulti"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintWidth_percent="0.4"
+        app:layout_constraintTop_toBottomOf="@id/textSelectColor"
+        app:layout_constraintBottom_toTopOf="@id/btnCreateRoom"
+        android:clickable="true"
+        android:focusable="true"
+        android:background="@drawable/image_selector"
+        android:layout_marginTop="16dp"/>
+
+    <!-- Create Room button -->
+    <Button
+        android:id="@+id/btnCreateRoom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Create Room"
+        app:layout_constraintTop_toBottomOf="@id/blueMultiPlayerSelector"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/textJoinRoom"
+        style="@style/GameButtonStyle"
+        android:layout_marginTop="30dp"/>
+
+    <!-- Horizontal Divider -->
+    <View
+        android:id="@+id/divider"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:background="?android:attr/listDivider"
+        app:layout_constraintTop_toBottomOf="@id/btnCreateRoom"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="16dp"/>
+
+    <!-- Join Room text -->
+    <TextView
+        android:id="@+id/textJoinRoom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="or Join Room"
+        android:textSize="18sp"
+        app:layout_constraintTop_toBottomOf="@id/btnCreateRoom"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="60dp"/>
+
+    <!-- Room ID input -->
+    <EditText
+        android:id="@+id/editTextRoomId"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="Enter Room ID"
+        app:layout_constraintTop_toBottomOf="@id/textJoinRoom"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="8dp"
+        app:layout_constraintWidth_percent="0.8"/>
+
+    <!-- Join Room button -->
+    <Button
+        android:id="@+id/btnJoinRoom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Join Room"
+        app:layout_constraintTop_toBottomOf="@id/editTextRoomId"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        style="@style/GameButtonStyle"
+        android:layout_marginTop="16dp"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

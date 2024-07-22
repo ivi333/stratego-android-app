@@ -36,6 +36,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.stream.Collectors;
 
+import de.arvato.stratego.colyseum.ColyseusManager;
 import de.arvato.stratego.game.HistoryPiece;
 import de.arvato.stratego.game.Piece;
 import de.arvato.stratego.game.PieceEnum;
@@ -76,8 +77,9 @@ public class StrategoView implements Observer {
 
     private ImageView fightPiece1Indicator;
     private ImageView fightPiece2Indicator;
-
     private int totalFighths=0;
+
+    private ColyseusManager colyseusManager;
 
     @Override
     public void update(Observable o, Object arg) {
@@ -157,6 +159,8 @@ public class StrategoView implements Observer {
             viewAnimator.setInAnimation(parent, R.anim.slide_right);
         }
 
+        initColyseusManager ();
+
         // Init the captured View
         initCapturedImages ();
 
@@ -172,6 +176,16 @@ public class StrategoView implements Observer {
         // Paint
         paintBoard();
 
+    }
+
+    private void initColyseusManager() {
+        colyseusManager = ColyseusManager.getInstance(StrategoConstants.ENDPOINT_COLYSEUS);
+        colyseusManager.joinOrCreate();
+
+        new Handler(Looper.getMainLooper()).postDelayed(() -> {
+            // Code to execute after delay
+            Toast.makeText(parent.getApplicationContext(), "Room " + colyseusManager.getRoomID() + " created!", Toast.LENGTH_SHORT).show();
+        }, 500);
     }
 
     public void handleClick(int index) {
@@ -238,6 +252,7 @@ public class StrategoView implements Observer {
         //Button bPlayerReset = parent.findViewById(R.id.PlayerReset);
         Button bPlayerRandom = parent.findViewById(R.id.PlayerRandom);
         Button bShowPiece = parent.findViewById(R.id.ShowPiece);
+        Button bLeaveRoom = parent.findViewById(R.id.LeaveRoom);
         TextView InfoText = parent.findViewById(R.id.InfoText);
         TextView InfoText2 = parent.findViewById(R.id.InfoText2);
         TextView InfoText3 = parent.findViewById(R.id.InfoText3);
@@ -308,14 +323,24 @@ public class StrategoView implements Observer {
                 //strategoViewBase.paintBoard(strategoControl, -1, Collections.emptyList());
 
                 //history test
-                List<HistoryPiece> historyMoves = strategoControl.getBoard().getHistoryMoves();
+                /*List<HistoryPiece> historyMoves = strategoControl.getBoard().getHistoryMoves();
                 Log.d(TAG, "History size:" + historyMoves.size());
                 for (HistoryPiece history : historyMoves) {
                     Log.d(TAG, history.toString());
-                }
+                }*/
+
+                String roomId = colyseusManager.getRoomID();
+                Log.d(TAG, roomId);
             }
         }
         );
+
+        bLeaveRoom.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                colyseusManager.disconnect();
+            }
+        });
 
     }
 

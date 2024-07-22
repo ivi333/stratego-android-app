@@ -11,18 +11,26 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
 import java.io.IOException;
 import java.io.InputStream;
 
+import de.arvato.stratego.colyseum.ColyseusManager;
+
+//import de.arvato.stratego.colyseum.ColyseusManager;
+
 public class StrategoPortraitActivity extends Activity {
 
     public static final String TAG = "StrategoPortActivity";
 
     private Button playButton, instructionsButton, playOnlineButton, profileButton, settingsButton;
+
+    private Button btnCreateRoom;
+
+    private ImageView blueMultiPlayerSelector;
+    private ImageView redMultiPlayerSelector;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -37,16 +45,20 @@ public class StrategoPortraitActivity extends Activity {
         }
 
         playButton = findViewById(R.id.PlayButton);
+        playOnlineButton = findViewById(R.id.PlayOnlineButton);
         instructionsButton = findViewById(R.id.instructionsButton);
+
         playButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 initDialogSelectColor ();
-                //TODO moved to selection player
-                /*Intent i = new Intent();
-                i.setClass(getApplicationContext(), StartPlayActivity.class);
-                i.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-                startActivity(i);*/
+            }
+        });
+
+        playOnlineButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                initMultiplayerDialogSelectColor ();
             }
         });
 
@@ -74,6 +86,63 @@ public class StrategoPortraitActivity extends Activity {
         } catch (IOException e) {
             Log.e("PORTRAIT", e.getMessage(), e);
         }
+    }
+
+    private void initMultiplayerDialogSelectColor() {
+        LayoutInflater inflater = getLayoutInflater();
+        View dialogView = inflater.inflate(R.layout.dialog_multiplayerplayer_selector, null);
+
+        blueMultiPlayerSelector = dialogView.findViewById(R.id.blueMultiPlayerSelector);
+        redMultiPlayerSelector = dialogView.findViewById(R.id.redMultiPlayerSelector);
+        btnCreateRoom = dialogView.findViewById(R.id.btnCreateRoom);
+
+        loadImageFromAssets (blueMultiPlayerSelector, "bandera_blue.png");
+        loadImageFromAssets (redMultiPlayerSelector, "bandera_red.png");
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setView(dialogView);
+        builder.setTitle("MultiPlayer Game");
+
+        btnCreateRoom.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Toast.makeText(getApplicationContext(), "Create Rooom!", Toast.LENGTH_SHORT).show();
+                /*ColyseusManager colyseusManager = ColyseusManager.getInstance(StrategoConstants.ENDPOINT_COLYSEUS);
+                colyseusManager.joinOrCreate();*/
+                Intent i = new Intent();
+                i.setClass(getApplicationContext(), StartPlayActivity.class);
+                i.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                startActivity(i);
+            }
+        });
+
+        blueMultiPlayerSelector.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Handle left image click
+                handleMultiPlayerDialogImageClick(StrategoConstants.BLUE, blueMultiPlayerSelector);
+            }
+        });
+
+        redMultiPlayerSelector.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Handle right image click
+                handleMultiPlayerDialogImageClick(StrategoConstants.RED, redMultiPlayerSelector);
+            }
+
+        });
+
+        // Show the dialog
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
+    private void handleMultiPlayerDialogImageClick(int which, ImageView playerSelector) {
+        blueMultiPlayerSelector.setSelected(false);
+        redMultiPlayerSelector.setSelected(false);
+
+        playerSelector.setSelected(true);
     }
 
     private void initDialogSelectColor() {
