@@ -253,6 +253,7 @@ public class StrategoView implements Observer {
         Button bPlayerRandom = parent.findViewById(R.id.PlayerRandom);
         Button bShowPiece = parent.findViewById(R.id.ShowPiece);
         Button bLeaveRoom = parent.findViewById(R.id.LeaveRoom);
+        Button bFakeRoom = parent.findViewById(R.id.FakeMove);
         TextView InfoText = parent.findViewById(R.id.InfoText);
         TextView InfoText2 = parent.findViewById(R.id.InfoText2);
         TextView InfoText3 = parent.findViewById(R.id.InfoText3);
@@ -334,6 +335,18 @@ public class StrategoView implements Observer {
             }
         }
         );
+
+        bFakeRoom.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    colyseusManager.sendFakeMove();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    throw new RuntimeException(e);
+                }
+            }
+        });
 
         bLeaveRoom.setOnClickListener(new View.OnClickListener() {
             @Override

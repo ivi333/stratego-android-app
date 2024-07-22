@@ -25,13 +25,14 @@
         android:layout_height="120dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toStartOf="@id/spaceMulti"
-        app:layout_constraintWidth_percent="0.4"
         app:layout_constraintTop_toBottomOf="@id/textSelectColor"
         app:layout_constraintBottom_toTopOf="@id/btnCreateRoom"
         android:clickable="true"
         android:focusable="true"
         android:background="@drawable/image_selector"
-        android:layout_marginTop="16dp"/>
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
+        android:layout_marginEnd="8dp"/>
 
     <!-- Space between the images -->
     <View
@@ -50,13 +51,14 @@
         android:layout_height="120dp"
         app:layout_constraintStart_toEndOf="@id/spaceMulti"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintWidth_percent="0.4"
         app:layout_constraintTop_toBottomOf="@id/textSelectColor"
         app:layout_constraintBottom_toTopOf="@id/btnCreateRoom"
         android:clickable="true"
         android:focusable="true"
         android:background="@drawable/image_selector"
-        android:layout_marginTop="16dp"/>
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
+        android:layout_marginStart="8dp"/>
 
     <!-- Create Room button -->
     <Button
@@ -64,7 +66,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Create Room"
-        app:layout_constraintTop_toBottomOf="@id/blueMultiPlayerSelector"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toTopOf="@id/textJoinRoom"
