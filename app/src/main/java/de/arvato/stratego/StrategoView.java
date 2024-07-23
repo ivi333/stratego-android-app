@@ -2,7 +2,9 @@ package de.arvato.stratego;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
@@ -22,6 +24,9 @@ import android.widget.Toast;
 import android.widget.ViewAnimator;
 
 import androidx.core.content.ContextCompat;
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -31,7 +36,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Observable;
-import java.util.Observer;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.stream.Collectors;
@@ -41,9 +45,11 @@ import de.arvato.stratego.game.HistoryPiece;
 import de.arvato.stratego.game.Piece;
 import de.arvato.stratego.game.PieceEnum;
 import de.arvato.stratego.game.PieceFightStatus;
+import de.arvato.stratego.model.PlayerView;
+import de.arvato.stratego.model.PlayerViewModel;
 import de.arvato.stratego.util.SpacingItemDecoration;
 
-public class StrategoView implements Observer {
+public class StrategoView {
 
     public static final String TAG = "StrategoView";
 
@@ -78,14 +84,18 @@ public class StrategoView implements Observer {
     private ImageView fightPiece1Indicator;
     private ImageView fightPiece2Indicator;
     private int totalFighths=0;
-
     private ColyseusManager colyseusManager;
 
-    @Override
+    //observers view model
+    private MutableLiveData<PlayerView> playerLiveData = new MutableLiveData<>();
+
+    private String prefferedUserName;
+
+    /*@Override
     public void update(Observable o, Object arg) {
         updateStatus ();
         paintBoard();
-    }
+    }*/
 
     static class StrategoInnerHandler extends Handler {
         WeakReference<StrategoView> _strategoView;
@@ -129,7 +139,7 @@ public class StrategoView implements Observer {
         //player = StrategoConstants.RED;
 
         strategoControl = new StrategoControl(player);
-        strategoControl.addObserver(this);
+        //strategoControl.addObserver(this);
 
         parent = (StrategoActivity) activity;
         strategoViewBase = new StrategoViewBase(activity, player);
@@ -159,6 +169,10 @@ public class StrategoView implements Observer {
             viewAnimator.setInAnimation(parent, R.anim.slide_right);
         }
 
+        initPreferences ();
+
+        initViewModelObserver ();
+
         initColyseusManager ();
 
         // Init the captured View
@@ -178,8 +192,24 @@ public class StrategoView implements Observer {
 
     }
 
+    private void initPreferences() {
+        SharedPreferences sharedPreferences  = parent.getSharedPreferences(StrategoConstants.PREFERENCES_NAME, Context.MODE_PRIVATE);
+        prefferedUserName = sharedPreferences.getString("name", "Hidden_Name");
+        Log.d(TAG, "PrefferedName:" + prefferedUserName);
+    }
+
+    private void initViewModelObserver() {
+        playerLiveData.observeForever(new Observer<PlayerView>() {
+            @Override
+            public void onChanged(PlayerView playerView) {
+                Log.d(TAG, "Player View changed:" + playerView);
+            }
+        });
+    }
+
     private void initColyseusManager() {
         colyseusManager = ColyseusManager.getInstance(StrategoConstants.ENDPOINT_COLYSEUS);
+        colyseusManager.setPlayerLiveDta(playerLiveData);
         colyseusManager.joinOrCreate();
 
         new Handler(Looper.getMainLooper()).postDelayed(() -> {
@@ -258,6 +288,20 @@ public class StrategoView implements Observer {
         TextView InfoText2 = parent.findViewById(R.id.InfoText2);
         TextView InfoText3 = parent.findViewById(R.id.InfoText3);
         winnerTextView = parent.findViewById(R.id.winnerTextView);
+
+        Drawable drawableCircleRed = ContextCompat.getDrawable(parent.getApplicationContext(), R.drawable.turnred);
+        Drawable drawableCircleBlue = ContextCompat.getDrawable(parent.getApplicationContext(), R.drawable.turnblue);
+
+        ImageView turnPlayerUp = parent.findViewById(R.id.turnPlayerUp);
+        ImageView turnPlayerDown = parent.findViewById(R.id.turnPlayerDown);
+
+        if (player == StrategoConstants.RED) {
+            turnPlayerDown.setImageDrawable(drawableCircleRed);
+            turnPlayerUp.setImageDrawable(drawableCircleBlue);
+        } else {
+            turnPlayerUp.setImageDrawable(drawableCircleRed);
+            turnPlayerDown.setImageDrawable(drawableCircleBlue);
+        }
 
         bPlayerReady.setOnClickListener(new View.OnClickListener() {
             @Override

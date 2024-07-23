@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
@@ -47,30 +48,26 @@ public class StrategoPortraitActivity extends Activity {
         playButton = findViewById(R.id.PlayButton);
         playOnlineButton = findViewById(R.id.PlayOnlineButton);
         instructionsButton = findViewById(R.id.instructionsButton);
+        settingsButton = findViewById(R.id.SettingsButton);
 
-        playButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                initDialogSelectColor ();
-            }
+        playButton.setOnClickListener(v -> initDialogSelectColor ());
+
+        playOnlineButton.setOnClickListener(v -> initMultiplayerDialogSelectColor ());
+
+        instructionsButton.setOnClickListener(v -> {
+            Intent i = new Intent();
+            i.setClass(getApplicationContext(), InstructionsActivity.class);
+            i.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+            startActivity(i);
         });
 
-        playOnlineButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                initMultiplayerDialogSelectColor ();
-            }
+        settingsButton.setOnClickListener(v -> {
+            Intent i = new Intent();
+            i.setClass(getApplicationContext(), SettingsActivity.class);
+            i.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+            startActivity(i);
         });
 
-        instructionsButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent();
-                i.setClass(getApplicationContext(), InstructionsActivity.class);
-                i.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-                startActivity(i);
-            }
-        });
     }
 
     private void loadImageFromAssets(ImageView imageView, String file) {
@@ -106,11 +103,19 @@ public class StrategoPortraitActivity extends Activity {
         btnCreateRoom.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Toast.makeText(getApplicationContext(), "Create Rooom!", Toast.LENGTH_SHORT).show();
-                /*ColyseusManager colyseusManager = ColyseusManager.getInstance(StrategoConstants.ENDPOINT_COLYSEUS);
-                colyseusManager.joinOrCreate();*/
+                int which = -1;
+                if (blueMultiPlayerSelector.isSelected()) {
+                    which = 1;
+                } else if (redMultiPlayerSelector.isSelected()) {
+                    which = 0;
+                }
+                if (which == -1) {
+                    Toast.makeText(getApplicationContext(), "Select a color first.!", Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 Intent i = new Intent();
                 i.setClass(getApplicationContext(), StartPlayActivity.class);
+                i.putExtra("select_color", which);
                 i.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                 startActivity(i);
             }
@@ -141,7 +146,6 @@ public class StrategoPortraitActivity extends Activity {
     private void handleMultiPlayerDialogImageClick(int which, ImageView playerSelector) {
         blueMultiPlayerSelector.setSelected(false);
         redMultiPlayerSelector.setSelected(false);
-
         playerSelector.setSelected(true);
     }
 

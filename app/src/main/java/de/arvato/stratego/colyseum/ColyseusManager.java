@@ -1,21 +1,22 @@
 package de.arvato.stratego.colyseum;
 
 import android.os.Build;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
+
+import androidx.lifecycle.MutableLiveData;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import org.json.JSONObject;
-
+import de.arvato.stratego.model.PlayerView;
 import io.colyseus.Client;
 import io.colyseus.Room;
-import io.colyseus.serializer.schema.DataChange;
 
-import java.util.Map;
-import java.util.concurrent.CompletableFuture;
+import java.util.Observable;
 
-public class ColyseusManager {
+public class ColyseusManager extends Observable {
 
     private static final String TAG = "ColyseusManager";
 
@@ -24,6 +25,10 @@ public class ColyseusManager {
     private Client client;
 
     private Room<GameState> room;
+
+    private MutableLiveData<PlayerView> playerLiveDta;
+
+    //private final Handler mainHandler = new Handler(Looper.getMainLooper());
 
     private ColyseusManager(String serverUrl) {
         client = new Client(serverUrl);
@@ -34,6 +39,14 @@ public class ColyseusManager {
             instance = new ColyseusManager(serverUrl);
         }
         return instance;
+    }
+
+    public MutableLiveData<PlayerView> getPlayerLiveDta() {
+        return playerLiveDta;
+    }
+
+    public void setPlayerLiveDta(MutableLiveData<PlayerView> playerLiveDta) {
+        this.playerLiveDta = playerLiveDta;
     }
 
     public void joinOrCreate () {
@@ -47,6 +60,9 @@ public class ColyseusManager {
 
             r.getState().players.setOnAdd((player, key) -> {
                 Log.d(TAG, "Player added: " + key + " -> " + player);
+                //mainHandler.post(() -> playerViewModel.updatePlayer(player));
+                //playerLiveDta.postValue();
+                playerLiveDta.postValue(new PlayerView(player.name, player.color));
             });
 
             r.getState().players.setOnRemove((player, key) -> {
@@ -77,6 +93,7 @@ public class ColyseusManager {
                 String from = message.get("from").asText();
                 String to = message.get("to").asText();
                 Log.d(TAG, "move:" + "From:" + from + " to:" + to);
+
             });
 
             r.onMessage("client_left", JsonNode.class, (JsonNode message) -> {

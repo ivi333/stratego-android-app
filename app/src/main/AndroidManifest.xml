@@ -60,6 +60,14 @@
             android:exported="true"
             android:label="Instructions">
         </activity>
+
+        <activity android:name=".SettingsActivity"
+            android:theme="@style/Theme.AppCompat"
+            tools:ignore="LockedOrientationActivity"
+            android:label="Settings"
+            android:exported="true">
+        </activity>
+
         <activity
             android:name=".StartPlayActivity"
             android:label="@string/start_play"
