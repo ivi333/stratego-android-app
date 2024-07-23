@@ -26,7 +26,7 @@ public class ColyseusManager extends Observable {
 
     private Room<GameState> room;
 
-    private MutableLiveData<PlayerView> playerLiveDta;
+    private MutableLiveData<PlayerView> playerLiveData;
 
     //private final Handler mainHandler = new Handler(Looper.getMainLooper());
 
@@ -41,12 +41,12 @@ public class ColyseusManager extends Observable {
         return instance;
     }
 
-    public MutableLiveData<PlayerView> getPlayerLiveDta() {
-        return playerLiveDta;
+    public MutableLiveData<PlayerView> getPlayerLiveData() {
+        return playerLiveData;
     }
 
     public void setPlayerLiveDta(MutableLiveData<PlayerView> playerLiveDta) {
-        this.playerLiveDta = playerLiveDta;
+        this.playerLiveData = playerLiveDta;
     }
 
     public void joinOrCreate () {
@@ -60,9 +60,9 @@ public class ColyseusManager extends Observable {
 
             r.getState().players.setOnAdd((player, key) -> {
                 Log.d(TAG, "Player added: " + key + " -> " + player);
-                //mainHandler.post(() -> playerViewModel.updatePlayer(player));
+                //mainHandler.post(() -> playerLiveData.setValue(player));
                 //playerLiveDta.postValue();
-                playerLiveDta.postValue(new PlayerView(player.name, player.color));
+                playerLiveData.postValue(new PlayerView(player.name, player.color));
             });
 
             r.getState().players.setOnRemove((player, key) -> {
