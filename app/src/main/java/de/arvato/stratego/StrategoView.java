@@ -53,6 +53,7 @@ public class StrategoView {
     private int selectedPos;
     private List<Integer> nextMovements;
     private int player;
+    private boolean multiplayer;
     private Timer timer;
     private TextView textViewClockTimeTop, textViewClockTimeBottom;
     //private ImageView pieceFight1, pieceFight2;
@@ -83,11 +84,7 @@ public class StrategoView {
 
     private String prefferedUserName;
 
-    /*@Override
-    public void update(Observable o, Object arg) {
-        updateStatus ();
-        paintBoard();
-    }*/
+    private TextView playerUpTitle;
 
     static class StrategoInnerHandler extends Handler {
         WeakReference<StrategoView> _strategoView;
@@ -125,6 +122,7 @@ public class StrategoView {
 
         Intent intent = activity.getIntent();
         player = intent.getIntExtra("select_color", StrategoConstants.RED);
+        multiplayer = intent.getBooleanExtra("multiplayer", false);
         Log.d(TAG, "Player Selected color: " + player);
 
         //select your player
@@ -163,7 +161,7 @@ public class StrategoView {
 
         initPreferences ();
 
-        initViewModelObserver ();
+        initObservers ();
 
         initColyseusManager ();
 
@@ -190,24 +188,30 @@ public class StrategoView {
         Log.d(TAG, "PrefferedName:" + prefferedUserName);
     }
 
-    private void initViewModelObserver() {
+    private void initObservers() {
         playerLiveData.observeForever(new Observer<PlayerView>() {
             @Override
             public void onChanged(PlayerView playerView) {
                 Log.d(TAG, "Player View changed:" + playerView);
+                //if (playerView.getColor())
+                parent.runOnUiThread(() -> {
+                    playerUpTitle.setText(playerView.getName());
+                });
             }
         });
     }
 
     private void initColyseusManager() {
         colyseusManager = ColyseusManager.getInstance(StrategoConstants.ENDPOINT_COLYSEUS);
-        colyseusManager.setPlayerLiveDta(playerLiveData);
+
+        //REMOVE LATER
+        /*colyseusManager.setPlayerLiveData(playerLiveData);
         colyseusManager.joinOrCreate();
 
         new Handler(Looper.getMainLooper()).postDelayed(() -> {
             // Code to execute after delay
             Toast.makeText(parent.getApplicationContext(), "Room " + colyseusManager.getRoomID() + " created!", Toast.LENGTH_SHORT).show();
-        }, 500);
+        }, 500);*/
     }
 
     public void handleClick(int index) {
@@ -286,6 +290,8 @@ public class StrategoView {
 
         ImageView turnPlayerUp = parent.findViewById(R.id.turnPlayerUp);
         ImageView turnPlayerDown = parent.findViewById(R.id.turnPlayerDown);
+        playerUpTitle = parent.findViewById(R.id.playerUpTitle);
+        TextView playerDownTitle = parent.findViewById(R.id.playerDownTitle);
 
         if (player == StrategoConstants.RED) {
             turnPlayerDown.setImageDrawable(drawableCircleRed);
@@ -294,6 +300,9 @@ public class StrategoView {
             turnPlayerUp.setImageDrawable(drawableCircleRed);
             turnPlayerDown.setImageDrawable(drawableCircleBlue);
         }
+
+        playerDownTitle.setText(prefferedUserName);
+        playerUpTitle.setText("Waiting for player . . .");
 
         bPlayerReady.setOnClickListener(new View.OnClickListener() {
             @Override

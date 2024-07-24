@@ -11,7 +11,7 @@ public class StartPlayActivity extends StrategoActivity implements GestureDetect
     private StrategoView strategoView;
     private GestureDetector gestureDetector;
 
-    private int selectedColor;
+    //private int selectedColor;
 
     private static final String TAG = "StartPlayActivity";
 

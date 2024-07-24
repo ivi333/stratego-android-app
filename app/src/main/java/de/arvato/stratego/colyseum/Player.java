@@ -8,8 +8,8 @@ public class Player extends Schema {
     @SchemaField(type = "0/string", ref = String.class)
     public String name = "";
 
-    @SchemaField(type = "1/string", ref = String.class)
-    public String color = "";
+    @SchemaField(type = "1/uint16", ref = Integer.class)
+    public Integer color = -1;
 
     @Override
     public String toString() {

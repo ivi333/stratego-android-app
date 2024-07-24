@@ -3,10 +3,10 @@ package de.arvato.stratego.model;
 public class PlayerView {
 
     private String name;
-    private String color;
+    private Integer color;
 
 
-    public PlayerView(String name, String color) {
+    public PlayerView(String name, Integer color) {
         this.name = name;
         this.color = color;
     }
@@ -19,11 +19,11 @@ public class PlayerView {
         this.name = name;
     }
 
-    public String getColor() {
+    public Integer getColor() {
         return color;
     }
 
-    public void setColor(String color) {
+    public void setColor(Integer color) {
         this.color = color;
     }
 

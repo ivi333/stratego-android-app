@@ -2,7 +2,9 @@ package de.arvato.stratego;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -14,13 +16,14 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Observer;
 
 import java.io.IOException;
 import java.io.InputStream;
 
 import de.arvato.stratego.colyseum.ColyseusManager;
-
-//import de.arvato.stratego.colyseum.ColyseusManager;
+import de.arvato.stratego.model.PlayerView;
 
 public class StrategoPortraitActivity extends Activity {
 
@@ -28,10 +31,12 @@ public class StrategoPortraitActivity extends Activity {
 
     private Button playButton, instructionsButton, playOnlineButton, profileButton, settingsButton;
 
-    private Button btnCreateRoom;
+    private Button btnCreateRoom, btnJoinRoom;
 
     private ImageView blueMultiPlayerSelector;
     private ImageView redMultiPlayerSelector;
+
+    private MutableLiveData<PlayerView> playerReadyLive = new MutableLiveData<>();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -92,6 +97,7 @@ public class StrategoPortraitActivity extends Activity {
         blueMultiPlayerSelector = dialogView.findViewById(R.id.blueMultiPlayerSelector);
         redMultiPlayerSelector = dialogView.findViewById(R.id.redMultiPlayerSelector);
         btnCreateRoom = dialogView.findViewById(R.id.btnCreateRoom);
+        btnJoinRoom = dialogView.findViewById(R.id.btnJoinRoom);
 
         loadImageFromAssets (blueMultiPlayerSelector, "bandera_blue.png");
         loadImageFromAssets (redMultiPlayerSelector, "bandera_red.png");
@@ -99,6 +105,16 @@ public class StrategoPortraitActivity extends Activity {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setView(dialogView);
         builder.setTitle("MultiPlayer Game");
+
+        btnJoinRoom.setOnClickListener(new View.OnClickListener() {
+             @Override
+             public void onClick(View v) {
+                 //TODO Join an existing room
+                 //ColyseusManager colyseusManager = ColyseusManager.getInstance(StrategoConstants.ENDPOINT_COLYSEUS);
+                 //colyseusManager.sendInitialPlayer("dummy", 1);
+             }
+        });
+
 
         btnCreateRoom.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -113,11 +129,9 @@ public class StrategoPortraitActivity extends Activity {
                     Toast.makeText(getApplicationContext(), "Select a color first.!", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                Intent i = new Intent();
-                i.setClass(getApplicationContext(), StartPlayActivity.class);
-                i.putExtra("select_color", which);
-                i.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-                startActivity(i);
+                ColyseusManager colyseusManager = ColyseusManager.getInstance(StrategoConstants.ENDPOINT_COLYSEUS);
+                colyseusManager.joinOrCreate(getPreferredUserName(), which);
+                colyseusManager.setPlayerReadyLive(playerReadyLive);
             }
         });
 
@@ -136,6 +150,20 @@ public class StrategoPortraitActivity extends Activity {
                 handleMultiPlayerDialogImageClick(StrategoConstants.RED, redMultiPlayerSelector);
             }
 
+        });
+
+        playerReadyLive.observeForever(new Observer<>() {
+            @Override
+            public void onChanged(PlayerView playerView) {
+                runOnUiThread(() -> {
+                    Intent i = new Intent();
+                    i.setClass(getApplicationContext(), StartPlayActivity.class);
+                    i.putExtra("select_color", playerView.getColor());
+                    i.putExtra("multiplayer", true);
+                    i.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                    startActivity(i);
+                });
+            }
         });
 
         // Show the dialog
@@ -198,6 +226,7 @@ public class StrategoPortraitActivity extends Activity {
         i.setClass(getApplicationContext(), StartPlayActivity.class);
         i.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
         i.putExtra("select_color", which);
+        i.putExtra("multiplayer", false);
         startActivity(i);
     }
 
@@ -228,5 +257,10 @@ public class StrategoPortraitActivity extends Activity {
             intent.putExtra("RESTART", true);
             startActivity(intent);
         }
+    }
+
+    public String getPreferredUserName () {
+        SharedPreferences sharedPreferences  = getSharedPreferences(StrategoConstants.PREFERENCES_NAME, Context.MODE_PRIVATE);
+        return sharedPreferences.getString("name", "Hidden_Name");
     }
 }
