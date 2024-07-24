@@ -36,10 +36,11 @@ public class StrategoPortraitActivity extends Activity {
     private ImageView blueMultiPlayerSelector;
     private ImageView redMultiPlayerSelector;
 
-    private MutableLiveData<PlayerView> playerReadyLive = new MutableLiveData<>();
+    private MutableLiveData<PlayerView> playerReadyLive;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+        Log.d(TAG, "onCreate");
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.stratego_main);
@@ -94,6 +95,8 @@ public class StrategoPortraitActivity extends Activity {
         LayoutInflater inflater = getLayoutInflater();
         View dialogView = inflater.inflate(R.layout.dialog_multiplayerplayer_selector, null);
 
+        playerReadyLive = new MutableLiveData<>();
+
         blueMultiPlayerSelector = dialogView.findViewById(R.id.blueMultiPlayerSelector);
         redMultiPlayerSelector = dialogView.findViewById(R.id.redMultiPlayerSelector);
         btnCreateRoom = dialogView.findViewById(R.id.btnCreateRoom);
@@ -101,6 +104,9 @@ public class StrategoPortraitActivity extends Activity {
 
         loadImageFromAssets (blueMultiPlayerSelector, "bandera_blue.png");
         loadImageFromAssets (redMultiPlayerSelector, "bandera_red.png");
+
+        blueMultiPlayerSelector.setSelected(false);
+        redMultiPlayerSelector.setSelected(false);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setView(dialogView);
@@ -234,6 +240,7 @@ public class StrategoPortraitActivity extends Activity {
     protected void onPostResume() {
         super.onPostResume();
         Log.d(TAG, "onPostResume");
+        //playerReadyLive.removeObserver();
             /*val getData =
                     getSharedPreferences("StrategoPlayer", Context.MODE_PRIVATE);
             if (getData.getBoolean("RESTART", false)) {
@@ -262,5 +269,41 @@ public class StrategoPortraitActivity extends Activity {
     public String getPreferredUserName () {
         SharedPreferences sharedPreferences  = getSharedPreferences(StrategoConstants.PREFERENCES_NAME, Context.MODE_PRIVATE);
         return sharedPreferences.getString("name", "Hidden_Name");
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Log.d(TAG, "onStart");
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.d(TAG, "onResume");
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Log.d(TAG, "onPause");
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Log.d(TAG, "onStop");
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        Log.d(TAG, "onRestart");
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Log.d(TAG, "onDestroy");
     }
 }

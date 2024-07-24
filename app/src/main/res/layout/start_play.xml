@@ -103,7 +103,7 @@
                         android:text="Ready"
                         style="@style/GameButtonStyle"
                         android:textSize="14sp"
-                        android:layout_marginEnd="8dp" />
+                        android:layout_marginEnd="4dp" />
 
                     <!--
                     <Button
@@ -122,19 +122,33 @@
                         android:layout_height="wrap_content"
                         android:text="Random"
                         style="@style/GameButtonStyle"
+                        android:layout_marginEnd="4dp"
                         android:textSize="14sp"/>
+
 
                     <Button
                         android:id="@+id/ShowPiece"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Show Piece"
+                        android:text="Test"
                         style="@style/GameButtonStyle"
+                        android:layout_marginEnd="4dp"
                         android:textSize="14sp"/>
+
+                    <Button
+                        android:id="@+id/LeaveRoom"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Leave Game"
+                        style="@style/GameButtonStyle"
+                        android:layout_marginEnd="4dp"
+                        android:textSize="14sp"/>
+
+
 
                 </LinearLayout>
 
-                <LinearLayout
+                <!--<LinearLayout
                     android:id="@+id/ButtonsLayout2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -142,17 +156,18 @@
                     app:layout_constraintTop_toBottomOf="@id/ButtonsLayout"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.5">
+                    app:layout_constraintHorizontal_bias="0.5">-->
 
-                <Button
+                <!--<Button
                     android:id="@+id/LeaveRoom"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Leave Room"
+                    android:text="Leave Game"
                     style="@style/GameButtonStyle"
                     android:textSize="14sp"/>
+                    -->
 
-
+                    <!--
                 <Button
                     android:id="@+id/FakeMove"
                     android:layout_width="wrap_content"
@@ -160,9 +175,9 @@
                     android:text="FakeMove"
                     style="@style/GameButtonStyle"
                     android:textSize="14sp"
-                    android:layout_marginEnd="8dp" />
+                    android:layout_marginEnd="8dp" />-->
 
-                </LinearLayout>
+                <!--</LinearLayout>-->
 
                 <TextView
                     android:id="@+id/winnerTextView"

@@ -11,9 +11,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import de.arvato.stratego.model.PlayerView;
 import io.colyseus.Client;
 import io.colyseus.Room;
-import io.colyseus.serializer.schema.types.MapSchema;
 
 import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.Observable;
 
 public class ColyseusManager extends Observable {
@@ -79,7 +79,9 @@ public class ColyseusManager extends Observable {
                 Log.d(TAG, "Player added: " + key + " -> " + player);
                 if (!key.equals(this.room.getSessionId())) {
                     Log.d(TAG, "A new player has been connected");
-                    playerLiveData.postValue(new PlayerView(player.name, player.color));
+                    if (playerLiveData != null) {
+                        playerLiveData.postValue(new PlayerView(player.name, player.color));
+                    }
                 } else {
                     Log.d(TAG, "Me added as a player");
                 }
@@ -148,6 +150,21 @@ public class ColyseusManager extends Observable {
 
     public void disconnect () {
         this.room.leave();
+    }
+
+    /*public void triggerPlayers () {
+        room.getState().players.triggerAll();
+    }*/
+
+    public Player getEnemyPlayer () {
+        Player enemy=null;
+        for (Map.Entry<String, Player> entry : room.getState().players.entrySet()) {
+            if (!entry.getKey().equals(room.getSessionId())) {
+                enemy = entry.getValue();
+            }
+        }
+        Log.d(TAG, "Exists player enemy in room:" + enemy);
+        return enemy;
     }
 
     public void sendFakeMove () throws Exception {

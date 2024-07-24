@@ -1,10 +1,13 @@
 package de.arvato.stratego;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
+
+import de.arvato.stratego.colyseum.ColyseusManager;
 
 public class StartPlayActivity extends StrategoActivity implements GestureDetector.OnGestureListener {
 
@@ -57,6 +60,28 @@ public class StartPlayActivity extends StrategoActivity implements GestureDetect
     @Override
     public void onLongPress(MotionEvent e) {
         //Log.d(TAG, "onLongPress");
+    }
+
+    @Override
+    public void onBackPressed() {
+        showExitConfirmationDialog();
+    }
+
+    private void showExitConfirmationDialog() {
+        new AlertDialog.Builder(this)
+                .setTitle("Exit Confirmation")
+                .setMessage("Are you sure you want to exit?")
+                .setPositiveButton("Yes", (dialog, which) -> {
+                    Log.d(TAG, "User confirmed exit");
+                    ColyseusManager.getInstance(StrategoConstants.ENDPOINT_COLYSEUS).disconnect();
+                    finish(); // Destroy the activity
+                })
+                .setNegativeButton("No", (dialog, which) -> {
+                    Log.d(TAG, "User canceled exit");
+                    dialog.dismiss(); // Dismiss the dialog
+                })
+                .setCancelable(false) // Prevent closing the dialog by clicking outside
+                .show();
     }
 
     @Override

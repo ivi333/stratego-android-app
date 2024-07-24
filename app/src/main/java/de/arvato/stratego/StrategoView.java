@@ -35,6 +35,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import de.arvato.stratego.colyseum.ColyseusManager;
+import de.arvato.stratego.colyseum.Player;
 import de.arvato.stratego.game.HistoryPiece;
 import de.arvato.stratego.game.PieceEnum;
 import de.arvato.stratego.game.PieceFightStatus;
@@ -161,14 +162,12 @@ public class StrategoView {
 
         initPreferences ();
 
-        initObservers ();
+        initDistributePieces () ;
 
-        initColyseusManager ();
+        initObservers ();
 
         // Init the captured View
         initCapturedImages ();
-
-        initDistributePieces () ;
 
         //initDialogSelectColor ();
 
@@ -176,6 +175,8 @@ public class StrategoView {
         initTimer ();
 
         initFightView();
+
+        initColyseusManager ();
 
         // Paint
         paintBoard();
@@ -193,7 +194,6 @@ public class StrategoView {
             @Override
             public void onChanged(PlayerView playerView) {
                 Log.d(TAG, "Player View changed:" + playerView);
-                //if (playerView.getColor())
                 parent.runOnUiThread(() -> {
                     playerUpTitle.setText(playerView.getName());
                 });
@@ -203,15 +203,11 @@ public class StrategoView {
 
     private void initColyseusManager() {
         colyseusManager = ColyseusManager.getInstance(StrategoConstants.ENDPOINT_COLYSEUS);
-
-        //REMOVE LATER
-        /*colyseusManager.setPlayerLiveData(playerLiveData);
-        colyseusManager.joinOrCreate();
-
-        new Handler(Looper.getMainLooper()).postDelayed(() -> {
-            // Code to execute after delay
-            Toast.makeText(parent.getApplicationContext(), "Room " + colyseusManager.getRoomID() + " created!", Toast.LENGTH_SHORT).show();
-        }, 500);*/
+        colyseusManager.setPlayerLiveData(playerLiveData);
+        Player enemyPlayer = colyseusManager.getEnemyPlayer();
+        if (enemyPlayer != null) {
+            playerUpTitle.setText(enemyPlayer.name);
+        }
     }
 
     public void handleClick(int index) {
@@ -279,7 +275,7 @@ public class StrategoView {
         Button bPlayerRandom = parent.findViewById(R.id.PlayerRandom);
         Button bShowPiece = parent.findViewById(R.id.ShowPiece);
         Button bLeaveRoom = parent.findViewById(R.id.LeaveRoom);
-        Button bFakeRoom = parent.findViewById(R.id.FakeMove);
+        //Button bFakeRoom = parent.findViewById(R.id.FakeMove);
         TextView InfoText = parent.findViewById(R.id.InfoText);
         TextView InfoText2 = parent.findViewById(R.id.InfoText2);
         TextView InfoText3 = parent.findViewById(R.id.InfoText3);
@@ -381,7 +377,7 @@ public class StrategoView {
         }
         );
 
-        bFakeRoom.setOnClickListener(new View.OnClickListener() {
+        /*bFakeRoom.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 try {
@@ -391,7 +387,7 @@ public class StrategoView {
                     throw new RuntimeException(e);
                 }
             }
-        });
+        });*/
 
         bLeaveRoom.setOnClickListener(new View.OnClickListener() {
             @Override
