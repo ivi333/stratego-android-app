@@ -164,8 +164,6 @@ public class StrategoView {
 
         initDistributePieces () ;
 
-        initObservers ();
-
         // Init the captured View
         initCapturedImages ();
 
@@ -176,7 +174,10 @@ public class StrategoView {
 
         initFightView();
 
-        initColyseusManager ();
+        if (multiplayer) {
+            initObservers ();
+            initColyseusManager();
+        }
 
         // Paint
         paintBoard();
@@ -313,7 +314,7 @@ public class StrategoView {
                     InfoText3.setVisibility(View.GONE);
                     bPlayerReady.setEnabled(false);
                     bPlayerRandom.setEnabled(false);
-
+                    colyseusManager.setPieces (strategoControl.getBoard().getPiecesBottom());
                 }
             }
         }
@@ -371,8 +372,9 @@ public class StrategoView {
                     Log.d(TAG, history.toString());
                 }*/
 
-                String roomId = colyseusManager.getRoomID();
-                Log.d(TAG, roomId);
+                /*String roomId = colyseusManager.getRoomID();
+                Log.d(TAG, roomId);*/
+                colyseusManager.sendFakeMessage ();
             }
         }
         );

@@ -51,7 +51,8 @@ public class StrategoControl extends Observable  {
         if (canStart) {
             //board.initPossibleBombs (y, z);
             board.changeGameStatus(StrategoConstants.GameStatus.PLAY);
-            continueTimer();
+            // TODO When both players are ready
+            //continueTimer();
         }
         return canStart;
     }

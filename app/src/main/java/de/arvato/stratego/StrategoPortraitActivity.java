@@ -240,19 +240,18 @@ public class StrategoPortraitActivity extends Activity {
     protected void onPostResume() {
         super.onPostResume();
         Log.d(TAG, "onPostResume");
-        //playerReadyLive.removeObserver();
-            /*val getData =
-                    getSharedPreferences("StrategoPlayer", Context.MODE_PRIVATE);
-            if (getData.getBoolean("RESTART", false)) {
-                finish()
-                val intent = Intent(this, MainActivity::class.java)
-                //intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-                val editor = getData.edit()
-                editor.putBoolean("RESTART", false)
-                editor.apply()
-                startActivity(intent)
-            }*/
+        /*val getData =
+                getSharedPreferences("StrategoPlayer", Context.MODE_PRIVATE);
+        if (getData.getBoolean("RESTART", false)) {
+            finish()
+            val intent = Intent(this, MainActivity::class.java)
+            //intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+            val editor = getData.edit()
+            editor.putBoolean("RESTART", false)
+            editor.apply()
+            startActivity(intent)
+        }*/
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -274,36 +273,36 @@ public class StrategoPortraitActivity extends Activity {
     @Override
     protected void onStart() {
         super.onStart();
-        Log.d(TAG, "onStart");
+        //Log.d(TAG, "onStart");
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        Log.d(TAG, "onResume");
+        //Log.d(TAG, "onResume");
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        Log.d(TAG, "onPause");
+        //Log.d(TAG, "onPause");
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        Log.d(TAG, "onStop");
+        //Log.d(TAG, "onStop");
     }
 
     @Override
     protected void onRestart() {
         super.onRestart();
-        Log.d(TAG, "onRestart");
+        //Log.d(TAG, "onRestart");
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        Log.d(TAG, "onDestroy");
+        //Log.d(TAG, "onDestroy");
     }
 }

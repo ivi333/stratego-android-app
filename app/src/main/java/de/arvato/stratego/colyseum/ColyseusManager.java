@@ -7,8 +7,11 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
 
+import de.arvato.stratego.game.Piece;
 import de.arvato.stratego.model.PlayerView;
+import de.arvato.stratego.util.PieceUtil;
 import io.colyseus.Client;
 import io.colyseus.Room;
 
@@ -95,19 +98,31 @@ public class ColyseusManager extends Observable {
                 Log.d(TAG, "Player changed: " + key + " -> " + player);
             });
 
+            r.getState().mapPieces.setOnAdd((pieces, key) -> {
+                Log.d(TAG, "Pieces added: " + key + " -> " + pieces);
+            });
+
+            r.getState().mapPieces.setOnRemove((pieces, key) -> {
+                Log.d(TAG, "Pieces removed: " + key + " -> " + pieces);
+            });
+
+            r.getState().mapPieces.setOnChange((pieces, key) -> {
+                Log.d(TAG, "Pieces changed: " + key + " -> " + pieces);
+            });
+
             r.getState().primitives.setOnChange(changes -> {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                     changes.forEach(change -> {
-                        Log.d(TAG, change.getField() + ": " + change.getPreviousValue() + " -> " + change.getValue());
+                        Log.d(TAG, "State primitives -->" + change.getField() + ": " + change.getPreviousValue() + " -> " + change.getValue());
                     });
                 }
             });
 
-            r.setOnStateChange((state, isFirstState) -> {
+            /*r.setOnStateChange((state, isFirstState) -> {
                 Log.d(TAG, "onStateChange()");
                 Log.d(TAG, "state.primitives.turn = " + state.primitives.turn);
                 Log.d(TAG, "isFirstState:" + isFirstState);
-            });
+            });*/
 
 
             //messages listener
@@ -175,5 +190,20 @@ public class ColyseusManager extends Observable {
         room.send("fakeMove", jsonNode);
     }
 
+    public void setPieces(Piece[] pieces) {
+        /*ObjectMapper objectMapper = new ObjectMapper();
+        ArrayNode arrayNode = objectMapper.createArrayNode();
+        arrayNode.add ("FLAG");
+        arrayNode.add ("BOMB");
+        arrayNode.add ("MARSHALL");
+        JsonNode jsonNode = objectMapper.valueToTree(arrayNode);*/
+        String [] piecesArrayString = PieceUtil.transformPiecesToString(pieces);
+        //String [] test = new String [] {"BOMB", "MARSHALL", "PEPE"};
+        room.send ("set_pieces", piecesArrayString);
+    }
+
+    public void sendFakeMessage() {
+        room.send("fakeMessage", "sending fake message from client:" + this.room.getSessionId());
+    }
 }
 

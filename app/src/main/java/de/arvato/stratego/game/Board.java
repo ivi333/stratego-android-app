@@ -453,6 +453,32 @@ public class Board {
         return historyMoves;
     }
 
+    public Piece [] getPiecesBottom () {
+        return getPieces(false);
+    }
+
+    public Piece [] getPiecesTop () {
+        return getPieces(true);
+    }
+
+    private Piece [] getPieces (boolean top) {
+        int ini, end;
+        if (top) {
+            ini = StrategoConstants.UP_PLAYER[0];
+            end = StrategoConstants.UP_PLAYER[1];
+        } else {
+            ini = StrategoConstants.DOWN_PLAYER[0];
+            end = StrategoConstants.DOWN_PLAYER[1];
+        }
+        Piece [] result = new Piece [StrategoConstants.MAX_PIECES];
+        int k=0;
+        for (int z=ini; z<end;z++) {
+            result[k++] = getPieceAt(z);
+        }
+        return result;
+    }
+
+
     @Override
     public String toString() {
         StringBuilder builder = new StringBuilder();
