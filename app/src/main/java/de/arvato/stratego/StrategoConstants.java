@@ -81,8 +81,9 @@ public class StrategoConstants
 					0, 0, 0, 0, 0, 0, 0, 0}
 	};*/
 
+	public static final String ENDPOINT_COLYSEUS = "ws://192.168.1.156:2567";
 	//public static final String ENDPOINT_COLYSEUS = "ws://192.168.1.136:2567";
-	public static final String ENDPOINT_COLYSEUS = "ws://192.168.1.64:2567";
+	//public static final String ENDPOINT_COLYSEUS = "ws://192.168.1.64:2567";
 
 	public static final String PREFERENCES_NAME = "StrategoPrefs";
 }

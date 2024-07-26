@@ -29,9 +29,12 @@ public class StrategoControl extends Observable  {
     protected Board board;
 
     protected int player;
+    protected boolean multiPlayerReady;
+    protected boolean multiplayer;
 
-    public StrategoControl (int player) {
+    public StrategoControl (int player, boolean multiplayer) {
         this.player = player;
+        this.multiplayer = multiplayer;
         resetGame();
     }
 
@@ -73,10 +76,12 @@ public class StrategoControl extends Observable  {
         boolean canMove = false;
         switch (board.getGameStatus()) {
             case PLAY:
-                canMove = board.move (to, selectPos);
-                if (canMove) {
-                    changeTurn();
-                    selectPos = -1;
+                if (multiPlayerReady || !multiplayer) {
+                    canMove = board.move(to, selectPos);
+                    if (canMove) {
+                        changeTurn();
+                        selectPos = -1;
+                    }
                 }
                 break;
             case INIT_BOARD:
@@ -92,6 +97,13 @@ public class StrategoControl extends Observable  {
         return canMove;
     }
 
+    public boolean movePieceEnemy (int from, int to) {
+        boolean b = board.move(to, from);
+        if (b) {
+            changeTurn();
+        }
+        return b;
+    }
 
     private void changeTurn() {
         switchTimer();
@@ -115,11 +127,19 @@ public class StrategoControl extends Observable  {
                 }
             case PLAY:
                 Piece piece = board.getPieceAt(pos);
-                if (piece != null && piece.getPlayer() == board.getTurn()) {
-                    selectPos = pos;
-                    return true;
+                if (multiplayer) {
+                    if (piece != null && piece.getPlayer() == player && piece.getPlayer() == board.getTurn()) {
+                        selectPos = pos;
+                        return true;
+                    }
+                    return false;
+                } else {
+                    if (piece != null && piece.getPlayer() == board.getTurn()) {
+                        selectPos = pos;
+                        return true;
+                    }
+                    return false;
                 }
-                return false;
             default:
                 break;
         }
@@ -221,13 +241,17 @@ public class StrategoControl extends Observable  {
     }
 
     protected void resetGame () {
+        this.multiPlayerReady = false;
         board = new Board();
         board.changeGameStatus(StrategoConstants.GameStatus.INIT_BOARD);
         board.initTurn(player);
         //board.humanPlayer(player);
         selectPos=-1;
-        randomPieces(StrategoConstants.RED);
-        randomPieces(StrategoConstants.BLUE);
+        if (player == StrategoConstants.RED) {
+            randomPieces(StrategoConstants.RED);
+        } else {
+            randomPieces(StrategoConstants.BLUE);
+        }
         resetTimer();
     }
 
@@ -274,5 +298,13 @@ public class StrategoControl extends Observable  {
 
     public int getWinner() {
         return board.getTurn();
+    }
+
+    public boolean isMultiPlayerReady() {
+        return multiPlayerReady;
+    }
+
+    public void setMultiPlayerReady(boolean multiPlayerReady) {
+        this.multiPlayerReady = multiPlayerReady;
     }
 }

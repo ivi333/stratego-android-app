@@ -20,7 +20,6 @@ public class Board {
     protected Map<PieceEnum, Integer> capturedPiecesBlue;
     protected StrategoConstants.GameStatus gameStatus;
     protected int countMoves;
-    protected List<Integer> possibleBombsHuman;
     protected List<HistoryPiece> historyMoves;
 
     private static final String TAG ="Board";
@@ -29,7 +28,6 @@ public class Board {
         this.pieces = new Piece [StrategoConstants.BOARD_SIZE];
         this.capturedPiecesBlue = new HashMap<PieceEnum, Integer>();
         this.capturedPiecesRed = new HashMap<PieceEnum, Integer>();
-        this.possibleBombsHuman = new ArrayList<Integer>();
         this.historyMoves = new ArrayList<HistoryPiece>();
     }
 
@@ -508,8 +506,6 @@ public class Board {
         builder.append(capturedPiecesBlue);
         builder.append(", \ngameStatus=");
         builder.append(gameStatus);
-        builder.append("\npossibleHumanBombs=");
-        builder.append(possibleBombsHuman);
         builder.append(", \ncountMoves=");
         builder.append(countMoves);
         builder.append("]");

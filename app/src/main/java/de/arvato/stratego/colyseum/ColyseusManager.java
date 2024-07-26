@@ -10,7 +10,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 
 import de.arvato.stratego.game.Piece;
+import de.arvato.stratego.model.MoveView;
+import de.arvato.stratego.model.PiecesView;
 import de.arvato.stratego.model.PlayerView;
+import de.arvato.stratego.model.TurnView;
 import de.arvato.stratego.util.PieceUtil;
 import io.colyseus.Client;
 import io.colyseus.Room;
@@ -30,7 +33,10 @@ public class ColyseusManager extends Observable {
     private Room<GameState> room;
 
     private MutableLiveData<PlayerView> playerLiveData;
+    private MutableLiveData<PiecesView> piecesLiveData;
     private MutableLiveData<PlayerView> playerReadyLive;
+    private MutableLiveData<TurnView> gameStartLive;
+    private MutableLiveData<MoveView> moveLiveData;
 
     private ColyseusManager(String serverUrl) {
         client = new Client(serverUrl);
@@ -41,22 +47,6 @@ public class ColyseusManager extends Observable {
             instance = new ColyseusManager(serverUrl);
         }
         return instance;
-    }
-
-    public MutableLiveData<PlayerView> getPlayerLiveData() {
-        return playerLiveData;
-    }
-
-    public void setPlayerLiveData(MutableLiveData<PlayerView> playerLiveDta) {
-        this.playerLiveData = playerLiveDta;
-    }
-
-    public MutableLiveData<PlayerView> getPlayerReadyLive() {
-        return playerReadyLive;
-    }
-
-    public void setPlayerReadyLive(MutableLiveData<PlayerView> playerReadyLive) {
-        this.playerReadyLive = playerReadyLive;
     }
 
     public void joinOrCreate (String name, int color) {
@@ -96,10 +86,16 @@ public class ColyseusManager extends Observable {
 
             r.getState().players.setOnChange((player, key) -> {
                 Log.d(TAG, "Player changed: " + key + " -> " + player);
+
             });
 
             r.getState().mapPieces.setOnAdd((pieces, key) -> {
                 Log.d(TAG, "Pieces added: " + key + " -> " + pieces);
+                if (!key.equals(this.room.getSessionId())) {
+                    if (piecesLiveData != null) {
+                        piecesLiveData.postValue(new PiecesView(pieces.pieces));
+                    }
+                }
             });
 
             r.getState().mapPieces.setOnRemove((pieces, key) -> {
@@ -127,10 +123,10 @@ public class ColyseusManager extends Observable {
 
             //messages listener
             r.onMessage("move", JsonNode.class, (JsonNode message) -> {
-                String from = message.get("from").asText();
-                String to = message.get("to").asText();
-                Log.d(TAG, "move:" + "From:" + from + " to:" + to);
-
+                int from = message.get("from").asInt();
+                int to = message.get("to").asInt();
+                Log.d(TAG, "Move got from enemy:" + "From:" + from + " to:" + to);
+                moveLiveData.postValue(new MoveView(from, to));
             });
 
             r.onMessage("client_left", JsonNode.class, (JsonNode message) -> {
@@ -142,6 +138,12 @@ public class ColyseusManager extends Observable {
                 Log.d(TAG, "Client is ready:" + player);
                 playerReadyLive.postValue(new PlayerView(player.name, player.color));
             });
+
+            r.onMessage("game_start", JsonNode.class, (JsonNode message) -> {
+                Log.d(TAG, "Game can start with turn:" + message);
+                gameStartLive.postValue (new TurnView(message.asInt()));
+            });
+
 
             //r.getState().players.triggerAll();
 
@@ -176,10 +178,35 @@ public class ColyseusManager extends Observable {
         for (Map.Entry<String, Player> entry : room.getState().players.entrySet()) {
             if (!entry.getKey().equals(room.getSessionId())) {
                 enemy = entry.getValue();
+                break;
             }
         }
         Log.d(TAG, "Exists player enemy in room:" + enemy);
         return enemy;
+    }
+
+    public PiecesView getEnemyPieces () {
+        PieceArray enemy=null;
+        for (Map.Entry<String, PieceArray> entry : room.getState().mapPieces.entrySet()) {
+            if (!entry.getKey().equals(room.getSessionId())) {
+                enemy = entry.getValue();
+                break;
+            }
+        }
+        if (enemy != null) {
+            return new PiecesView(enemy.pieces);
+        }
+        return null;
+    }
+
+    public void sendMove(int selectedPos, int index) {
+        ObjectMapper objectMapper = new ObjectMapper();
+        JsonNode jsonNode = objectMapper.createObjectNode()
+                .put("from", selectedPos)
+                .put("to", index);
+
+        Log.d(TAG, "Colyseus sending move from:" + selectedPos + " to:" + index);
+        room.send("move", jsonNode);
     }
 
     public void sendFakeMove () throws Exception {
@@ -191,19 +218,52 @@ public class ColyseusManager extends Observable {
     }
 
     public void setPieces(Piece[] pieces) {
-        /*ObjectMapper objectMapper = new ObjectMapper();
-        ArrayNode arrayNode = objectMapper.createArrayNode();
-        arrayNode.add ("FLAG");
-        arrayNode.add ("BOMB");
-        arrayNode.add ("MARSHALL");
-        JsonNode jsonNode = objectMapper.valueToTree(arrayNode);*/
         String [] piecesArrayString = PieceUtil.transformPiecesToString(pieces);
-        //String [] test = new String [] {"BOMB", "MARSHALL", "PEPE"};
         room.send ("set_pieces", piecesArrayString);
     }
 
     public void sendFakeMessage() {
         room.send("fakeMessage", "sending fake message from client:" + this.room.getSessionId());
+    }
+
+    public MutableLiveData<PlayerView> getPlayerLiveData() {
+        return playerLiveData;
+    }
+
+    public void setPlayerLiveData(MutableLiveData<PlayerView> playerLiveDta) {
+        this.playerLiveData = playerLiveDta;
+    }
+
+    public MutableLiveData<PlayerView> getPlayerReadyLive() {
+        return playerReadyLive;
+    }
+
+    public MutableLiveData<PiecesView> getPiecesLiveData() {
+        return piecesLiveData;
+    }
+
+    public void setPiecesLiveData(MutableLiveData<PiecesView> piecesLiveData) {
+        this.piecesLiveData = piecesLiveData;
+    }
+
+    public void setPlayerReadyLive(MutableLiveData<PlayerView> playerReadyLive) {
+        this.playerReadyLive = playerReadyLive;
+    }
+
+    public MutableLiveData<TurnView> getGameStartLive() {
+        return gameStartLive;
+    }
+
+    public void setGameStartLive(MutableLiveData<TurnView> gameStartLive) {
+        this.gameStartLive = gameStartLive;
+    }
+
+    public MutableLiveData<MoveView> getMoveLiveData() {
+        return moveLiveData;
+    }
+
+    public void setMoveLiveData(MutableLiveData<MoveView> moveLiveData) {
+        this.moveLiveData = moveLiveData;
     }
 }
 

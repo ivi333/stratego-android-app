@@ -138,6 +138,7 @@ public class StrategoImageView extends View {
                         if (ico.enemy) {
                                 if (!ico.discovered) {
                                         bmp = cover[ico.color];
+                                        //bmp = arrPieceBitmaps[ico.color][ico.piece];    //TODO remove it is for debugging
                                 } else {
                                         bmp = arrPieceBitmaps[ico.color][ico.piece];
                                 }

@@ -37,9 +37,13 @@ import java.util.TimerTask;
 import de.arvato.stratego.colyseum.ColyseusManager;
 import de.arvato.stratego.colyseum.Player;
 import de.arvato.stratego.game.HistoryPiece;
+import de.arvato.stratego.game.Piece;
 import de.arvato.stratego.game.PieceEnum;
 import de.arvato.stratego.game.PieceFightStatus;
+import de.arvato.stratego.model.MoveView;
+import de.arvato.stratego.model.PiecesView;
 import de.arvato.stratego.model.PlayerView;
+import de.arvato.stratego.model.TurnView;
 import de.arvato.stratego.util.SpacingItemDecoration;
 
 public class StrategoView {
@@ -82,6 +86,9 @@ public class StrategoView {
 
     //observers view model
     private MutableLiveData<PlayerView> playerLiveData = new MutableLiveData<>();
+    private MutableLiveData<PiecesView> piecesLiveData = new MutableLiveData<>();
+    private MutableLiveData<TurnView> gameStartLive = new MutableLiveData<>();
+    private MutableLiveData<MoveView> moveLiveData = new MutableLiveData<>();
 
     private String prefferedUserName;
 
@@ -129,7 +136,7 @@ public class StrategoView {
         //select your player
         //player = StrategoConstants.RED;
 
-        strategoControl = new StrategoControl(player);
+        strategoControl = new StrategoControl(player, multiplayer);
         //strategoControl.addObserver(this);
 
         parent = (StrategoActivity) activity;
@@ -200,15 +207,74 @@ public class StrategoView {
                 });
             }
         });
+
+        piecesLiveData.observeForever(new Observer<PiecesView>() {
+            @Override
+            public void onChanged(PiecesView playerView) {
+                Log.d(TAG, "Pieces View changed:" + playerView);
+                parent.runOnUiThread(() -> {
+                    updateEnemyBoard(playerView);
+                });
+            }
+        });
+
+        gameStartLive.observeForever(new Observer<TurnView>() {
+            @Override
+            public void onChanged(TurnView turnView) {
+                Log.d(TAG,"Game Start Live:" + turnView.getTurn() + " ready to move");
+                strategoControl.getBoard().initTurn(turnView.getTurn());
+                strategoControl.setMultiPlayerReady(true);
+                strategoControl.continueTimer();
+            }
+        });
+
+        moveLiveData.observeForever(new Observer<MoveView>() {
+            @Override
+            public void onChanged(MoveView moveView) {
+                Log.d(TAG,"Move Live Data:" + moveView);
+                MoveView transformed = moveView.transformMoveToEnemyBoard();
+                boolean b = strategoControl.movePieceEnemy (transformed.getFrom(), transformed.getTo());
+
+                if (!b) {
+                    // Error moving from enemy TODO WHAT?
+                    Toast.makeText(parent.getApplicationContext(), "Error moving enemy piece!", Toast.LENGTH_LONG).show();
+                }
+                paintBoard();
+                updateStatus();
+            }
+        });
     }
 
     private void initColyseusManager() {
         colyseusManager = ColyseusManager.getInstance(StrategoConstants.ENDPOINT_COLYSEUS);
         colyseusManager.setPlayerLiveData(playerLiveData);
+        colyseusManager.setPiecesLiveData(piecesLiveData);
+        colyseusManager.setGameStartLive(gameStartLive);
+        colyseusManager.setMoveLiveData(moveLiveData);
+
         Player enemyPlayer = colyseusManager.getEnemyPlayer();
         if (enemyPlayer != null) {
             playerUpTitle.setText(enemyPlayer.name);
         }
+
+        PiecesView enemyPieces = colyseusManager.getEnemyPieces();
+        if (enemyPieces != null) {
+            updateEnemyBoard (enemyPieces);
+        }
+
+    }
+
+    private synchronized void updateEnemyBoard(PiecesView enemyPieces) {
+        Piece[] pieces = enemyPieces.transformToPieceModel(player == StrategoConstants.RED ? StrategoConstants.BLUE : StrategoConstants.RED);
+        int ini, end;
+        ini = StrategoConstants.UP_PLAYER[0];
+        end = StrategoConstants.UP_PLAYER[1];
+        for (int z=ini; z<end;z++) {
+            Piece piece = pieces[ (end-1) -z];
+            strategoControl.getBoard().setPieceAt(piece, z);
+        }
+        paintBoard();
+        Toast.makeText(parent.getApplicationContext(), "Pieces Enemy Ready!", Toast.LENGTH_LONG).show();
     }
 
     public void handleClick(int index) {
@@ -228,9 +294,12 @@ public class StrategoView {
         } else {
             if (selectedPos != -1) {
                 Log.d (TAG, "Move Piece to target index:" + index);
-                strategoControl.movePiece(index);
-                checkFinishedGame ();
-                selectedPos = -1;
+                boolean moved = strategoControl.movePiece(index);
+                if (moved) {
+                    colyseusManager.sendMove (selectedPos, index);
+                    checkFinishedGame();
+                    selectedPos = -1;
+                }
             }
         }
         strategoViewBase.paintBoard(strategoControl, selectedPos, nextMovements);
@@ -374,7 +443,10 @@ public class StrategoView {
 
                 /*String roomId = colyseusManager.getRoomID();
                 Log.d(TAG, roomId);*/
-                colyseusManager.sendFakeMessage ();
+
+                //colyseusManager.sendFakeMessage ();
+
+                strategoControl.getBoard().printPieces();
             }
         }
         );
@@ -571,5 +643,9 @@ public class StrategoView {
         if (changes) {
             temporaryAdapter.notifyDataSetChanged();
         }
+    }
+
+    public int getPlayer() {
+        return player;
     }
 }
