@@ -105,18 +105,28 @@ public class StrategoView {
         public void handleMessage(Message msg) {
             StrategoView strategoView = _strategoView.get();
             if (strategoView != null) {
+                int currentPlayer = strategoView.getPlayer();
                 long lTmp;
                 lTmp = strategoView.getStrategoControl().getRedRemainClock();
                 if (lTmp < 0) {
                     lTmp = -lTmp;
                 }
-                strategoView.textViewClockTimeBottom.setText(strategoView.formatTime(lTmp));
+
+                if (currentPlayer == StrategoConstants.RED) {
+                    strategoView.textViewClockTimeBottom.setText(strategoView.formatTime(lTmp));
+                } else {
+                    strategoView.textViewClockTimeTop.setText(strategoView.formatTime(lTmp));
+                }
 
                 lTmp = strategoView.getStrategoControl().getBlueRemainClock();
                 if (lTmp < 0) {
                     lTmp = -lTmp;
                 }
-                strategoView.textViewClockTimeTop.setText(strategoView.formatTime(lTmp));
+                if (currentPlayer == StrategoConstants.RED) {
+                    strategoView.textViewClockTimeTop.setText(strategoView.formatTime(lTmp));
+                } else {
+                    strategoView.textViewClockTimeBottom.setText(strategoView.formatTime(lTmp));
+                }
             }
         }
     }
@@ -413,6 +423,7 @@ public class StrategoView {
             @Override
             public void onClick(View v) {
                 strategoControl.randomPieces(player);
+                //strategoControl.continueTimer();
                 paintBoard ();
             }
         }
@@ -446,7 +457,17 @@ public class StrategoView {
 
                 //colyseusManager.sendFakeMessage ();
 
-                strategoControl.getBoard().printPieces();
+                //strategoControl.getBoard().printPieces();
+
+                //strategoControl.continueTimer();
+                //strategoControl.getBoard().changeTurn();
+
+                //strategoControl.getBoard().getTurn();
+                /*Log.d(TAG, "Turn before change:" + strategoControl.getBoard().getTurn());
+                strategoControl.switchTimer();
+                strategoControl.getBoard().changeTurn();
+                Log.d(TAG, "Turn after change:" + strategoControl.getBoard().getTurn());*/
+
             }
         }
         );

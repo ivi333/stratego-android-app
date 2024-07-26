@@ -1,5 +1,6 @@
 package de.arvato.stratego;
 
+import android.util.Log;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -224,6 +225,7 @@ public class StrategoControl extends Observable  {
 
     protected void switchTimer(){
         final long lEnd = System.currentTimeMillis();
+
         if(lClockStartRed > 0 && board.getTurn() == StrategoConstants.RED){
             lClockRed += (lEnd - lClockStartRed);
             lClockStartRed = 0;
@@ -233,6 +235,7 @@ public class StrategoControl extends Observable  {
             lClockStartBlue = 0;
             lClockStartRed = lEnd;
         }
+
     }
 
     protected void stopTimer () {
