@@ -89,6 +89,7 @@ public class StrategoView {
     private MutableLiveData<PiecesView> piecesLiveData = new MutableLiveData<>();
     private MutableLiveData<TurnView> gameStartLive = new MutableLiveData<>();
     private MutableLiveData<MoveView> moveLiveData = new MutableLiveData<>();
+    private MutableLiveData<String> finishGameLive = new MutableLiveData<>();
 
     private String prefferedUserName;
 
@@ -253,6 +254,14 @@ public class StrategoView {
                 updateStatus();
             }
         });
+
+        finishGameLive.observeForever(new Observer<String>() {
+            @Override
+            public void onChanged(String s) {
+                strategoControl.getBoard().finishGame();
+                updateFinishedGameStateEvent();
+            }
+        });
     }
 
     private void initColyseusManager() {
@@ -261,6 +270,7 @@ public class StrategoView {
         colyseusManager.setPiecesLiveData(piecesLiveData);
         colyseusManager.setGameStartLive(gameStartLive);
         colyseusManager.setMoveLiveData(moveLiveData);
+        colyseusManager.setFinishGameLive(finishGameLive);
 
         Player enemyPlayer = colyseusManager.getEnemyPlayer();
         if (enemyPlayer != null) {
@@ -318,20 +328,25 @@ public class StrategoView {
 
     private void checkFinishedGame() {
         if (strategoControl.getBoard().getGameStatus() == StrategoConstants.GameStatus.FINISH) {
-            viewAnimator.setDisplayedChild(0);
-            int winner = strategoControl.getWinner ();
-            if (StrategoConstants.BLUE == winner) {
-                winnerTextView.setText("Blue Flag Captured!");
-                winnerTextView.setTextColor(Color.BLUE);
-            } else {
-                winnerTextView.setText("Red Flag Captured!");
-                winnerTextView.setTextColor(Color.RED);
-            }
-            strategoControl.stopTimer();
-            winnerTextView.setVisibility(View.VISIBLE);
-            Animation bounceAnimation = AnimationUtils.loadAnimation(parent.getApplicationContext(), R.anim.bounce);
-            winnerTextView.startAnimation(bounceAnimation);
+            colyseusManager.sendFinishGame ();
+            updateFinishedGameStateEvent();
         }
+    }
+
+    private void updateFinishedGameStateEvent () {
+        viewAnimator.setDisplayedChild(0);
+        int winner = strategoControl.getWinner ();
+        if (StrategoConstants.BLUE == winner) {
+            winnerTextView.setText("Blue Flag Captured!");
+            winnerTextView.setTextColor(Color.BLUE);
+        } else {
+            winnerTextView.setText("Red Flag Captured!");
+            winnerTextView.setTextColor(Color.RED);
+        }
+        strategoControl.stopTimer();
+        winnerTextView.setVisibility(View.VISIBLE);
+        Animation bounceAnimation = AnimationUtils.loadAnimation(parent.getApplicationContext(), R.anim.bounce);
+        winnerTextView.startAnimation(bounceAnimation);
     }
 
     private void initDistributePieces() {

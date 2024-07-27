@@ -37,6 +37,7 @@ public class ColyseusManager extends Observable {
     private MutableLiveData<PlayerView> playerReadyLive;
     private MutableLiveData<TurnView> gameStartLive;
     private MutableLiveData<MoveView> moveLiveData;
+    private MutableLiveData<String> finishGameLive;
 
     private ColyseusManager(String serverUrl) {
         client = new Client(serverUrl);
@@ -145,6 +146,12 @@ public class ColyseusManager extends Observable {
             });
 
 
+            r.onMessage("finish_game", JsonNode.class, (JsonNode message) -> {
+                Log.d(TAG, "Finish Game Event");
+                finishGameLive.postValue("finished");
+            });
+
+
             //r.getState().players.triggerAll();
 
         }, Throwable::printStackTrace);
@@ -209,6 +216,10 @@ public class ColyseusManager extends Observable {
         room.send("move", jsonNode);
     }
 
+    public void sendFinishGame() {
+        room.send("finish_game");
+    }
+
     public void sendFakeMove () throws Exception {
         ObjectMapper objectMapper = new ObjectMapper();
         JsonNode jsonNode = objectMapper.createObjectNode()
@@ -264,6 +275,14 @@ public class ColyseusManager extends Observable {
 
     public void setMoveLiveData(MutableLiveData<MoveView> moveLiveData) {
         this.moveLiveData = moveLiveData;
+    }
+
+    public MutableLiveData<String> getFinishGameLive() {
+        return finishGameLive;
+    }
+
+    public void setFinishGameLive(MutableLiveData<String> finishGameLive) {
+        this.finishGameLive = finishGameLive;
     }
 }
 
