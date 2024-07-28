@@ -2,6 +2,7 @@ package de.arvato.stratego.colyseum;
 
 import android.os.Build;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.lifecycle.MutableLiveData;
 
@@ -9,12 +10,16 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 
+import de.arvato.stratego.colyseum.interfaces.JoinRoomCallback;
+import de.arvato.stratego.exceptions.GenericColyseusException;
+import de.arvato.stratego.exceptions.RoomNotFoundException;
 import de.arvato.stratego.game.Piece;
 import de.arvato.stratego.model.MoveView;
 import de.arvato.stratego.model.PiecesView;
 import de.arvato.stratego.model.PlayerView;
 import de.arvato.stratego.model.TurnView;
 import de.arvato.stratego.util.PieceUtil;
+import de.arvato.stratego.util.RandomKeyGenerator;
 import io.colyseus.Client;
 import io.colyseus.Room;
 
@@ -50,70 +55,113 @@ public class ColyseusManager extends Observable {
         return instance;
     }
 
-    public void joinOrCreate (String name, int color) {
-
+    public void createPrivateRoom (String name, int color) {
         LinkedHashMap<String, Object> options = new LinkedHashMap<>();
         options.put("name", name);
         options.put("color", color);
+        String randomKey = RandomKeyGenerator.generateRandomKey(RandomKeyGenerator.KEY_LENGTH);
+        options.put ("key", randomKey);
+        client.create (GameState.class, "stratego_game", options, this::clientListeners, Throwable::printStackTrace);
+    }
 
-        client.joinOrCreate(GameState.class, "stratego_game", options,   r -> {
-            Log.d(TAG, "Connected to room:" + r.getName());
-            this.room = r;
-            if (this.room.getId() != null) {
-                Log.d(TAG, "Room ID:" + this.room.getId());
-            }
+    public void joinOrCreate (String name, int color) {
+        LinkedHashMap<String, Object> options = new LinkedHashMap<>();
+        options.put("name", name);
+        options.put("color", color);
+        client.joinOrCreate(GameState.class, "stratego_game", options, this::clientListeners, Throwable::printStackTrace);
+    }
 
-            if (this.room.getSessionId() != null) {
-                Log.d(TAG, "Session ID:" + room.getSessionId());
-            }
+    public void join (String name, int color, String roomId, JoinRoomCallback callback) {
+        LinkedHashMap<String, Object> options = new LinkedHashMap<>();
+        options.put("name", name);
+        options.put("color", color); // Color is not relevant when joining as you get the opposite of your enemy
 
-            //state
-
-            r.getState().players.setOnAdd((player, key) -> {
-                Log.d(TAG, "Player added: " + key + " -> " + player);
-                if (!key.equals(this.room.getSessionId())) {
-                    Log.d(TAG, "A new player has been connected");
-                    if (playerLiveData != null) {
-                        playerLiveData.postValue(new PlayerView(player.name, player.color));
+        //client.joinById(GameState.class, roomId, options, this::clientListeners, Throwable::printStackTrace);
+        client.joinById(GameState.class, roomId, options,
+                room -> {
+                    // Success callback
+                    if (callback != null) {
+                        clientListeners(room);
+                        callback.onSuccess(room);
                     }
-                } else {
-                    Log.d(TAG, "Me added as a player");
-                }
-            });
-
-            r.getState().players.setOnRemove((player, key) -> {
-                Log.d(TAG, "Player removed: " + key);
-            });
-
-            r.getState().players.setOnChange((player, key) -> {
-                Log.d(TAG, "Player changed: " + key + " -> " + player);
-
-            });
-
-            r.getState().mapPieces.setOnAdd((pieces, key) -> {
-                Log.d(TAG, "Pieces added: " + key + " -> " + pieces);
-                if (!key.equals(this.room.getSessionId())) {
-                    if (piecesLiveData != null) {
-                        piecesLiveData.postValue(new PiecesView(pieces.pieces));
+                },
+                throwable -> {
+                    // Error callback
+                    if (callback != null) {
+                        callback.onError(handleError(throwable));
                     }
                 }
-            });
+        );
+    }
 
-            r.getState().mapPieces.setOnRemove((pieces, key) -> {
-                Log.d(TAG, "Pieces removed: " + key + " -> " + pieces);
-            });
+    private Exception handleError(Throwable throwable) {
+        if (throwable instanceof Client.MatchMakeException) {
+            Client.MatchMakeException error = (Client.MatchMakeException) throwable;
+            switch (error.getCode()) {
+                case Client.MatchMakeException.ERR_MATCHMAKE_INVALID_ROOM_ID :
+                   return new RoomNotFoundException("Room ID not found!");
+            }
+        }
+        return new GenericColyseusException("Unexpected error: " + throwable.getMessage());
+    }
 
-            r.getState().mapPieces.setOnChange((pieces, key) -> {
-                Log.d(TAG, "Pieces changed: " + key + " -> " + pieces);
-            });
+    private void clientListeners(Room<GameState> r) {
+        Log.d(TAG, "Connected to room:" + r.getName());
+        this.room = r;
+        if (this.room.getId() != null) {
+            Log.d(TAG, "Room ID:" + this.room.getId());
+        }
 
-            r.getState().primitives.setOnChange(changes -> {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                    changes.forEach(change -> {
-                        Log.d(TAG, "State primitives -->" + change.getField() + ": " + change.getPreviousValue() + " -> " + change.getValue());
-                    });
+        if (this.room.getSessionId() != null) {
+            Log.d(TAG, "Session ID:" + room.getSessionId());
+        }
+
+        //state
+        r.getState().players.setOnAdd((player, key) -> {
+            Log.d(TAG, "Player added: " + key + " -> " + player);
+            if (!key.equals(this.room.getSessionId())) {
+                Log.d(TAG, "A new player has been connected");
+                if (playerLiveData != null) {
+                    playerLiveData.postValue(new PlayerView(player.name, player.color));
                 }
-            });
+            } else {
+                Log.d(TAG, "Me added as a player");
+            }
+        });
+
+        r.getState().players.setOnRemove((player, key) -> {
+            Log.d(TAG, "Player removed: " + key);
+        });
+
+        r.getState().players.setOnChange((player, key) -> {
+            Log.d(TAG, "Player changed: " + key + " -> " + player);
+
+        });
+
+        r.getState().mapPieces.setOnAdd((pieces, key) -> {
+            Log.d(TAG, "Pieces added: " + key + " -> " + pieces);
+            if (!key.equals(this.room.getSessionId())) {
+                if (piecesLiveData != null) {
+                    piecesLiveData.postValue(new PiecesView(pieces.pieces));
+                }
+            }
+        });
+
+        r.getState().mapPieces.setOnRemove((pieces, key) -> {
+            Log.d(TAG, "Pieces removed: " + key + " -> " + pieces);
+        });
+
+        r.getState().mapPieces.setOnChange((pieces, key) -> {
+            Log.d(TAG, "Pieces changed: " + key + " -> " + pieces);
+        });
+
+        r.getState().primitives.setOnChange(changes -> {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                changes.forEach(change -> {
+                    Log.d(TAG, "State primitives -->" + change.getField() + ": " + change.getPreviousValue() + " -> " + change.getValue());
+                });
+            }
+        });
 
             /*r.setOnStateChange((state, isFirstState) -> {
                 Log.d(TAG, "onStateChange()");
@@ -122,39 +170,34 @@ public class ColyseusManager extends Observable {
             });*/
 
 
-            //messages listener
-            r.onMessage("move", JsonNode.class, (JsonNode message) -> {
-                int from = message.get("from").asInt();
-                int to = message.get("to").asInt();
-                Log.d(TAG, "Move got from enemy:" + "From:" + from + " to:" + to);
-                moveLiveData.postValue(new MoveView(from, to));
-            });
+        //messages listener
+        r.onMessage("move", JsonNode.class, (JsonNode message) -> {
+            int from = message.get("from").asInt();
+            int to = message.get("to").asInt();
+            Log.d(TAG, "Move got from enemy:" + "From:" + from + " to:" + to);
+            moveLiveData.postValue(new MoveView(from, to));
+        });
 
-            r.onMessage("client_left", JsonNode.class, (JsonNode message) -> {
-                String sessionId = message.get("sessionId").asText();
-                Log.d(TAG, "Client:" + sessionId + " left the room");
-            });
+        r.onMessage("client_left", JsonNode.class, (JsonNode message) -> {
+            String sessionId = message.get("sessionId").asText();
+            Log.d(TAG, "Client:" + sessionId + " left the room");
+        });
 
-            r.onMessage("ready", Player.class, (Player player) -> {
-                Log.d(TAG, "Client is ready:" + player);
-                playerReadyLive.postValue(new PlayerView(player.name, player.color));
-            });
+        r.onMessage("ready", Player.class, (Player player) -> {
+            Log.d(TAG, "Client is ready:" + player);
+            playerReadyLive.postValue(new PlayerView(player.name, player.color));
+        });
 
-            r.onMessage("game_start", JsonNode.class, (JsonNode message) -> {
-                Log.d(TAG, "Game can start with turn:" + message);
-                gameStartLive.postValue (new TurnView(message.asInt()));
-            });
-
-
-            r.onMessage("finish_game", JsonNode.class, (JsonNode message) -> {
-                Log.d(TAG, "Finish Game Event");
-                finishGameLive.postValue("finished");
-            });
+        r.onMessage("game_start", JsonNode.class, (JsonNode message) -> {
+            Log.d(TAG, "Game can start with turn:" + message);
+            gameStartLive.postValue (new TurnView(message.asInt()));
+        });
 
 
-            //r.getState().players.triggerAll();
-
-        }, Throwable::printStackTrace);
+        r.onMessage("finish_game", JsonNode.class, (JsonNode message) -> {
+            Log.d(TAG, "Finish Game Event");
+            finishGameLive.postValue("finished");
+        });
     }
 
     public String getRoomID () {

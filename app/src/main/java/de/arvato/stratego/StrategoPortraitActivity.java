@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -23,7 +24,10 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import de.arvato.stratego.colyseum.ColyseusManager;
+import de.arvato.stratego.colyseum.GameState;
+import de.arvato.stratego.colyseum.interfaces.JoinRoomCallback;
 import de.arvato.stratego.model.PlayerView;
+import io.colyseus.Room;
 
 public class StrategoPortraitActivity extends Activity {
 
@@ -31,7 +35,8 @@ public class StrategoPortraitActivity extends Activity {
 
     private Button playButton, instructionsButton, playOnlineButton, profileButton, settingsButton;
 
-    private Button btnCreateRoom, btnJoinRoom;
+    private Button btnCreateRoom, btnJoinRoom, btnCreatePrivateRoom;
+    private EditText editTextRoomId;
 
     private ImageView blueMultiPlayerSelector;
     private ImageView redMultiPlayerSelector;
@@ -100,7 +105,9 @@ public class StrategoPortraitActivity extends Activity {
         blueMultiPlayerSelector = dialogView.findViewById(R.id.blueMultiPlayerSelector);
         redMultiPlayerSelector = dialogView.findViewById(R.id.redMultiPlayerSelector);
         btnCreateRoom = dialogView.findViewById(R.id.btnCreateRoom);
+        btnCreatePrivateRoom = dialogView.findViewById(R.id.btnCreatPrivateeRoom);
         btnJoinRoom = dialogView.findViewById(R.id.btnJoinRoom);
+        editTextRoomId = dialogView.findViewById(R.id.editTextRoomId);
 
         loadImageFromAssets (blueMultiPlayerSelector, "bandera_blue.png");
         loadImageFromAssets (redMultiPlayerSelector, "bandera_red.png");
@@ -115,9 +122,26 @@ public class StrategoPortraitActivity extends Activity {
         btnJoinRoom.setOnClickListener(new View.OnClickListener() {
              @Override
              public void onClick(View v) {
-                 //TODO Join an existing room
-                 //ColyseusManager colyseusManager = ColyseusManager.getInstance(StrategoConstants.ENDPOINT_COLYSEUS);
-                 //colyseusManager.sendInitialPlayer("dummy", 1);
+                String roomId = editTextRoomId.getText().toString().trim();
+                Log.d(TAG, "Joining to roomID:" + roomId);
+                 ColyseusManager colyseusManager = ColyseusManager.getInstance(StrategoConstants.ENDPOINT_COLYSEUS);
+                 colyseusManager.setPlayerReadyLive(playerReadyLive);
+                 colyseusManager.join(getPreferredUserName(), 0, roomId, new JoinRoomCallback() {
+                     @Override
+                     public void onSuccess(Room<GameState> room) {
+                         runOnUiThread(() -> {
+                             Toast.makeText(getApplicationContext(), "Successfully joined the room", Toast.LENGTH_SHORT).show();
+                         });
+                     }
+
+                     @Override
+                     public void onError(Exception e) {
+                         runOnUiThread(() -> {
+                            Toast.makeText(getApplicationContext(), "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                         });
+                     }
+                 });
+
              }
         });
 
@@ -137,6 +161,25 @@ public class StrategoPortraitActivity extends Activity {
                 }
                 ColyseusManager colyseusManager = ColyseusManager.getInstance(StrategoConstants.ENDPOINT_COLYSEUS);
                 colyseusManager.joinOrCreate(getPreferredUserName(), which);
+                colyseusManager.setPlayerReadyLive(playerReadyLive);
+            }
+        });
+
+        btnCreatePrivateRoom.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int which = -1;
+                if (blueMultiPlayerSelector.isSelected()) {
+                    which = 1;
+                } else if (redMultiPlayerSelector.isSelected()) {
+                    which = 0;
+                }
+                if (which == -1) {
+                    Toast.makeText(getApplicationContext(), "Select a color first.!", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                ColyseusManager colyseusManager = ColyseusManager.getInstance(StrategoConstants.ENDPOINT_COLYSEUS);
+                colyseusManager.createPrivateRoom(getPreferredUserName(), which);
                 colyseusManager.setPlayerReadyLive(playerReadyLive);
             }
         });
@@ -161,6 +204,7 @@ public class StrategoPortraitActivity extends Activity {
         playerReadyLive.observeForever(new Observer<>() {
             @Override
             public void onChanged(PlayerView playerView) {
+                Log.d(TAG, "player Ready Live:" + playerView.toString());
                 runOnUiThread(() -> {
                     Intent i = new Intent();
                     i.setClass(getApplicationContext(), StartPlayActivity.class);

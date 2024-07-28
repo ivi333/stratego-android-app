@@ -65,11 +65,26 @@
         android:id="@+id/btnCreateRoom"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Create Room"
+        android:text="Create or Join Room"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/btnCreatPrivateeRoom"
+        style="@style/GameButtonStyle"
+        android:textSize="14sp"
+        android:layout_marginBottom="15dp"
+        android:layout_marginTop="30dp"/>
+
+    <!-- Create Room button -->
+    <Button
+        android:id="@+id/btnCreatPrivateeRoom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Create Private Room"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toTopOf="@id/textJoinRoom"
         style="@style/GameButtonStyle"
+        android:textSize="14sp"
         android:layout_marginTop="30dp"/>
 
     <!-- Horizontal Divider -->
@@ -78,10 +93,10 @@
         android:layout_width="0dp"
         android:layout_height="1dp"
         android:background="?android:attr/listDivider"
-        app:layout_constraintTop_toBottomOf="@id/btnCreateRoom"
+        app:layout_constraintTop_toBottomOf="@id/btnCreatPrivateeRoom"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="16dp"/>
+        android:layout_marginTop="30dp"/>
 
     <!-- Join Room text -->
     <TextView
@@ -90,10 +105,10 @@
         android:layout_height="wrap_content"
         android:text="or Join Room"
         android:textSize="18sp"
-        app:layout_constraintTop_toBottomOf="@id/btnCreateRoom"
+        app:layout_constraintTop_toBottomOf="@id/btnCreatPrivateeRoom"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="60dp"/>
+        android:layout_marginTop="80dp"/>
 
     <!-- Room ID input -->
     <EditText
@@ -117,5 +132,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         style="@style/GameButtonStyle"
+        android:textSize="14sp"
         android:layout_marginTop="16dp"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
