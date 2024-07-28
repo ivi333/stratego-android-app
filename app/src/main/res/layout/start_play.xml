@@ -126,6 +126,7 @@
                         android:textSize="14sp"/>
 
 
+                    <!--
                     <Button
                         android:id="@+id/ShowPiece"
                         android:layout_width="wrap_content"
@@ -134,7 +135,7 @@
                         style="@style/GameButtonStyle"
                         android:layout_marginEnd="4dp"
                         android:textSize="14sp"/>
-
+                     -->
                     <Button
                         android:id="@+id/LeaveRoom"
                         android:layout_width="wrap_content"

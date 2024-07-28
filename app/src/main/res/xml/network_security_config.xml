@@ -7,5 +7,6 @@
         <domain includeSubdomains="true">192.168.1.64</domain>
         <domain includeSubdomains="true">192.168.1.145</domain>
         <domain includeSubdomains="true">192.168.1.156</domain>
+        <domain includeSubdomains="true">raspberryolesavpn2.myddns.me</domain>
     </domain-config>
 </network-security-config>

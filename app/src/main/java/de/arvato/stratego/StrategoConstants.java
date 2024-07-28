@@ -88,7 +88,10 @@ public class StrategoConstants
 	//public static final String ENDPOINT_COLYSEUS = "ws://192.168.1.136:2567";
 
 	// olesa ip
-	public static final String ENDPOINT_COLYSEUS = "ws://192.168.1.64:2567";
+	//public static final String ENDPOINT_COLYSEUS = "ws://192.168.1.64:2567";
+
+	// public ip colyseus server
+	public static final String ENDPOINT_COLYSEUS = "ws://raspberryolesavpn2.myddns.me:2567";
 
 	public static final String PREFERENCES_NAME = "StrategoPrefs";
 }

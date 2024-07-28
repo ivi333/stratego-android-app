@@ -21,4 +21,12 @@
         android:text="Save"
         android:layout_marginTop="16dp"/>
 
+    <ToggleButton
+        android:id="@+id/toggleButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textOn="Music On"
+        android:textOff="Music Off"
+        android:layout_marginTop="16dp"/>
+
 </LinearLayout>

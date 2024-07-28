@@ -368,7 +368,7 @@ public class StrategoView {
         Button bPlayerReady = parent.findViewById(R.id.PlayerReady);
         //Button bPlayerReset = parent.findViewById(R.id.PlayerReset);
         Button bPlayerRandom = parent.findViewById(R.id.PlayerRandom);
-        Button bShowPiece = parent.findViewById(R.id.ShowPiece);
+        //Button bShowPiece = parent.findViewById(R.id.ShowPiece);
         Button bLeaveRoom = parent.findViewById(R.id.LeaveRoom);
         //Button bFakeRoom = parent.findViewById(R.id.FakeMove);
         TextView InfoText = parent.findViewById(R.id.InfoText);
@@ -444,7 +444,7 @@ public class StrategoView {
         }
         );
 
-        bShowPiece.setOnClickListener(new View.OnClickListener() {
+        /*bShowPiece.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //strategoControl.randomPieces(player);
@@ -461,14 +461,14 @@ public class StrategoView {
                 //strategoViewBase.paintBoard(strategoControl, -1, Collections.emptyList());
 
                 //history test
-                /*List<HistoryPiece> historyMoves = strategoControl.getBoard().getHistoryMoves();
-                Log.d(TAG, "History size:" + historyMoves.size());
-                for (HistoryPiece history : historyMoves) {
-                    Log.d(TAG, history.toString());
-                }*/
+                //List<HistoryPiece> historyMoves = strategoControl.getBoard().getHistoryMoves();
+                //Log.d(TAG, "History size:" + historyMoves.size());
+                //for (HistoryPiece history : historyMoves) {
+                    //Log.d(TAG, history.toString());
+                //}
 
-                /*String roomId = colyseusManager.getRoomID();
-                Log.d(TAG, roomId);*/
+                //String roomId = colyseusManager.getRoomID();
+                //Log.d(TAG, roomId);
 
                 //colyseusManager.sendFakeMessage ();
 
@@ -478,14 +478,13 @@ public class StrategoView {
                 //strategoControl.getBoard().changeTurn();
 
                 //strategoControl.getBoard().getTurn();
-                /*Log.d(TAG, "Turn before change:" + strategoControl.getBoard().getTurn());
-                strategoControl.switchTimer();
-                strategoControl.getBoard().changeTurn();
-                Log.d(TAG, "Turn after change:" + strategoControl.getBoard().getTurn());*/
-
+                //Log.d(TAG, "Turn before change:" + strategoControl.getBoard().getTurn());
+                //strategoControl.switchTimer();
+                //strategoControl.getBoard().changeTurn();
+                //Log.d(TAG, "Turn after change:" + strategoControl.getBoard().getTurn());
             }
         }
-        );
+        );*/
 
         /*bFakeRoom.setOnClickListener(new View.OnClickListener() {
             @Override

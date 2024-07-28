@@ -2,12 +2,15 @@ package de.arvato.stratego;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,6 +30,7 @@ import de.arvato.stratego.colyseum.ColyseusManager;
 import de.arvato.stratego.colyseum.GameState;
 import de.arvato.stratego.colyseum.interfaces.JoinRoomCallback;
 import de.arvato.stratego.model.PlayerView;
+import de.arvato.stratego.services.AudioService;
 import io.colyseus.Room;
 
 public class StrategoPortraitActivity extends Activity {
@@ -42,6 +46,9 @@ public class StrategoPortraitActivity extends Activity {
     private ImageView redMultiPlayerSelector;
 
     private MutableLiveData<PlayerView> playerReadyLive;
+
+    private AudioService audioService;
+    private boolean bound = false;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -78,6 +85,25 @@ public class StrategoPortraitActivity extends Activity {
             i.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
             startActivity(i);
         });
+
+        // Start the audio service
+        Intent intent = new Intent(this, AudioService.class);
+        startService(intent);
+
+        // Bind to the audio service
+        bindService(intent, new ServiceConnection() {
+            @Override
+            public void onServiceConnected(ComponentName name, IBinder service) {
+                AudioService.LocalBinder binder = (AudioService.LocalBinder) service;
+                audioService = binder.getService();
+                bound = true;
+            }
+
+            @Override
+            public void onServiceDisconnected(ComponentName name) {
+                bound = false;
+            }
+        }, Context.BIND_AUTO_CREATE);
 
     }
 
@@ -206,6 +232,7 @@ public class StrategoPortraitActivity extends Activity {
             public void onChanged(PlayerView playerView) {
                 Log.d(TAG, "player Ready Live:" + playerView.toString());
                 runOnUiThread(() -> {
+                    stopAudio();
                     Intent i = new Intent();
                     i.setClass(getApplicationContext(), StartPlayActivity.class);
                     i.putExtra("select_color", playerView.getColor());
@@ -272,6 +299,7 @@ public class StrategoPortraitActivity extends Activity {
     }
 
     private void handleDialogImageClick(int which) {
+        stopAudio ();
         Intent i = new Intent();
         i.setClass(getApplicationContext(), StartPlayActivity.class);
         i.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
@@ -314,39 +342,64 @@ public class StrategoPortraitActivity extends Activity {
         return sharedPreferences.getString("name", "Hidden_Name");
     }
 
+    private void stopAudio () {
+        Intent intent = new Intent(this, AudioService.class);
+        stopService(intent);
+    }
+
     @Override
     protected void onStart() {
         super.onStart();
-        //Log.d(TAG, "onStart");
+        Log.d(TAG, "onStart");
     }
 
     @Override
     protected void onResume() {
+        Log.d(TAG, "onResume");
         super.onResume();
-        //Log.d(TAG, "onResume");
+        if (bound && audioService != null) {
+            audioService.startAudio(); // Restart audio when activity resumes (if needed)
+        }
     }
 
     @Override
     protected void onPause() {
+        Log.d(TAG, "onPause");
         super.onPause();
-        //Log.d(TAG, "onPause");
+        if (bound) {
+            if (audioService != null) {
+                audioService.stopAudio(); // Stop audio when activity is paused
+            }
+        }
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        //Log.d(TAG, "onStop");
+        Log.d(TAG, "onStop");
     }
 
     @Override
     protected void onRestart() {
         super.onRestart();
-        //Log.d(TAG, "onRestart");
+        Log.d(TAG, "onRestart");
     }
 
     @Override
     protected void onDestroy() {
+        Log.d(TAG, "onDestroy");
         super.onDestroy();
-        //Log.d(TAG, "onDestroy");
+        if (bound) {
+            unbindService(new ServiceConnection() {
+                @Override
+                public void onServiceConnected(ComponentName name, IBinder service) {
+                }
+
+                @Override
+                public void onServiceDisconnected(ComponentName name) {
+                }
+            });
+            bound = false;
+        }
     }
 }
