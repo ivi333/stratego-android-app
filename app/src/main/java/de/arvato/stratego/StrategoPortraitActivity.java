@@ -339,8 +339,13 @@ public class StrategoPortraitActivity extends Activity {
 
     public String getPreferredUserName () {
         SharedPreferences sharedPreferences  = getSharedPreferences(StrategoConstants.PREFERENCES_NAME, Context.MODE_PRIVATE);
-        return sharedPreferences.getString("name", "Hidden_Name");
+        return sharedPreferences.getString(SettingsActivity.KEY_NAME, "Hidden_Name");
     }
+
+    /*public boolean isMusicActivated () {
+        SharedPreferences sharedPreferences  = getSharedPreferences(StrategoConstants.PREFERENCES_NAME, Context.MODE_PRIVATE);
+        return sharedPreferences.getBoolean(SettingsActivity.KEY_MUSIC, false);
+    }*/
 
     private void stopAudio () {
         Intent intent = new Intent(this, AudioService.class);
