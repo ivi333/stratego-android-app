@@ -90,6 +90,7 @@ public class StrategoView {
     private MutableLiveData<TurnView> gameStartLive = new MutableLiveData<>();
     private MutableLiveData<MoveView> moveLiveData = new MutableLiveData<>();
     private MutableLiveData<String> finishGameLive = new MutableLiveData<>();
+    private MutableLiveData<String> playerDisconnected = new MutableLiveData<>();
 
     private String prefferedUserName;
 
@@ -262,6 +263,13 @@ public class StrategoView {
                 updateFinishedGameStateEvent();
             }
         });
+
+        playerDisconnected.observeForever(new Observer<String>() {
+            @Override
+            public void onChanged(String s) {
+                updateGamePlayerDisconnected ();
+            }
+        });
     }
 
     private void initColyseusManager() {
@@ -271,6 +279,7 @@ public class StrategoView {
         colyseusManager.setGameStartLive(gameStartLive);
         colyseusManager.setMoveLiveData(moveLiveData);
         colyseusManager.setFinishGameLive(finishGameLive);
+        colyseusManager.setPlayerDisconnected(playerDisconnected);
 
         Player enemyPlayer = colyseusManager.getEnemyPlayer();
         if (enemyPlayer != null) {
@@ -344,6 +353,16 @@ public class StrategoView {
             winnerTextView.setTextColor(Color.RED);
         }
         strategoControl.stopTimer();
+        winnerTextView.setVisibility(View.VISIBLE);
+        Animation bounceAnimation = AnimationUtils.loadAnimation(parent.getApplicationContext(), R.anim.bounce);
+        winnerTextView.startAnimation(bounceAnimation);
+    }
+
+    private void updateGamePlayerDisconnected () {
+        colyseusManager.disconnect();
+        strategoControl.stopTimer();
+        viewAnimator.setDisplayedChild(0);
+        winnerTextView.setText("Player Enemy left the game. Try again");
         winnerTextView.setVisibility(View.VISIBLE);
         Animation bounceAnimation = AnimationUtils.loadAnimation(parent.getApplicationContext(), R.anim.bounce);
         winnerTextView.startAnimation(bounceAnimation);

@@ -43,6 +43,7 @@ public class ColyseusManager extends Observable {
     private MutableLiveData<TurnView> gameStartLive;
     private MutableLiveData<MoveView> moveLiveData;
     private MutableLiveData<String> finishGameLive;
+    private MutableLiveData<String> playerDisconnected;
 
     private ColyseusManager(String serverUrl) {
         client = new Client(serverUrl);
@@ -181,6 +182,7 @@ public class ColyseusManager extends Observable {
         r.onMessage("client_left", JsonNode.class, (JsonNode message) -> {
             String sessionId = message.get("sessionId").asText();
             Log.d(TAG, "Client:" + sessionId + " left the room");
+            playerDisconnected.postValue("disconnected");
         });
 
         r.onMessage("ready", Player.class, (Player player) -> {
@@ -280,20 +282,8 @@ public class ColyseusManager extends Observable {
         room.send("fakeMessage", "sending fake message from client:" + this.room.getSessionId());
     }
 
-    public MutableLiveData<PlayerView> getPlayerLiveData() {
-        return playerLiveData;
-    }
-
     public void setPlayerLiveData(MutableLiveData<PlayerView> playerLiveDta) {
         this.playerLiveData = playerLiveDta;
-    }
-
-    public MutableLiveData<PlayerView> getPlayerReadyLive() {
-        return playerReadyLive;
-    }
-
-    public MutableLiveData<PiecesView> getPiecesLiveData() {
-        return piecesLiveData;
     }
 
     public void setPiecesLiveData(MutableLiveData<PiecesView> piecesLiveData) {
@@ -304,28 +294,20 @@ public class ColyseusManager extends Observable {
         this.playerReadyLive = playerReadyLive;
     }
 
-    public MutableLiveData<TurnView> getGameStartLive() {
-        return gameStartLive;
-    }
-
     public void setGameStartLive(MutableLiveData<TurnView> gameStartLive) {
         this.gameStartLive = gameStartLive;
-    }
-
-    public MutableLiveData<MoveView> getMoveLiveData() {
-        return moveLiveData;
     }
 
     public void setMoveLiveData(MutableLiveData<MoveView> moveLiveData) {
         this.moveLiveData = moveLiveData;
     }
 
-    public MutableLiveData<String> getFinishGameLive() {
-        return finishGameLive;
-    }
-
     public void setFinishGameLive(MutableLiveData<String> finishGameLive) {
         this.finishGameLive = finishGameLive;
+    }
+
+    public void setPlayerDisconnected(MutableLiveData<String> playerDisconnected) {
+        this.playerDisconnected = playerDisconnected;
     }
 }
 
