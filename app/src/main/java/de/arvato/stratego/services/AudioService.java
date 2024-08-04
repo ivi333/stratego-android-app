@@ -56,7 +56,7 @@ public class AudioService extends Service {
         if (mediaPlayer != null && isMusicActivated()) {
             if (!mediaPlayer.isPlaying()) {
                 mediaPlayer.start(); // Start playback
-            } else if (isPaused) {
+            } else if (isPaused && isMusicActivated()) {
                 mediaPlayer.seekTo(mediaPlayer.getCurrentPosition());
                 mediaPlayer.start();
                 isPaused = false;

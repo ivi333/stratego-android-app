@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -22,15 +23,18 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
+import androidx.preference.PreferenceManager;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Locale;
 
 import de.arvato.stratego.colyseum.ColyseusManager;
 import de.arvato.stratego.colyseum.GameState;
 import de.arvato.stratego.colyseum.interfaces.JoinRoomCallback;
 import de.arvato.stratego.model.PlayerView;
 import de.arvato.stratego.services.AudioService;
+import de.arvato.stratego.util.LocaleHelper;
 import io.colyseus.Room;
 
 public class StrategoPortraitActivity extends Activity {
@@ -54,6 +58,8 @@ public class StrategoPortraitActivity extends Activity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         Log.d(TAG, "onCreate");
         super.onCreate(savedInstanceState);
+
+        LocaleHelper.applyLanguageSettings(this);
 
         setContentView(R.layout.stratego_main);
 
@@ -362,6 +368,7 @@ public class StrategoPortraitActivity extends Activity {
     protected void onResume() {
         Log.d(TAG, "onResume");
         super.onResume();
+        // Apply language settings
         if (bound && audioService != null) {
             audioService.startAudio(); // Restart audio when activity resumes (if needed)
         }

@@ -25,6 +25,8 @@ open class MyBaseActivity : Activity() {
     var _imove = 0
     var _icapture = 0
     var _fVolume = 1.0f
+    var _fight = 0;
+    var _win = 0;
 
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,6 +40,8 @@ open class MyBaseActivity : Activity() {
         _ihorseRunAway = spSound!!.load(this, R.raw.horserunaway, 1)
         _imove = spSound!!.load(this, R.raw.move, 1)
         _icapture = spSound!!.load(this, R.raw.capture, 1)
+        _fight = spSound!!.load(this, R.raw.fight, 1)
+        _win = spSound!!.load(this, R.raw.win, 1)
     }
 
     override fun onResume() {
@@ -109,6 +113,15 @@ open class MyBaseActivity : Activity() {
     fun soundCapture() {
         spSound!!.play(_icapture, _fVolume, _fVolume, 1, 0, 1f)
     }
+
+    fun soundFight() {
+        spSound!!.play(_fight, _fVolume, _fVolume, 1, 0, 1f)
+    }
+
+    fun soundWin() {
+        spSound!!.play(_win, _fVolume, _fVolume, 1, 0, 1f)
+    }
+
 
     private fun prepareWindowSettings() {
         Factory.prepareWindowSettings(this);

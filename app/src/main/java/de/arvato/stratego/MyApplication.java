@@ -10,6 +10,7 @@ import androidx.lifecycle.LifecycleObserver;
 import androidx.lifecycle.OnLifecycleEvent;
 
 import de.arvato.stratego.services.AudioService;
+import de.arvato.stratego.util.LocaleHelper;
 
 public class MyApplication extends Application {
 
@@ -18,6 +19,7 @@ public class MyApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        LocaleHelper.applyLanguageSettings(this);
         ProcessLifecycleOwner.get().getLifecycle().addObserver(new AppLifecycleObserver());
     }
 

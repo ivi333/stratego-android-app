@@ -325,6 +325,7 @@ public class StrategoView {
                 Log.d (TAG, "Move Piece to target index:" + index);
                 boolean moved = strategoControl.movePiece(index);
                 if (moved) {
+                    parent.soundMove();
                     colyseusManager.sendMove (selectedPos, index);
                     checkFinishedGame();
                     selectedPos = -1;
@@ -343,6 +344,7 @@ public class StrategoView {
     }
 
     private void updateFinishedGameStateEvent () {
+        parent.soundWin();
         viewAnimator.setDisplayedChild(0);
         int winner = strategoControl.getWinner ();
         if (StrategoConstants.BLUE == winner) {
@@ -387,7 +389,7 @@ public class StrategoView {
         Button bPlayerReady = parent.findViewById(R.id.PlayerReady);
         //Button bPlayerReset = parent.findViewById(R.id.PlayerReset);
         Button bPlayerRandom = parent.findViewById(R.id.PlayerRandom);
-        //Button bShowPiece = parent.findViewById(R.id.ShowPiece);
+        Button bShowPiece = parent.findViewById(R.id.ShowPiece);
         Button bLeaveRoom = parent.findViewById(R.id.LeaveRoom);
         //Button bFakeRoom = parent.findViewById(R.id.FakeMove);
         TextView InfoText = parent.findViewById(R.id.InfoText);
@@ -463,7 +465,7 @@ public class StrategoView {
         }
         );
 
-        /*bShowPiece.setOnClickListener(new View.OnClickListener() {
+        bShowPiece.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //strategoControl.randomPieces(player);
@@ -501,9 +503,11 @@ public class StrategoView {
                 //strategoControl.switchTimer();
                 //strategoControl.getBoard().changeTurn();
                 //Log.d(TAG, "Turn after change:" + strategoControl.getBoard().getTurn());
+
+                parent.soundMove();
             }
         }
-        );*/
+        );
 
         /*bFakeRoom.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -695,6 +699,7 @@ public class StrategoView {
             }
         }
         if (changes) {
+            parent.soundFight();
             temporaryAdapter.notifyDataSetChanged();
         }
     }

@@ -1,6 +1,8 @@
 package de.arvato.stratego;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
@@ -8,6 +10,14 @@ import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.preference.PreferenceManager;
+
+import java.util.Locale;
+
+import de.arvato.stratego.fragment.PreferencesFragment;
+import de.arvato.stratego.util.LocaleHelper;
 
 public class SettingsActivity extends AppCompatActivity {
 
@@ -17,10 +27,12 @@ public class SettingsActivity extends AppCompatActivity {
     private SharedPreferences sharedPreferences;
     public static final String KEY_NAME = "name";
     public static final String KEY_MUSIC = "music";
+    public static final String KEY_LANGUAGE = "language";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_settings);
 
         editTextName = findViewById(R.id.editTextName);
@@ -33,6 +45,7 @@ public class SettingsActivity extends AppCompatActivity {
         // Load saved name
         String savedName = sharedPreferences.getString(KEY_NAME, "");
         editTextName.setText(savedName);
+
 
         boolean savedMusic = sharedPreferences.getBoolean(KEY_MUSIC, false);
         toggleMusic.setChecked(savedMusic);
@@ -49,8 +62,22 @@ public class SettingsActivity extends AppCompatActivity {
             editor.putBoolean(KEY_MUSIC, toggleMusic.isChecked());
             editor.apply();
 
+            LocaleHelper.applyLanguageSettings(this);
+
             // Show a confirmation message
             Toast.makeText(SettingsActivity.this, "Settings saved!", Toast.LENGTH_SHORT).show();
+
         });
+
+        //language
+        if (savedInstanceState == null) {
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+
+            // Add the PreferencesFragment to the FrameLayout
+            PreferencesFragment preferencesFragment = new PreferencesFragment();
+            fragmentTransaction.replace(R.id.preferences_container, preferencesFragment);
+            fragmentTransaction.commit();
+        }
     }
 }

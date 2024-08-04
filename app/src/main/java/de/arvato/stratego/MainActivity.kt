@@ -27,8 +27,8 @@ class MainActivity : Activity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val getData =
-            getSharedPreferences("ChessPlayer", Context.MODE_PRIVATE)
-        var myLanguage = getData.getString("localelanguage", "")
+            getSharedPreferences("StrategoPlayer", Context.MODE_PRIVATE)
+        var myLanguage = getData.getString("language", "")
         val current = resources.configuration.locale
         val language = current.language
         if (myLanguage == "") { // localelanguage not used yet? then use device default locale

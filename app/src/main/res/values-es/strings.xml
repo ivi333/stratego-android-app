@@ -2,10 +2,10 @@
 <resources>
 
     <string name="app_name">Stratego</string>
-    <string name="app_name_play">Play</string>
-    <string name="app_name_playonline">Play online</string>
+    <string name="app_name_play">Jugar</string>
+    <string name="app_name_playonline">Jugar online</string>
     <string name="app_name_setup">Setup</string>
-    <string name="app_name_help">Help</string>
+    <string name="app_name_help">Ayuda</string>
     <string name="app_name_import">Import</string>
     <string name="app_name_pgntools">Advanced</string>
     <string name="app_name_save_games">Saved games</string>
@@ -13,13 +13,13 @@
 
     <string name="language">en</string>
 
-    <string name="start_play">Play</string>
-    <string name="start_lessons">Lessons</string>
-    <string name="start_practice">Practice</string>
+    <string name="start_play">Jugar</string>
+    <string name="start_lessons">Lecciones</string>
+    <string name="start_practice">Practicar</string>
     <string name="start_puzzles">Puzzles</string>
-    <string name="start_about">About</string>
-    <string name="start_pgn">Advanced</string>
-    <string name="start_ics">Play online</string>
+    <string name="start_about">Sobre</string>
+    <string name="start_pgn">Avanzando</string>
+    <string name="start_ics">Jugar online</string>
     <string name="start_globalpreferences">Global settings</string>
     <string name="start_convergence">TV Screen</string>
 
@@ -406,7 +406,7 @@
     <string name="toast_could_not_start_activity">Could not start the activity</string>
     <string name="toast_challenge_posted">Challenge posted</string>
     <string name="prefs_icsshowclocksummary">In the PGN, show the clock times on each move</string>
-    <string name = "single_player">Single Player</string>
+    <string name = "single_player">1 Jugador</string>
     <string name="game_instructions">
         <![CDATA[
         <html>
