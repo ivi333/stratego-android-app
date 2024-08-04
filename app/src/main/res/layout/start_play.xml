@@ -134,7 +134,7 @@
                         android:text="Test"
                         style="@style/GameButtonStyle"
                         android:layout_marginEnd="4dp"
-                        android:visibility="invisible"
+                        android:visibility="gone"
                         android:textSize="14sp"/>
 
                     <Button
